@@ -1,10 +1,11 @@
 <?php
 
 //paramètres de la base de données
-define('SERVEURBDD', "localhost");
-define('NOMBASE', "esirempire_db");
-define('LOGINBDD', "_");
-define('PASSWORDBDD', "");
+define('SERVER', "localhost");
+define('DB_PORT', "3307");
+define('DB_NAME', "esirempire_db");
+define('DB_LOGIN', "api_admin");
+define('DB_PWD', "apiadmin1234");
 
 class DBinterface {
 
@@ -12,11 +13,9 @@ class DBinterface {
 
     public function __construct(){
         try{
-            $this->bdd = new PDO(
-                "mysql:host=". SERVEURBDD .";dbname=". NOMBASE , LOGINBDD, PASSWORDBDD;
-            );
+            $this->db = new PDO('mysql:host=' . SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8', DB_LOGIN, DB_PWD);
         } catch(PDOException $e){
-            echo 'Échec lors de la connexion : ' . $e->getMessage();
+            echo 'Error while connexion : ' . $e->getMessage();
         }
     }
 
