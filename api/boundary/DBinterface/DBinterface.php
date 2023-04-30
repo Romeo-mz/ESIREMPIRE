@@ -19,4 +19,8 @@ class DBinterface {
         }
     }
 
+    public function getDB(){
+        return $this->db;
+    }
+
 }
