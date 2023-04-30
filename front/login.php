@@ -9,19 +9,26 @@
 </head>
 <body>
     <main>
-        <div class="left login">
-            <h1>ESIREMPIRE</h1>
+        <div class="left">
+            <div class="overlay">
+                <h1>ESIREMPIRE</h1>
+            </div>
+           
 
         </div>
         <div class="right">
             <h1>LOGIN</h1>
             <form action="login.php" method="post">
                 <input type="text" name="username" placeholder="Username" required>
+                
                 <input type="password" name="password" placeholder="Password" required>
                 <select name="univers" id="univers-select">
                     <option value="">--Choisissez un univers--</option>
                     <option value="1">Univers 1</option>
                 </select>
+                
+                <br/><br/>
+
                 <label for="remember">Remember me</label>
                 <input type="checkbox" name="remember" id="remember">
                 <input type="submit" value="Login">
