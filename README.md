@@ -17,4 +17,4 @@ ESIREMPIRE est un jeu de stratégie passionnant qui vous offrira des heures de j
 
 ## Comment contribuer
 
-Nous sommes toujours à la recherche de nouvelles idées et de nouveaux contributeurs pour améliorer ESIREM Galactique. Si vous souhaitez contribuer au développement du jeu, n'hésitez pas à nous contacter ou à soumettre une demande de pull.
+Nous sommes toujours à la recherche de nouvelles idées et de nouveaux contributeurs pour améliorer ESIREMPIRE. Si vous souhaitez contribuer au développement du jeu, n'hésitez pas à nous contacter ou à soumettre une demande de pull.
