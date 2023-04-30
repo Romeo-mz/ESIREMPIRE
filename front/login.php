@@ -29,11 +29,11 @@
                 
                 <br/><br/>
 
-                <label for="remember">Remember me</label>
+                <label for="remember">Se souvenir de moi</label>
                 <input type="checkbox" name="remember" id="remember">
                 <input type="submit" value="Login">
             </form>
-            <span class="register">Don't have an account? <a href="register.php">Register</a></p>
+            <span class="register">Vous n'avez pas de compte <a href="register.php">Register</a></p>
         </div>
     </main>
 </body>

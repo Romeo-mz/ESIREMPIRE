@@ -30,8 +30,11 @@ html {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 20px 6px #68446a9e;
+    transition: .3s;
 }
-
+main:hover{
+    transform: scale(1.05);
+}
 main div{
     height: auto;
 }
