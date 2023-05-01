@@ -13,6 +13,12 @@ class Administration
         $this->APIadmin = new APIadmin($this);
     }
 
+    public function getUniverses() {
+        $query = "SELECT * FROM univers";
+        $result = $this->DBinterface->getUniverses($query);
+        return $result;
+    }
+
     public function getLastUniverseId() {
         $query = "SELECT MAX(id) FROM univers";
         $result = $this->DBinterface->getLastUniverseId($query);

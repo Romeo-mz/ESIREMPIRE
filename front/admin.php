@@ -15,6 +15,9 @@ if(isset($_GET['success'])) {
             </div>";
 }
 
+$universes = file_get_contents("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIadmin.php?universes");
+$universes = json_decode($universes, true);
+
 ?>
 
 <!DOCTYPE html>
@@ -41,10 +44,14 @@ if(isset($_GET['success'])) {
                 <label for="universe_name">Créer un Univers <i>(vide: Univers X)</i>:</label><br>
                 <input type="text" name="universe_name" placeholder="Nom Univers" id="universe_name">
                 
-                <br><br><label for="univers-select">Univers Actuel</label><br>
+                <br><br><label for="univers-select">Univers Existants</label><br>
                 <select id="univers-select">
-                    <option value="" default>--Univers Actuel--</option>
-                    <option value="1">Univers 1</option>
+                    <option value="" default>--Univers Existants--</option>
+                    <?php 
+                        foreach($universes as $universe) {
+                            echo "<option value='" . $universe['id'] . "'>" . $universe['nom'] . "</option>";
+                        }
+                    ?>
                 </select>
 
                 <input type="submit" value="Créer">

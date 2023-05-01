@@ -19,6 +19,12 @@ class DBinterface {
         }
     }
 
+    public function getUniverses($query){
+        $result = $this->db->query($query);
+        $row = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
     public function getLastUniverseId($query){
         $result = $this->db->query($query);
         $row = $result->fetch(PDO::FETCH_ASSOC);

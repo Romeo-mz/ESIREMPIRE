@@ -55,8 +55,9 @@ class APIadmin
 
             case 'GET':
 
-                //Then, call controller method
-
+                if(isset($_GET['universes']))
+                    echo json_encode($this->controller->getUniverses());
+                
                 break;
             
             default:
