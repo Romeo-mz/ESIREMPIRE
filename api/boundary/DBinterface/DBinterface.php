@@ -25,7 +25,37 @@ class DBinterface {
         return $row['MAX(id)'];
     }
 
+    public function getLast5GalaxiesId($query){
+        $result = $this->db->query($query);
+        $row = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public function getLast50SolarSystemsId($query){
+        $result = $this->db->query($query);
+        $row = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
     public function createUniverse($query){
+        $stmt = $this->db->prepare($query);
+        $result = $stmt->execute(); 
+        return $result;
+    }
+
+    public function createGalaxy($query){
+        $stmt = $this->db->prepare($query);
+        $result = $stmt->execute(); 
+        return $result;
+    }
+
+    public function createSolarSystem($query){
+        $stmt = $this->db->prepare($query);
+        $result = $stmt->execute(); 
+        return $result;
+    }
+
+    public function createPlanet($query){
         $stmt = $this->db->prepare($query);
         $result = $stmt->execute(); 
         return $result;
