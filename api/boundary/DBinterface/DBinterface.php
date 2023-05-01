@@ -24,3 +24,9 @@ class DBinterface {
     }
 
 }
+
+interface DBinterface {
+    public function connect();
+    public function disconnect();
+    public function query($sql);
+}
