@@ -45,9 +45,8 @@ class APIlogin
             echo "Bad request";
             return;
         }
+        
         $result = $this->controller->login($username, $password, $univers);
-
-        echo $result[0];
         
         if($result == 0)
         {

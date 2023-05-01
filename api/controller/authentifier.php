@@ -14,34 +14,26 @@ class Authentifier
     }
 
     public function login($username, $password, $univers){
-        
-        $user = $this->DBinterface->getDB()->prepare("SELECT * FROM joueur WHERE pseudo = 'test'");
 
-        //Association des paramètres
-        // $user->bindParam(':pseudo', $username);
-        // $user->bindParam(':univers', $univers);
-
-        $user->execute();
-        $result = $user->fetch(PDO::FETCH_ASSOC);
+        $query = "SELECT * FROM joueur WHERE pseudo = :pseudo";
+        $result = $this->DBinterface->login($query, $username);
         
-        return $result;
-        
-        // if(!$user){
-        //     echo "Error while preparing request";
-        //     return false;
-        // }
+        if(!$result){
+            echo "Error while preparing request";
+            return false; // Attention false == 0 donc confusion avec return 0 du if d'après.
+        }
 
-        // if($result && password_verify($password, $result['password'])){
-        //     $_SESSION['username'] = $username;
-        //     $_SESSION['univers'] = $univers;
-        //     $_SESSION['id'] = $result['id'];
-        //     return 0;
-        // }
-        // else if($result){
-        //     return 1;
-        // }
-        // else{
-        //     return 2;
-        // }
+        if($result['mdp'] == $password && $username == $result['pseudo']){
+            $_SESSION['id'] = $result['id'];
+            $_SESSION['username'] = $result['pseudo'];
+            // $_SESSION['univers'] = $result['univers'];
+            return 0;
+        }
+        else if($result){
+            return 1;
+        }
+        else{
+            return 2;
+        }
     }
 }

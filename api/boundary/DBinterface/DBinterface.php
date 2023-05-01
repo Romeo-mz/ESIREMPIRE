@@ -19,17 +19,17 @@ class DBinterface {
         }
     }
 
-    public function getDB(){
-        return $this->db;
-    }
-
-    // public function login($login){
-    //     $query = $this->db->prepare("SELECT * FROM joueur WHERE pseudo = " . '"' . $login . '"');
-        
-    //     $result = $query->fetch(PDO::FETCH_ASSOC);
-
-    //     return $result;
+    // public function getDB(){
+    //     return $this->db;
     // }
+
+    public function login($query, $username){
+        $user = $this->db->prepare($query);
+        $user->bindParam(':pseudo', $username);
+        $user->execute();
+        $result = $user->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
 
 ?>
