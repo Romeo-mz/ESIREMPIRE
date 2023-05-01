@@ -2,10 +2,10 @@
 
 //paramètres de la base de données
 define('SERVER', "localhost");
-define('DB_PORT', "3307");
-define('DB_NAME', "esirempire_db");
-define('DB_LOGIN', "api_admin");
-define('DB_PWD', "apiadmin1234");
+define('DB_PORT', "3306");
+define('DB_NAME', "esirempire");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 class DBinterface {
 

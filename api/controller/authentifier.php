@@ -21,12 +21,14 @@ class Authentifier
         $user->bindParam(':username', $username);
         $user->bindParam(':univers', $univers);
 
+        $user->execute();
+        
         if(!$user){
             echo "Error while preparing request";
             return false;
         }
 
-        $user->execute();
+        
 
         $result = $user->fetch(PDO::FETCH_ASSOC);
 

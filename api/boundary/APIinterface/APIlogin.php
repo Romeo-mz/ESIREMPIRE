@@ -18,6 +18,7 @@ class APIlogin
         
         switch ($request_method) {
             case 'POST':
+                echo("POST");
                 $this->postRequest();
                 break;
 
@@ -43,6 +44,7 @@ class APIlogin
             return;
         }
         $result = $this->controller->authentifier->login($username, $password, $univers);
+        echo($result);
 
         if($result == 0)
         {
