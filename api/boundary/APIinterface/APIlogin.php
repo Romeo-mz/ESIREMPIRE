@@ -1,7 +1,6 @@
 <?php
 
-require_once(realpath(dirname(__FILE__) . '../../controller/authentifier.php'));
-
+require_once('../../controller/authentifier.php');
 
 class APIlogin
 {
