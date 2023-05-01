@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../controller/authentifier.php');
+require_once(realpath(dirname(__FILE__) . '../../controller/authentifier.php'));
 
 
 class APIlogin
@@ -13,32 +13,58 @@ class APIlogin
         //$this->request();
     }
 
-    private function request()
+    public function request()
     {
-
-        // récuperer verbe
         $request_method = $_SERVER['REQUEST_METHOD'];
-
-        // Traitement verbe
+        
         switch ($request_method) {
             case 'POST':
-
-                $data = json_decode(file_get_contents("php://input"),true);
-
-                //Then, call controller method
-
+                $this->postRequest();
                 break;
 
             case 'GET':
-
-                //Then, call controller method
-
+                http_response_code(405);
+                echo "Method not allowed";
                 break;
             
             default:
                 echo "Bad URL";
                 break;
             }
+    }
+    private function postRequest()
+    {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $univers = $_POST['univers'];
+        if(!isset($username) || !isset($password) || !isset($univers))
+        {
+            http_response_code(400);
+            echo "Bad request";
+            return;
+        }
+        $result = $this->controller->authentifier->login($username, $password, $univers);
+
+        if($result == 0)
+        {
+            http_response_code(200);
+            echo "Login successful";
+        }
+        else if($result == 1)
+        {
+            http_response_code(401);
+            echo "Wrong password";
+        }
+        else if($result == 2)
+        {
+            http_response_code(401);
+            echo "Wrong username";
+        }
+        else if($result == 3)
+        {
+            http_response_code(401);
+            echo "Wrong univers";
+        }
     }
 }
 
