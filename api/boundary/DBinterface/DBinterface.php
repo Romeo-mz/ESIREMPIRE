@@ -19,8 +19,16 @@ class DBinterface {
         }
     }
 
-    public function getDB(){
-        return $this->db;
+    public function getLastUniverseId($query){
+        $result = $this->db->query($query);
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        return $row['MAX(id)'];
+    }
+
+    public function createUniverse($query){
+        $stmt = $this->db->prepare($query);
+        $result = $stmt->execute(); 
+        return $result;
     }
 
 }

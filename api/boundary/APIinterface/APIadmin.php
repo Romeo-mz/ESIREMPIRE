@@ -22,10 +22,22 @@ class APIadmin
         switch ($request_method) {
             case 'POST':
 
-                if($_POST['universe_name'] != "")
-                    $universe_name = $_POST['universe_name'];
-                else
-                    echo "blank";
+                if (isset($_POST['universe_name'])) {
+
+                    if($_POST['universe_name'] != "")
+                        $universe_name = $_POST['universe_name'];
+                    else 
+                        $universe_name = "Univers " .  $this->controller->getLastUniverseId() + 1;
+
+                    $result = $this->controller->createUniverse($universe_name);
+
+                    if($result)
+                        echo "Universe created";
+                    else
+                        echo "Error while creating universe";
+
+                } else
+                    echo "bad request";
 
                 break;
 

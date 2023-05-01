@@ -13,4 +13,16 @@ class Authentifier
         $this->APIadmin = new APIadmin($this);
     }
 
+    public function getLastUniverseId() {
+        $query = "SELECT MAX(id) FROM univers";
+        $result = $this->DBinterface->getLastUniverseId($query);
+        return $result; 
+    }
+
+    public function createUniverse($universe_name) {
+        $query = "INSERT INTO univers (nom) VALUES ('" . $universe_name . "')";
+        $result = $this->DBinterface->createUniverse($query);
+        return $result; 
+    }
+
 }
