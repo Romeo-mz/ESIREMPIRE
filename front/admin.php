@@ -3,15 +3,15 @@
 if(isset($_GET['success'])) {
     if($_GET['success'] == 1)
         echo 
-            " <div class='alert' style='background-color: green'>
+            " <div class='alert' style='background-color: #00b91c'>
                 <span class='closebtn' onclick='this.parentElement.style.display='none';\">&times;</span>
-                Succès lors de la création de l'univers.
+                <b>Succès lors de la création de l'univers.</b>
             </div>";
     else
         echo 
             " <div class='alert' style='background-color: red'>
                 <span class='closebtn' onclick='this.parentElement.style.display='none';\">&times;</span>
-                Erreur lors de la création de l'univers.
+                <b>Erreur lors de la création de l'univers.</b>
             </div>";
 }
 
