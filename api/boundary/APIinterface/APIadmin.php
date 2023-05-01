@@ -1,15 +1,15 @@
 <?php
 
-require_once('../../controller/authentifier.php');
+require_once('../../controller/administration.php');
 
-class APIlogin
+class APIadmin
 {
     private $controller;
 
     public function __construct($controller)
     {
         $this->controller = $controller;
-        //$this->request();
+        $this->request();
     }
 
     private function request()
@@ -22,9 +22,10 @@ class APIlogin
         switch ($request_method) {
             case 'POST':
 
-                $data = json_decode(file_get_contents("php://input"),true);
-
-                //Then, call controller method
+                if($_POST['universe_name'] != "")
+                    $universe_name = $_POST['universe_name'];
+                else
+                    echo "blank";
 
                 break;
 
