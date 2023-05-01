@@ -33,16 +33,13 @@ class APIadmin
                     $UniverseResult = $this->controller->createUniverse($universe_name);
 
                     // Create 5 Galaxies for the Universe
-                    $UniverseId = $this->controller->getLastUniverseId();
-                    $GalaxiesResult = $this->controller->createGalaxies($UniverseId);
+                    $GalaxiesResult = $this->controller->createGalaxies();
 
                     // Create 10 Solar Systems for each Galaxy
-                    $GalaxiesId = $this->controller->getLast5GalaxiesId();
-                    $SolarSystemsResult = $this->controller->createSolarSystems($GalaxiesId);
+                    $SolarSystemsResult = $this->controller->createSolarSystems();
 
                     // Create randomly between 4 and 10 Planets for each Solar System
-                    $SolarSystemsId = $this->controller->getLast50SolarSystemsId();
-                    $PlanetsResult = $this->controller->createPlanets($SolarSystemsId);
+                    $PlanetsResult = $this->controller->createPlanets();
 
                     if($UniverseResult && $GalaxiesResult && $SolarSystemsResult && $PlanetsResult)
                         header("Location: ../../../front/admin.php?success=1");
