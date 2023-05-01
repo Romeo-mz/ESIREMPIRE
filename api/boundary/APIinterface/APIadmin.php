@@ -44,7 +44,7 @@ class APIadmin
                     $SolarSystemsId = $this->controller->getLast50SolarSystemsId();
                     $PlanetsResult = $this->controller->createPlanets($SolarSystemsId);
 
-                    if($UniverseResult && $GalaxiesResult && $SolarSystemsResult)
+                    if($UniverseResult && $GalaxiesResult && $SolarSystemsResult && $PlanetsResult)
                         header("Location: ../../../front/admin.php?success=1");
                     else
                         header("Location: ../../../front/admin.php?success=0");
