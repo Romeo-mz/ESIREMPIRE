@@ -45,13 +45,12 @@ class APIadmin
                     $PlanetsResult = $this->controller->createPlanets($SolarSystemsId);
 
                     if($UniverseResult && $GalaxiesResult && $SolarSystemsResult)
-                        echo "Universe, Galaxies, Solar Systems and Planets created";
+                        header("Location: ../../../front/admin.php?success=1");
                     else
-                        echo "Error while creating Universe, Galaxies, Solar Systems and Planets";
+                        header("Location: ../../../front/admin.php?success=0");
 
                 } else
-                    echo "bad request";
-
+                    header("Location: ../../../front/admin.php?success=0");
                 break;
 
             case 'GET':

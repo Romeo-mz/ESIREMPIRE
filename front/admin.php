@@ -1,5 +1,12 @@
 <?php
 
+if(isset($_GET['success'])) {
+    if($_GET['success'] == 1)
+        echo "<p class='success'>Univers créé avec succès !</p>";
+    else
+        echo "<p class='error'>Erreur lors de la création de l'Univers !</p>";
+}
+
 ?>
 
 <!DOCTYPE html>
