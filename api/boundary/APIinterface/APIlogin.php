@@ -9,7 +9,7 @@ class APIlogin
     public function __construct($controller)
     {
         $this->controller = $controller;
-        //$this->request();
+        $this->request();
     }
 
     public function request()
@@ -18,7 +18,7 @@ class APIlogin
         
         switch ($request_method) {
             case 'POST':
-                echo("POST");
+                //echo("POST");
                 $this->postRequest();
                 break;
 
@@ -32,20 +32,23 @@ class APIlogin
                 break;
             }
     }
+
     private function postRequest()
     {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $univers = $_POST['univers'];
+
         if(!isset($username) || !isset($password) || !isset($univers))
         {
             http_response_code(400);
             echo "Bad request";
             return;
         }
-        $result = $this->controller->authentifier->login($username, $password, $univers);
-        echo($result);
+        $result = $this->controller->login($username, $password, $univers);
 
+        echo $result[0];
+        
         if($result == 0)
         {
             http_response_code(200);

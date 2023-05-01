@@ -2,8 +2,8 @@
 
 //paramètres de la base de données
 define('SERVER', "localhost");
-define('DB_PORT', "3306");
-define('DB_NAME', "esirempire");
+define('DB_PORT', "3307");
+define('DB_NAME', "esirempire_db");
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
 
@@ -23,4 +23,13 @@ class DBinterface {
         return $this->db;
     }
 
+    // public function login($login){
+    //     $query = $this->db->prepare("SELECT * FROM joueur WHERE pseudo = " . '"' . $login . '"');
+        
+    //     $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    //     return $result;
+    // }
 }
+
+?>
