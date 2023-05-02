@@ -13,7 +13,7 @@ class Authentifier
         $this->APIlogin = new APIlogin($this);
     }
 
-    public function login($username, $password, $univers){
+    public function login($username, $password){
 
         $query = "SELECT * FROM joueur WHERE pseudo = :pseudo";
         
@@ -36,5 +36,25 @@ class Authentifier
         else{
             return 2;
         }
+    }
+
+    public function register($username, $password, $mail){
+
+        //Check if fields are empty
+
+        if (empty($username) || empty($password) || empty($email)) {
+            return array('success' => false, 'message' => 'Veuillez remplir tous les champs.');
+        }
+
+        //Check if email is valid
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return array('success' => false, 'message' => 'Adresse e-mail invalide.');
+        }
+
+        //Check if user already exists
+        $user_query = $this->DBinterface->query("SELECT * FROM joueur WHERE pseudo = :pseudo", array('pseudo' => $username));
+        
+        $existing_user = $user_query->fetch();
     }
 }
