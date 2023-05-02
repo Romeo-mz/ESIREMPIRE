@@ -16,11 +16,12 @@ class Authentifier
     public function login($username, $password, $univers){
 
         $query = "SELECT * FROM joueur WHERE pseudo = :pseudo";
+        
         $result = $this->DBinterface->login($query, $username);
         
         if(!$result){
-            echo "Error while preparing request";
-            return false; // Attention false == 0 donc confusion avec return 0 du if d'après.
+            //echo "Error while preparing request";
+            return 2; // code 2 : Wrong username
         }
 
         if($result['mdp'] == $password && $username == $result['pseudo']){
