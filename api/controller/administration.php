@@ -31,17 +31,9 @@ class Administration
         return $this->DBinterface->getLast5GalaxiesId();
     }
 
-    private function getLast50SolarSystemsId() {
-        // Get last 50 solar systems id where id_Galaxie = this->getLast5GalaxiesId()
-        $query = "SELECT id FROM systemesolaire WHERE id_Galaxie IN (";
-        $GalaxiesId = $this->getLast5GalaxiesId();
-        foreach ($GalaxiesId as $GalaxyId) {
-            $query .= $GalaxyId['id'] . ", ";
-        }
-        $query = substr($query, 0, -2);
-        $query .= ") ORDER BY id DESC LIMIT 50";
-        $result = $this->DBinterface->getLast50SolarSystemsId($query);
-        return $result;
+    public function getLast50SolarSystemsId() 
+    {
+        return $this->DBinterface->getLast50SolarSystemsId();
     }
 
     public function createUniverse($universe_name) {
