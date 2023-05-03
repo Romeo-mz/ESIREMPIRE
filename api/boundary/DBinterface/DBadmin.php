@@ -29,7 +29,6 @@ class DBadmin extends DBinterface {
 
     public function getLast50SolarSystemsId($placeholders, $galaxiesId)
     {
-        // return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50");
         return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50", $galaxiesId);
     }
 
@@ -52,54 +51,6 @@ class DBadmin extends DBinterface {
     {
         return $this->executeQuery('INSERT INTO planete (id_Systeme_Solaire, taille, position, nom, id_Bonus_Ressources) VALUES (?, ?, ?, ?, ?)', [$id_Systeme_Solaire, $taille, $position, $name, $id_Bonus_Ressources]);
     }
-
-    // public function getUniverses($query){
-    //     $result = $this->db->query($query);
-    //     $row = $result->fetchAll(PDO::FETCH_ASSOC);
-    //     return $row;
-    // }
-
-    // public function getLastUniverseId($query){
-    //     $result = $this->db->query($query);
-    //     $row = $result->fetch(PDO::FETCH_ASSOC);
-    //     return $row['MAX(id)'];
-    // }
-
-    // public function getLast5GalaxiesId($query){
-    //     $result = $this->db->query($query);
-    //     $row = $result->fetchAll(PDO::FETCH_ASSOC);
-    //     return $row;
-    // }
-
-    // public function getLast50SolarSystemsId($query){
-    //     $result = $this->db->query($query);
-    //     $row = $result->fetchAll(PDO::FETCH_ASSOC);
-    //     return $row;
-    // }
-
-    // public function createUniverse($query){
-    //     $stmt = $this->db->prepare($query);
-    //     $result = $stmt->execute(); 
-    //     return $result;
-    // }
-
-    // public function createGalaxy($query){
-    //     $stmt = $this->db->prepare($query);
-    //     $result = $stmt->execute(); 
-    //     return $result;
-    // }
-
-    // public function createSolarSystem($query){
-    //     $stmt = $this->db->prepare($query);
-    //     $result = $stmt->execute(); 
-    //     return $result;
-    // }
-
-    // public function createPlanet($query){
-    //     $stmt = $this->db->prepare($query);
-    //     $result = $stmt->execute(); 
-    //     return $result;
-    // }
 
 }
 
