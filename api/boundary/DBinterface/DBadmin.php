@@ -38,7 +38,7 @@ class DBadmin extends DBinterface {
 
     public function createUniverse($name)
     {
-        return $this->executeQuery('INSERT INTO universes (name) VALUES (?)', [$name]);
+        return $this->executeQuery('INSERT INTO univers (nom) VALUES (?)', [$name]);
     }
 
     public function createGalaxy($name, $universe_id)

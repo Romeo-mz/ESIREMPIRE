@@ -36,10 +36,9 @@ class Administration
         return $this->DBinterface->getLast50SolarSystemsId();
     }
 
-    public function createUniverse($universe_name) {
-        $query = "INSERT INTO univers (nom) VALUES ('" . $universe_name . "')";
-        $result = $this->DBinterface->createUniverse($query);
-        return $result; 
+    public function createUniverse($universe_name) 
+    {
+        return $this->DBinterface->createUniverse($universe_name);
     }
 
     public function createGalaxies() {
