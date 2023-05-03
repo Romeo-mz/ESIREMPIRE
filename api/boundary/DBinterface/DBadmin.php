@@ -22,17 +22,13 @@ class DBadmin extends DBinterface {
         return $this->fetchValue('SELECT MAX(id) FROM univers');
     }
 
-    public function getLast5GalaxiesId()
+    public function getLast5GalaxiesId($universeId)
     {
-        $universeId = $this->getLastUniverseId();
         return $this->fetchAllRows('SELECT id FROM galaxie WHERE id_Univers = ' . $universeId . ' ORDER BY id DESC LIMIT 5');
     }
 
-    public function getLast50SolarSystemsId()
+    public function getLast50SolarSystemsId($placeholders)
     {
-        $galaxiesId = $this->getLast5GalaxiesId();
-        $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
-
         return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50");
     }
 

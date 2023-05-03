@@ -28,12 +28,15 @@ class Administration
 
     private function getLast5GalaxiesId() 
     {
-        return $this->dbInterface->getLast5GalaxiesId();
+        $universeId = $this->getLastUniverseId();
+        return $this->dbInterface->getLast5GalaxiesId($universeId);
     }
 
     public function getLast50SolarSystemsId() 
     {
-        return $this->dbInterface->getLast50SolarSystemsId();
+        $galaxiesId = $this->getLast5GalaxiesId();
+        $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
+        return $this->dbInterface->getLast50SolarSystemsId($placeholders);
     }
 
     public function createUniverse($universe_name) 
