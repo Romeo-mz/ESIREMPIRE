@@ -1,35 +1,34 @@
 <?php
 
 require_once('../../boundary/APIinterface/APIadmin.php');
-require_once('../../boundary/DBinterface/DBinterface.php');
+require_once('../../boundary/DBinterface/DBadmin.php');
 
-$controller = new Administration();
+$controller = new Administration(new DBadmin(), new APIadmin());
 
 class Administration
 {
-    public function __construct()
+    private $dbInterface;
+    private $apiInterface;
+
+    public function __construct(DBadmin $dbInterface, APIadmin $apiInterface)
     {
-        $this->DBinterface = new DBinterface();
-        $this->APIadmin = new APIadmin($this);
+        $this->dbInterface = $dbInterface;
+        $this->apiInterface = $apiInterface;
     }
 
-    public function getUniverses() {
-        $query = "SELECT * FROM univers";
-        $result = $this->DBinterface->getUniverses($query);
-        return $result;
+    public function getUniverses() 
+    {
+        return $this->DBinterface->getUniverses();
     }
 
-    public function getLastUniverseId() {
-        $query = "SELECT MAX(id) FROM univers";
-        $result = $this->DBinterface->getLastUniverseId($query);
-        return $result; 
+    public function getLastUniverseId() 
+    {
+        return $this->DBinterface->getLastUniverseId();
     }
 
-    private function getLast5GalaxiesId() {
-        // Get laste 5 galaxies id where id_Univers = this->getLastUniverseId()
-        $query = "SELECT id FROM galaxie WHERE id_Univers = " . $this->getLastUniverseId() . " ORDER BY id DESC LIMIT 5";
-        $result = $this->DBinterface->getLast5GalaxiesId($query);
-        return $result;
+    private function getLast5GalaxiesId() 
+    {
+        return $this->DBinterface->getLast5GalaxiesId();
     }
 
     private function getLast50SolarSystemsId() {

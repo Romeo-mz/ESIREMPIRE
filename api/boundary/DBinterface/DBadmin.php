@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Interface.php';
+require_once 'DBinterface.php';
 
 //Compte Interface API
 define('DB_LOGIN', "api_admin");
@@ -14,17 +14,17 @@ class DBadmin extends DBinterface {
 
     public function getUniverses()
     {
-        return $this->fetchAllRows('SELECT * FROM universes');
+        return $this->fetchAllRows('SELECT * FROM univers');
     }
 
     public function getLastUniverseId()
     {
-        return $this->fetchValue('SELECT MAX(id) FROM universes');
+        return $this->fetchValue('SELECT MAX(id) FROM univers');
     }
 
     public function getLast5GalaxiesId()
     {
-        return $this->fetchAllRows('SELECT * FROM galaxies ORDER BY id DESC LIMIT 5');
+        return $this->fetchAllRows('SELECT id FROM galaxie WHERE id_Univers = ' . $this->getLastUniverseId() . ' ORDER BY id DESC LIMIT 5');
     }
 
     public function getLast50SolarSystemsId()
