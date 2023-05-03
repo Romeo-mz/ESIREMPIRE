@@ -1,12 +1,11 @@
 <?php
-require_once '../../controller/authentifier.php';
+require_once '../../controller/authentifierRegister.php';
 
 class APIregister{
     private $controller;
 
     public function __construct($controller){
         $this->controller = $controller;
-        echo("okayy");
         $this->request();
     }
 
@@ -41,15 +40,27 @@ class APIregister{
         }
         else if($result == 1){
             http_response_code(401);
-            echo "Wrong password";
+            echo "Password Invalid";
         }
         else if($result == 2){
             http_response_code(401);
-            echo "Wrong username";
+            echo "Username Ivalid";
+        }
+        else if($result == 3){
+            http_response_code(401);
+            echo "Email Invalid";
+        }
+        else if($result == 4){
+            http_response_code(401);
+            echo "Username already exists";
+        }
+        else if($result == 5){
+            http_response_code(401);
+            echo "Email already exists";
         }
         else{
             http_response_code(500);
-            echo "Error while registering";
+            echo "Internal server error";
         }
     }
 }
