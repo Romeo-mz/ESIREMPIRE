@@ -41,10 +41,12 @@ class Administration
         return $this->DBinterface->createUniverse($universe_name);
     }
 
-    public function createGalaxies() {
+    public function createGalaxies() 
+    {
+        $universeId = $this->getLastUniverseId();
         for ($i = 1; $i <= 5; $i++) {
-            $query = "INSERT INTO galaxie (nom, id_Univers) VALUES ('G" . $i . "', " . $this->getLastUniverseId() . ")";
-            $result = $this->DBinterface->createGalaxy($query);
+            $name = "G" . $i;
+            $result = $this->DBinterface->createGalaxy($name, $universeId);
         }
         return $result;
     }

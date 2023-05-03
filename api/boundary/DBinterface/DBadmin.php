@@ -43,7 +43,7 @@ class DBadmin extends DBinterface {
 
     public function createGalaxy($name, $universe_id)
     {
-        return $this->executeQuery('INSERT INTO galaxies (name, universe_id) VALUES (?, ?)', [$name, $universe_id]);
+        return $this->executeQuery('INSERT INTO galaxie (nom, id_Univers) VALUES (?, ?)', [$name, $universe_id]);
     }
 
     public function createSolarSystem($name, $galaxy_id)
@@ -105,3 +105,4 @@ class DBadmin extends DBinterface {
     // }
 
 }
+
