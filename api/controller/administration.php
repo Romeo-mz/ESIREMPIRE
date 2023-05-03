@@ -63,40 +63,31 @@ class Administration
         return $result;
     }
 
-    public function createPlanets() 
+    public function createPlanets()
     {
-        foreach ($this->getLast50SolarSystemsId() as $SolarSystemId) {
+        $solarSystemIds = $this->getLast50SolarSystemsId();
+        $result = array();
 
+        foreach ($solarSystemIds as $solarSystem) {
             $nbPlanets = rand(4, 10);
-            $positions = array();
+            $positions = range(1, 10);
+            shuffle($positions);
+            $tailleValues = array(130, 120, 110, 100, 90);
+            $tailleKeys = array(5, 4, 3, 2, 1);
+            $tailleMap = array_combine($tailleKeys, $tailleValues);
 
             for ($i = 0; $i < $nbPlanets; $i++) {
-                $random = rand(1, 10);
-                while (in_array($random, $positions)) {
-                    $random = rand(1, 10);
-                }
-                array_push($positions, $random);
-            }
+                
+                $name = "P" . $positions[$i];
+                $position = $positions[$i];
+                $taille = $tailleMap[$positions[$i]];
+                $id_Bonus_Ressources = $positions[$i];
+                $id_Systeme_Solaire = $solarSystem['id'];
 
-            for ($i = 1; $i <= $nbPlanets; $i++) {
-                $id_Bonus_Ressources = $positions[$i - 1];
-
-                if ($positions[$i - 1] == 1 || $positions[$i - 1] == 10) {
-                    $taille = 90;
-                } else if ($positions[$i - 1] == 2 || $positions[$i - 1] == 9) {
-                    $taille = 100;
-                } else if ($positions[$i - 1] == 3 || $positions[$i - 1] == 8) {
-                    $taille = 110;
-                } else if ($positions[$i - 1] == 4 || $positions[$i - 1] == 7) {
-                    $taille = 120;
-                } else if ($positions[$i - 1] == 5 || $positions[$i - 1] == 6) {
-                    $taille = 130;
-                }
-
-                $query = "INSERT INTO planete (nom, position, taille, id_Bonus_Ressources, id_Systeme_Solaire) VALUES ('P" . $positions[$i - 1] . "', " . $positions[$i - 1] . ", " . $taille . ", " . $id_Bonus_Ressources . "," . $SolarSystemId['id'] . ")";
-                $result = $this->dbInterface->createPlanet($query);
+                $result[] = $this->dbInterface->createPlanet($name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire);
             }
         }
+
         return $result;
     }
 

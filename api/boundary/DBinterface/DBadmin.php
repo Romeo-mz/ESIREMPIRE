@@ -51,9 +51,9 @@ class DBadmin extends DBinterface {
         return $this->executeQuery('INSERT INTO systemesolaire (nom, id_Galaxie) VALUES (?, ?)', [$name, $galaxy_id]);
     }
 
-    public function createPlanet($name, $solar_system_id)
+    public function createPlanet($name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire)
     {
-        return $this->executeQuery('INSERT INTO planets (name, solar_system_id) VALUES (?, ?)', [$name, $solar_system_id]);
+        return $this->executeQuery('INSERT INTO planete (nom, position, taille, id_Bonus_Ressources, id_Systeme_Solaire) VALUES (?, ?, ?, ?, ?)', [$name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire ]);
     }
 
     // public function getUniverses($query){
