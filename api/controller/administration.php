@@ -34,10 +34,6 @@ class Administration
 
     public function getLast50SolarSystemsId() 
     {
-        // $galaxiesId = $this->getLast5GalaxiesId();
-        // $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
-        // return $this->dbInterface->getLast50SolarSystemsId($placeholders);
-
         $galaxiesId = $this->getLast5GalaxiesId();
         $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
         return $this->dbInterface->getLast50SolarSystemsId($placeholders, array_column($galaxiesId, 'id'));
