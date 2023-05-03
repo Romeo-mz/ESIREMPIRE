@@ -18,27 +18,27 @@ class Administration
 
     public function getUniverses() 
     {
-        return $this->DBinterface->getUniverses();
+        return $this->dbInterface->getUniverses();
     }
 
     public function getLastUniverseId() 
     {
-        return $this->DBinterface->getLastUniverseId();
+        return $this->dbInterface->getLastUniverseId();
     }
 
     private function getLast5GalaxiesId() 
     {
-        return $this->DBinterface->getLast5GalaxiesId();
+        return $this->dbInterface->getLast5GalaxiesId();
     }
 
     public function getLast50SolarSystemsId() 
     {
-        return $this->DBinterface->getLast50SolarSystemsId();
+        return $this->dbInterface->getLast50SolarSystemsId();
     }
 
     public function createUniverse($universe_name) 
     {
-        return $this->DBinterface->createUniverse($universe_name);
+        return $this->dbInterface->createUniverse($universe_name);
     }
 
     public function createGalaxies() 
@@ -46,24 +46,25 @@ class Administration
         $universeId = $this->getLastUniverseId();
         for ($i = 1; $i <= 5; $i++) {
             $name = "G" . $i;
-            $result = $this->DBinterface->createGalaxy($name, $universeId);
+            $result = $this->dbInterface->createGalaxy($name, $universeId);
         }
         return $result;
     }
 
-    // Create 10 solar systems for each galaxy
-    public function createSolarSystems() {
+    
+    public function createSolarSystems() 
+    {
         foreach ($this->getLast5GalaxiesId() as $GalaxyId) {
             for ($i = 1; $i <= 10; $i++) {
-                $query = "INSERT INTO systemesolaire (nom, id_Galaxie) VALUES ('SS" . $i . "', " . $GalaxyId['id'] . ")";
-                $result = $this->DBinterface->createSolarSystem($query);
+                $name = "SS" . $i;
+                $result = $this->dbInterface->createSolarSystem($name, $GalaxyId['id']);
             }
         }
         return $result;
     }
 
-    // Create randomly between 4 and 10 Planets for each Solar System
-    public function createPlanets() {
+    public function createPlanets() 
+    {
         foreach ($this->getLast50SolarSystemsId() as $SolarSystemId) {
 
             $nbPlanets = rand(4, 10);
@@ -93,7 +94,7 @@ class Administration
                 }
 
                 $query = "INSERT INTO planete (nom, position, taille, id_Bonus_Ressources, id_Systeme_Solaire) VALUES ('P" . $positions[$i - 1] . "', " . $positions[$i - 1] . ", " . $taille . ", " . $id_Bonus_Ressources . "," . $SolarSystemId['id'] . ")";
-                $result = $this->DBinterface->createPlanet($query);
+                $result = $this->dbInterface->createPlanet($query);
             }
         }
         return $result;
