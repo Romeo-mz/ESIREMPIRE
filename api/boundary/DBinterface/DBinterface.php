@@ -30,6 +30,24 @@ class DBinterface {
         $result = $user->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function isEmail($query, $mail){
+        $user = $this->db->prepare($query);
+        $user->bindParam(':mail', $mail);
+        $user->execute();
+        $result = $user->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function register($query, $username, $password, $mail ){
+        $user = $this->db->prepare($query);
+        $user->bindParam(':pseudo', $username);
+        $user->bindParam(':mdp', $password);
+        $user->bindParam(':email', $mail);
+        $user->execute();
+        $result = $user->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
 
 ?>

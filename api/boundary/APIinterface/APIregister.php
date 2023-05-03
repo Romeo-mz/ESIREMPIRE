@@ -40,11 +40,11 @@ class APIregister{
         }
         else if($result == 1){
             http_response_code(401);
-            echo "Password Invalid";
+            echo "Password Invalid / Password too short";
         }
         else if($result == 2){
             http_response_code(401);
-            echo "Username Ivalid";
+            echo "Username Ivalid / Username too short";
         }
         else if($result == 3){
             http_response_code(401);

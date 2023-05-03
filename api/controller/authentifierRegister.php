@@ -27,8 +27,35 @@ class Authentifier
         
         
         if ($user_exist) {
-            echo "Username already exists";
             return 4;
-        }        
+        }
+        
+        //Check if email already exists
+        $query_email_exist = "SELECT * FROM joueur WHERE mail = :mail";
+        $email_exist = $this->DBinterface->isEmail($query_email_exist, $mail);
+
+        if ($email_exist) {
+            return 5;
+        }
+
+        //Check if password is valid
+        if (strlen($password) < 8) {
+            return 1;
+        }
+
+        //Check if username is valid
+        if (strlen($username) < 4) {
+            return 2;
+        }
+
+        //Insert user in database
+        $query = "INSERT INTO joueur (pseudo, email , mdp ) VALUES (:pseudo, :email, :mdp)";
+        $result = $this->DBinterface->register($query, $username, $password, $mail);
+
+        if ($result) {
+            return 0;
+        }
+
+
     }
 }
