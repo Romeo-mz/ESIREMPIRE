@@ -27,9 +27,10 @@ class DBadmin extends DBinterface {
         return $this->fetchAllRows('SELECT id FROM galaxie WHERE id_Univers = ' . $universeId . ' ORDER BY id DESC LIMIT 5');
     }
 
-    public function getLast50SolarSystemsId($placeholders)
+    public function getLast50SolarSystemsId($placeholders, $galaxiesId)
     {
-        return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50");
+        // return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50");
+        return $this->fetchAllRows("SELECT id FROM systemesolaire WHERE id_Galaxie IN ($placeholders) ORDER BY id DESC LIMIT 50", $galaxiesId);
     }
 
     public function createUniverse($name)
@@ -49,7 +50,7 @@ class DBadmin extends DBinterface {
 
     public function createPlanet($name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire)
     {
-        return $this->executeQuery('INSERT INTO planete (nom, position, taille, id_Bonus_Ressources, id_Systeme_Solaire) VALUES (?, ?, ?, ?, ?)', [$name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire ]);
+        return $this->executeQuery('INSERT INTO planete (id_Systeme_Solaire, taille, position, nom, id_Bonus_Ressources) VALUES (?, ?, ?, ?, ?)', [$id_Systeme_Solaire, $taille, $position, $name, $id_Bonus_Ressources]);
     }
 
     // public function getUniverses($query){

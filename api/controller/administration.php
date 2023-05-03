@@ -3,17 +3,17 @@
 require_once('../../boundary/APIinterface/APIadmin.php');
 require_once('../../boundary/DBinterface/DBadmin.php');
 
-$controller = new Administration(new DBadmin(), new APIadmin());
+$controller = new Administration();
 
 class Administration
 {
     private $dbInterface;
     private $apiInterface;
 
-    public function __construct(DBadmin $dbInterface, APIadmin $apiInterface)
+    public function __construct()
     {
-        $this->dbInterface = $dbInterface;
-        $this->apiInterface = $apiInterface;
+        $this->dbInterface = new DBadmin();
+        $this->apiInterface = new APIadmin($this);
     }
 
     public function getUniverses() 
@@ -34,9 +34,13 @@ class Administration
 
     public function getLast50SolarSystemsId() 
     {
+        // $galaxiesId = $this->getLast5GalaxiesId();
+        // $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
+        // return $this->dbInterface->getLast50SolarSystemsId($placeholders);
+
         $galaxiesId = $this->getLast5GalaxiesId();
         $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
-        return $this->dbInterface->getLast50SolarSystemsId($placeholders);
+        return $this->dbInterface->getLast50SolarSystemsId($placeholders, array_column($galaxiesId, 'id'));
     }
 
     public function createUniverse($universe_name) 
@@ -80,14 +84,17 @@ class Administration
             $tailleMap = array_combine($tailleKeys, $tailleValues);
 
             for ($i = 0; $i < $nbPlanets; $i++) {
+                if (!isset($positions[$i])) {
+                    continue;
+                }
                 
                 $name = "P" . $positions[$i];
                 $position = $positions[$i];
-                $taille = $tailleMap[$positions[$i]];
+                $taille = isset($tailleMap[$positions[$i]]) ? $tailleMap[$positions[$i]] : 0;
                 $id_Bonus_Ressources = $positions[$i];
                 $id_Systeme_Solaire = $solarSystem['id'];
 
-                $result[] = $this->dbInterface->createPlanet($name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire);
+                $result = $this->dbInterface->createPlanet($name, $position, $taille, $id_Bonus_Ressources, $id_Systeme_Solaire);
             }
         }
 
