@@ -9,58 +9,64 @@ class APIadmin
     public function __construct($controller)
     {
         $this->controller = $controller;
-        $this->request();
+        $this->handleRequest();
     }
 
-    private function request()
+    private function handleRequest()
     {
-
-        // récuperer verbe
-        $request_method = $_SERVER['REQUEST_METHOD'];
-
-        // Traitement verbe
-        switch ($request_method) {
+        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        switch ($requestMethod) {
             case 'POST':
-
-                if (isset($_POST['universe_name'])) {
-
-                    if($_POST['universe_name'] != "")
-                        $universe_name = $_POST['universe_name'];
-                    else 
-                        $universe_name = "Univers " .  $this->controller->getLastUniverseId() + 1;
-
-                    // Create Universe
-                    $UniverseResult = $this->controller->createUniverse($universe_name);
-
-                    // Create 5 Galaxies for the Universe
-                    $GalaxiesResult = $this->controller->createGalaxies();
-
-                    // Create 10 Solar Systems for each Galaxy
-                    $SolarSystemsResult = $this->controller->createSolarSystems();
-
-                    // Create randomly between 4 and 10 Planets for each Solar System
-                    $PlanetsResult = $this->controller->createPlanets();
-
-                    if($UniverseResult && $GalaxiesResult && $SolarSystemsResult && $PlanetsResult)
-                        header("Location: ../../../front/admin.php?success=1");
-                    else
-                        header("Location: ../../../front/admin.php?success=0");
-
-                } else
-                    header("Location: ../../../front/admin.php?success=0");
+                $this->handlePost();
                 break;
-
             case 'GET':
-
-                if(isset($_GET['universes']))
-                    echo json_encode($this->controller->getUniverses());
-                
+                $this->handleGet();
                 break;
-            
             default:
-                echo "Bad URL";
+                $this->sendResponse(405, 'Method Not Allowed');
                 break;
-            }
+        }
+    }
+
+    private function handlePost()
+    {
+        if (!isset($_POST['universe_name'])) {
+            $this->sendResponse(400, 'Bad Request');
+            return;
+        }
+
+        $universeName = $_POST['universe_name'] ?: "Univers " . ($this->controller->getLastUniverseId() + 1);
+
+        $universeResult = $this->controller->createUniverse($universeName);
+        $galaxiesResult = $this->controller->createGalaxies();
+        $solarSystemsResult = $this->controller->createSolarSystems();
+        $planetsResult = $this->controller->createPlanets();
+
+        if ($universeResult && $galaxiesResult && $solarSystemsResult && $planetsResult) {
+            $this->sendResponse(201, 'Universe Created');
+        } else {
+            $this->sendResponse(500, 'Internal Server Error');
+        }
+    }
+
+    private function handleGet()
+    {
+        if (isset($_GET['universes'])) {
+            $universes = $this->controller->getUniverses();
+            $this->sendResponse(200, 'OK', json_encode($universes));
+        } else {
+            $this->sendResponse(400, 'Bad Request');
+        }
+    }
+
+    private function sendResponse($statusCode, $statusText, $body = null)
+    {
+        header("HTTP/1.1 {$statusCode} {$statusText}");
+        if ($body) {
+            header("Content-Type: application/json");
+            echo $body;
+        }
+        exit;
     }
 }
 
