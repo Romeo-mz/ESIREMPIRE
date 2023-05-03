@@ -1,70 +1,39 @@
 <?php
 
-//paramètres de la base de données
 define('SERVER', "localhost");
 define('DB_PORT', "3307");
 define('DB_NAME', "esirempire_db");
-define('DB_LOGIN', "api_admin");
-define('DB_PWD', "apiadmin1234");
 
-class DBinterface {
+abstract class DBinterface {
 
-    private $db;
+    protected $db;
 
-    public function __construct(){
+    public function __construct($db_login, $db_pwd){
         try{
-            $this->db = new PDO('mysql:host=' . SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8', DB_LOGIN, DB_PWD);
+            $this->db = new PDO('mysql:host=' . SERVER . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8', $db_login, $db_pwd);
         } catch(PDOException $e){
             echo 'Error while connexion : ' . $e->getMessage();
         }
     }
 
-    public function getUniverses($query){
-        $result = $this->db->query($query);
-        $row = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $row;
-    }
-
-    public function getLastUniverseId($query){
-        $result = $this->db->query($query);
-        $row = $result->fetch(PDO::FETCH_ASSOC);
-        return $row['MAX(id)'];
-    }
-
-    public function getLast5GalaxiesId($query){
-        $result = $this->db->query($query);
-        $row = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $row;
-    }
-
-    public function getLast50SolarSystemsId($query){
-        $result = $this->db->query($query);
-        $row = $result->fetchAll(PDO::FETCH_ASSOC);
-        return $row;
-    }
-
-    public function createUniverse($query){
+    protected function fetchAllRows($query, array $params = [])
+    {
         $stmt = $this->db->prepare($query);
-        $result = $stmt->execute(); 
-        return $result;
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createGalaxy($query){
+    protected function fetchValue($query, array $params = [])
+    {
         $stmt = $this->db->prepare($query);
-        $result = $stmt->execute(); 
-        return $result;
+        $stmt->execute($params);
+        return $stmt->fetchColumn();
     }
 
-    public function createSolarSystem($query){
+    protected function executeQuery($query, array $params = [])
+    {
         $stmt = $this->db->prepare($query);
-        $result = $stmt->execute(); 
-        return $result;
-    }
-
-    public function createPlanet($query){
-        $stmt = $this->db->prepare($query);
-        $result = $stmt->execute(); 
-        return $result;
+        return $stmt->execute($params);
     }
 
 }
