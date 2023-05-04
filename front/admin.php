@@ -33,11 +33,11 @@ $universes = json_decode($universes, true);
     <main>
         <div class="left">
             <div class="overlay">
-                <h1>ESIREMPIRE</h1>
+                <img class="img-logo" src="img/logo2_transp.png" alt="logo">
             </div>
         </div>
         <div class="right">
-            <h1>ADMIN PANEL</h1>
+            <h1 class="admin-title">ADMIN PANEL</h1>
             <form action="../api/boundary/APIinterface/APIadmin.php" method="POST">
 
                 <!-- Create Univers -->
@@ -46,7 +46,6 @@ $universes = json_decode($universes, true);
                 
                 <br><br><label for="univers-select">Univers Existants</label><br>
                 <select id="univers-select">
-                    <option value="" default>--Univers Existants--</option>
                     <?php 
                         foreach($universes as $universe) {
                             echo "<option value='" . $universe['id'] . "'>" . $universe['nom'] . "</option>";
@@ -54,7 +53,7 @@ $universes = json_decode($universes, true);
                     ?>
                 </select>
 
-                <input type="submit" value="Créer">
+                <br><br><input type="submit" value="Créer">
             </form>
         </div>
     </main>
