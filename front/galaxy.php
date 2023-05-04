@@ -72,7 +72,6 @@ $planets = json_decode($planets, true);
                         <th>Planète</th>
                         <th>Joueur</th>
                     </tr>
-                    <!-- print position 1-10 even if its empty. when empty print blank -->
                     <?php for ($i = 1; $i <= 10; $i++) { ?>
                         <tr>
                             <td><?php echo $i; ?></td>
