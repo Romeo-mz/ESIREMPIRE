@@ -4,7 +4,7 @@ require_once 'DBinterface.php';
 
 //Compte Interface API
 define('DB_LOGIN', "api_admin");
-define('DB_PWD', "apiadmin1234");
+define('DB_PWD', "lDMH6chWNK3um6fF");
 
 class DBadmin extends DBinterface {
 

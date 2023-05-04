@@ -62,12 +62,19 @@ class APIadmin
     private function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");
-        if ($body) {
+
+        if ($body != null) {
             header("Content-Type: application/json");
             echo $body;
         }
+        else if ($statusCode >= 200 && $statusCode < 300) {
+            echo "<script>window.location.href = 'http://localhost:5550/ESIREMPIRE/front/admin.php?success=1&message=" . urlencode($statusText) . "';</script>";
+        } else {
+            echo "<script>window.location.href = 'http://localhost:5550/ESIREMPIRE/front/admin.php?success=0&message=" . urlencode($statusText) . "';</script>";
+        }
         exit;
     }
+
 }
 
 ?>
