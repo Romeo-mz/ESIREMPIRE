@@ -14,6 +14,10 @@ if (!isset($_POST['id_SolarSystem'])) {
     $_POST['id_SolarSystem'] = 1;
 }
 
+echo $_POST['id_Univers'] . "<br>";
+echo $_POST['id_Galaxy'] . "<br>";
+echo $_POST['id_SolarSystem'] . "<br>";
+
 $galaxies = file_get_contents("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIgalaxy.php?id_Univers=" . $_POST['id_Univers']);
 $galaxies = json_decode($galaxies, true);
 
@@ -61,6 +65,7 @@ $planets = json_decode($planets, true);
                     </select>
                     <input type="submit" value="Go">
                 </form>
+            </div>
         </div>
         
         <div class="div-planet">
