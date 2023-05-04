@@ -37,26 +37,26 @@ $planets = json_decode($planets, true);
 <body>
     <main>
         <div class="div-galaxy">
-            <h2 class="galaxy-title">Galaxy</h2>
+            <h2 class="galaxy-title">Galaxie</h2>
             <div class="div-choose-galaxy">
-                <form action="" method="post">
-                    <label for="id_Galaxy">Choose a galaxy: </label>
+                <form action="galaxy.php" method="POST">
+                    <label for="id_Galaxy">Choisissez une galaxie: </label>
                     <select name="id_Galaxy" id="id_Galaxy">
                         <?php foreach ($galaxies as $galaxy) { ?>
-                            <option value="<?php echo $galaxy['id']; ?>"><?php echo $galaxy['nom']; ?></option>
+                            <option <?php if ($galaxy['id'] == $_POST['id_Galaxy']) echo ' selected';?> value="<?php echo $galaxy['id']; ?>"><?php echo $galaxy['nom']; ?></option>
                         <?php } ?>
                     </select>
                     <input type="submit" value="Go">
                 </form>
         </div>
         <div class="div-sys-sol">
-            <h2 class="sys-sol-title">Systeme solaire</h2>
+            <h2 class="sys-sol-title">Systeme Solaire</h2>
             <div class="div-choose-sys-sol">
-                <form action="" method="GET">
-                    <label for="id_SolarSystem">Choose a systeme solaire: </label>
+                <form action="galaxy.php" method="POST">
+                    <label for="id_SolarSystem">Choisissez un systeme solaire: </label>
                     <select name="id_SolarSystem" id="id_SolarSystem">
                         <?php foreach ($sys_sols as $sys_sol) { ?>
-                            <option value="<?php echo $sys_sol['id']; ?>"><?php echo $sys_sol['nom']; ?></option>
+                            <option <?php if ($sys_sol['id'] == $_POST['id_SolarSystem']) echo ' selected';?> value="<?php echo $sys_sol['id']; ?>"><?php echo $sys_sol['nom']; ?></option>
                         <?php } ?>
                     </select>
                     <input type="submit" value="Go">
@@ -64,13 +64,13 @@ $planets = json_decode($planets, true);
         </div>
         
         <div class="div-planet">
-            <h2 class="planet-title">Planet</h2>
+            <h2 class="planet-title">Planète</h2>
             <div class="div-choose-planet">
                 <table class="planet-tab">
                     <tr>
                         <th>Position</th>
-                        <th>Planet</th>
-                        <th>Player</th>
+                        <th>Planète</th>
+                        <th>Joueur</th>
                     </tr>
                     <!-- print position 1-10 even if its empty. when empty print blank -->
                     <?php for ($i = 1; $i <= 10; $i++) { ?>
