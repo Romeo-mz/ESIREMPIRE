@@ -1,12 +1,10 @@
 <?php
-require_once '../../controller/authentifierRegister.php';
-
+require_once '../../controller/authentifier.php';
 class APIregister{
     private $controller;
 
     public function __construct($controller){
         $this->controller = $controller;
-        $this->request();
     }
 
     public function request(){
@@ -63,4 +61,16 @@ class APIregister{
             echo "Internal server error";
         }
     }
+    public function addUniverse(){
+        
+        $id_joueur = $this->controller->getIdJoueur($_POST['username']);
+        echo($id_joueur['id']);
+
+        $univers_joueur = $this->controller->registerUnivers($id_joueur['id']);
+        echo($univers_joueur['id']);
+    }
 }
+
+$controller_instance = new Authentifier();
+$api_register = new APIregister($controller_instance);
+$api_register->request();

@@ -1,16 +1,38 @@
 <?php
 
-require_once('../../boundary/APIinterface/APIregister.php');
 require_once('../../boundary/DBinterface/DBinterface.php');
-
-$controller = new Authentifier();
 
 class Authentifier
 {
+    private $DBinterface;
     public function __construct()
     {
         $this->DBinterface = new DBinterface();
-        $this->APIregister = new APIregister($this);
+    }
+
+    public function login($username, $password){
+
+        $query = "SELECT * FROM joueur WHERE pseudo = :pseudo";
+        
+        $result = $this->DBinterface->login($query, $username);
+        
+        if(!$result){
+            //echo "Error while preparing request";
+            return 2; // code 2 : Wrong username
+        }
+
+        if($result['mdp'] == $password && $username == $result['pseudo']){
+            $_SESSION['id'] = $result['id'];
+            $_SESSION['username'] = $result['pseudo'];
+            // $_SESSION['univers'] = $result['univers'];
+            return 0;
+        }
+        else if($result){
+            return 1;
+        }
+        else{
+            return 2;
+        }
     }
 
     public function register($username, $password, $mail){
@@ -58,4 +80,20 @@ class Authentifier
 
 
     }
+    public function getIdJoueur($pseudo){
+        $query = "SELECT id FROM joueur WHERE pseudo = :pseudo";
+        $result = $this->DBinterface->getIdJoueur($query, $pseudo);
+        return $result;
+    }
+
+    public function getIdUnivers(){
+        $query = "SELECT id_Univers FROM joueurunivers WHERE nbJoueur > 0";
+        $result = $this->DBinterface->getIdUniversNonVide($query);
+        return $result;
+    }
+    public function registerUnivers($query, $idJoueur){
+        $query = "INSERT INTO joueurunivers (idJoueur, idUnivers) VALUES (:idJoueur, :idUnivers)";
+        $result = $this->DBinterface->registerUnivers($query, $idJoueur);
+    }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once('../../controller/authentifierLogin.php');
+require_once('../../controller/authentifier.php');
 
 class APIlogin
 {
@@ -9,7 +9,7 @@ class APIlogin
     public function __construct($controller)
     {
         $this->controller = $controller;
-        $this->request();
+        // $this->request();
     }
 
     public function request()
@@ -70,5 +70,9 @@ class APIlogin
         }
     }
 }
+
+$controller_instance = new Authentifier();
+$api_login = new APIlogin($controller_instance);
+$api_login->request();
 
 ?>

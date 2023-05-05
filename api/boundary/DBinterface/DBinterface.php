@@ -48,6 +48,26 @@ class DBinterface {
         $result = $user->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function getIdJoueur($query, $username){
+        $user = $this->db->prepare($query);
+        $user->bindParam(':pseudo', $username);
+        $user->execute();
+        $result = $user->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function registerUnivers($query, $idJoueur){
+        $user = $this->db->prepare($query);
+        $user->bindParam(':idJoueur', $idJoueur);
+        $user->execute();
+        $result = $user->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function joueurByUnivers(){
+        
+    }
 }
 
 ?>
