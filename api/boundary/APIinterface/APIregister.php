@@ -5,6 +5,7 @@ class APIregister{
 
     public function __construct($controller){
         $this->controller = $controller;
+        $this->addUniverse();
     }
 
     public function request(){
@@ -62,12 +63,12 @@ class APIregister{
         }
     }
     public function addUniverse(){
-        
+        if(http_response_code() != 200){
+            return;
+        }
+        $id_univers = $this->controller->getIdUnivers($_POST['univers']);
         $id_joueur = $this->controller->getIdJoueur($_POST['username']);
-        echo($id_joueur['id']);
-
-        $univers_joueur = $this->controller->registerUnivers($id_joueur['id']);
-        echo($univers_joueur['id']);
+        $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers['id']);
     }
 }
 
