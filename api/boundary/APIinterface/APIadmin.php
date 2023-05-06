@@ -2,6 +2,10 @@
 
 require_once('../../controller/administration.php');
 
+$controller_instance = new Administration();
+$api_admin = new APIadmin($controller_instance);
+$api_admin->handleRequest();
+
 class APIadmin
 {
     private $controller;
@@ -9,7 +13,6 @@ class APIadmin
     public function __construct($controller)
     {
         $this->controller = $controller;
-        $this->handleRequest();
     }
 
     private function handleRequest()

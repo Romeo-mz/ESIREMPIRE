@@ -2,6 +2,10 @@
 
 require_once('../../controller/galaxy.php');
 
+$controller_instance = new Administration();
+$api_galaxy = new APIadmin($controller_instance);
+$api_galaxy->handleRequest();
+
 class APIgalaxy
 {
     private $controller;
@@ -9,16 +13,12 @@ class APIgalaxy
     public function __construct($controller)
     {
         $this->controller = $controller;
-        $this->handleRequest();
     }
 
     private function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         switch ($requestMethod) {
-            case 'POST':
-                $this->handlePost();
-                break;
             case 'GET':
                 $this->handleGet();
                 break;
@@ -26,26 +26,6 @@ class APIgalaxy
                 $this->sendResponse(405, 'Method Not Allowed');
                 break;
         }
-    }
-
-    private function handlePost()
-    {
-        // if (!isset($_POST['id_Univers']) || !isset($_POST['galaxyName']) || !isset($_POST['solarSystemName'])) {
-        //     $this->sendResponse(400, 'Bad Request');
-        //     return;
-        // }
-
-        // $id_Univers = $_POST['id_Univers'];
-        // $galaxyName = $_POST['galaxyName'];
-        // $solarSystemName = $_POST['solarSystemName'];
-
-        // $getGalaxiesResult = $this->controller->getGalaxies($id_Univers, $galaxyName, $solarSystemName);
-
-        // if ($universeResult && $galaxiesResult && $solarSystemsResult && $planetsResult) {
-        //     $this->sendResponse(201, 'Universe Created');
-        // } else {
-        //     $this->sendResponse(500, 'Internal Server Error');
-        // }
     }
 
     private function handleGet()
@@ -78,11 +58,7 @@ class APIgalaxy
             header("Content-Type: application/json");
             echo $body;
         }
-        // if ($statusCode >= 200 && $statusCode < 300) {
-        //     echo "<script>window.location.href = 'http://localhost:5550/ESIREMPIRE/front/admin.php?success=1&message=" . urlencode($statusText) . "';</script>";
-        // } else {
-        //     echo "<script>window.location.href = 'http://localhost:5550/ESIREMPIRE/front/admin.php?success=0&message=" . urlencode($statusText) . "';</script>";
-        // }
+        
         exit;
     }
 
