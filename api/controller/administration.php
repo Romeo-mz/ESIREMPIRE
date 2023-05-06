@@ -3,8 +3,6 @@
 require_once('../../boundary/APIinterface/APIadmin.php');
 require_once('../../boundary/DBinterface/DBadmin.php');
 
-$controller = new Administration();
-
 class Administration
 {
     private $dbInterface;
