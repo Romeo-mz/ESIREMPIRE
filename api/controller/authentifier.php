@@ -86,15 +86,27 @@ class Authentifier
         return $result;
     }
 
-    public function getIdUnivers(){
-        $query = "SELECT id_Univers FROM joueurunivers WHERE nbJoueur > 0";
-        $result = $this->DBinterface->getIdUniversNonVide($query);
+
+    public function getNumberJoueurUnivers($idUnivers){
+        $query = "SELECT COUNT(*) FROM joueurunivers WHERE id_Univers = :id_Univers";
+        $result = $this->DBinterface->getNumberJoueurUnivers($query, $idUnivers);
         return $result;
     }
-    public function registerUnivers($idJoueur){
+    
+    public function registerUnivers($idJoueur, $idUnivers){
         
         $query = "INSERT INTO joueurunivers (idJoueur, idUnivers) VALUES (:idJoueur, :idUnivers)";
-        $result = $this->DBinterface->registerUnivers($query, $idJoueur);
+        $result = $this->DBinterface->registerUnivers($query, $idJoueur, $idUnivers);
     }
+
+    public function getIdUnivers() {
+        $query = "SELECT id FROM univers ORDER BY id ASC LIMIT 1";
+        $result = $this->DBinterface->getIdUnivers($query);
+        
+        return $result;
+        
+    }
+    
+    
 
 }

@@ -5,7 +5,7 @@ class APIregister{
 
     public function __construct($controller){
         $this->controller = $controller;
-        $this->addUniverse();
+        $this->addJoueurToUnivers();
     }
 
     public function request(){
@@ -62,14 +62,22 @@ class APIregister{
             echo "Internal server error";
         }
     }
-    public function addUniverse(){
+    public function addJoueurToUnivers(){
         if(http_response_code() != 200){
             return;
         }
-        $id_univers = $this->controller->getIdUnivers($_POST['univers']);
+    
+        $id_univers = $this->controller->getIdUnivers();
         $id_joueur = $this->controller->getIdJoueur($_POST['username']);
-        $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers['id']);
+        $number_joueur = $this->controller->getNumberJoueurUnivers($id_univers[0]['id']);
+    
+        if($number_joueur['COUNT(*)'] < 50){
+        $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);
+        } else {
+            // Choisir un autre univers
+        }
     }
+    
 }
 
 $controller_instance = new Authentifier();
