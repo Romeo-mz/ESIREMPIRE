@@ -2,8 +2,8 @@
 
 require_once('../../controller/galaxy.php');
 
-$controller_instance = new Administration();
-$api_galaxy = new APIadmin($controller_instance);
+$controller_instance = new Galaxy();
+$api_galaxy = new APIgalaxy($controller_instance);
 $api_galaxy->handleRequest();
 
 class APIgalaxy

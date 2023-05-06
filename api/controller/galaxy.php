@@ -1,19 +1,15 @@
 <?php
 
-require_once('../../boundary/APIinterface/APIgalaxy.php');
 require_once('../../boundary/DBinterface/DBgalaxy.php');
 
-$controller = new Galaxy();
 
 class Galaxy
 {
     private $dbInterface;
-    private $apiInterface;
 
     public function __construct()
     {
         $this->dbInterface = new DBgalaxy();
-        $this->apiInterface = new APIgalaxy($this);
     }
 
     public function getGalaxies($id_Univers)
