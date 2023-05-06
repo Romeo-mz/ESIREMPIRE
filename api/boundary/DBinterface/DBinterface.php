@@ -68,9 +68,7 @@ class DBinterface {
 
     public function getNumberJoueurUnivers($query, $idUnivers){
         $user = $this->db->prepare($query);
-        $user->bindValue(':idUnivers', $idUnivers, PDO::PARAM_INT);
-        
-        $user->execute();
+        $user->execute([':id_Univers' => $idUnivers]);
         $result = $user->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
