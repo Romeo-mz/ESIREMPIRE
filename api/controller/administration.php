@@ -1,17 +1,14 @@
 <?php
 
-require_once('../../boundary/APIinterface/APIadmin.php');
 require_once('../../boundary/DBinterface/DBadmin.php');
 
 class Administration
 {
     private $dbInterface;
-    private $apiInterface;
 
     public function __construct()
     {
         $this->dbInterface = new DBadmin();
-        $this->apiInterface = new APIadmin($this);
     }
 
     public function getUniverses() 
