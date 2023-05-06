@@ -5,7 +5,7 @@ class APIregister{
 
     public function __construct($controller){
         $this->controller = $controller;
-        $this->addJoueurToUnivers();
+        
     }
 
     public function request(){
@@ -36,6 +36,7 @@ class APIregister{
         if($result == 0){
             http_response_code(200);
             echo "Register successful";
+            $this->addJoueurToUnivers();
         }
         else if($result == 1){
             http_response_code(401);
@@ -62,14 +63,62 @@ class APIregister{
             echo "Internal server error";
         }
     }
+
+    public function getIdUnivers(){
+        if(http_response_code() != 200){
+            return;
+        }
+
+        $univers = $this->controller->getIdUnivers();
+
+        if($univers == null){
+            http_response_code(401);
+            echo "Univers doesn't exist";
+        }
+        else{
+            return $univers;
+        }
+    }
+
+    public function getIdJoueur($username){
+        if(http_response_code() != 200){
+            return;
+        }
+
+        $id_joueur = $this->controller->getIdJoueur($username);
+
+        if($id_joueur == null){
+            http_response_code(401);
+            echo "Joueur doesn't exist";
+        }
+        else{
+            return $id_joueur;
+        }
+    }
+
+    public function getNumberJoueurUnivers($id_univers){
+        if(http_response_code() != 200){
+            return;
+        }
+
+        $number_joueur = $this->controller->getNumberJoueurUnivers($id_univers);
+
+        if($number_joueur == null){
+            http_response_code(401);
+            echo "Aucun joueur dans cet univers";
+        }
+        else{
+            return $number_joueur;
+        }
+    }
     public function addJoueurToUnivers(){
         if(http_response_code() != 200){
             return;
         }
     
-        $id_univers = $this->controller->getIdUnivers();
-        $id_joueur = $this->controller->getIdJoueur($_POST['username']);
-        $number_joueur = $this->controller->getNumberJoueurUnivers($id_univers[0]['id']);
+        $id_univers = $this->getIdUnivers();
+        $id_joueur = $this->getIdJoueur($_POST['username']);
+        $number_joueur = $this->getNumberJoueurUnivers($id_univers[0]['id']);
         
 
         if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
