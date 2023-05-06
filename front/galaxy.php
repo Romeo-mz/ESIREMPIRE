@@ -85,7 +85,7 @@ $planets = fetch_data('id_SolarSystem', $_POST['id_SolarSystem']);
                     
                 </table>
         </div>
-
+        
     </main>
 
     <script>
