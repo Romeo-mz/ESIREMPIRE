@@ -15,7 +15,7 @@ class APIadmin
         $this->controller = $controller;
     }
 
-    private function handleRequest()
+    public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         switch ($requestMethod) {
