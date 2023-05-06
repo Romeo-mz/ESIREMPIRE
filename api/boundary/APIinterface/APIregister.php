@@ -70,11 +70,13 @@ class APIregister{
         $id_univers = $this->controller->getIdUnivers();
         $id_joueur = $this->controller->getIdJoueur($_POST['username']);
         $number_joueur = $this->controller->getNumberJoueurUnivers($id_univers[0]['id']);
-    
-        if($number_joueur['COUNT(*)'] < 50){
-        $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);
+        
+
+        if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
+            $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);            
         } else {
-            // Choisir un autre univers
+            http_response_code(401);
+            echo "Univers is full";
         }
     }
     

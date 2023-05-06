@@ -61,8 +61,14 @@ class DBinterface {
         $user = $this->db->prepare($query);
         $user->bindParam(':idJoueur', $idJoueur);
         $user->bindParam(':idUnivers', $idUnivers);
+        
+        // var_dump($user);
         $user->execute();
-        $result = $user->fetch(PDO::FETCH_ASSOC);
+        $result = $user->rowCount();
+        if ($user->errorCode() !== '00000') {
+            $errorInfo = $user->errorInfo();
+            echo 'Erreur lors de l\'exécution de la requête : '.$errorInfo[2];
+        }
         return $result;
     }
 

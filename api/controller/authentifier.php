@@ -94,9 +94,9 @@ class Authentifier
     }
     
     public function registerUnivers($idJoueur, $idUnivers){
-        
-        $query = "INSERT INTO joueurunivers (idJoueur, idUnivers) VALUES (:idJoueur, :idUnivers)";
+        $query = "INSERT INTO joueurunivers (id_Joueur, id_Univers) VALUES (:idJoueur, :idUnivers)";
         $result = $this->DBinterface->registerUnivers($query, $idJoueur, $idUnivers);
+        return $result;
     }
 
     public function getIdUnivers() {
