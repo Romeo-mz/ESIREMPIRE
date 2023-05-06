@@ -107,6 +107,13 @@ class Authentifier
         
     }
     
-    
-
+    public function getAllUnivers() {
+        $query = "SELECT * FROM univers";
+        $result = $this->DBinterface->getAllUnivers($query);
+        
+        return $result;
+    }
+    public function nextUnivers(){
+        $query 
+    }
 }

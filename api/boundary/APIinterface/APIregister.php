@@ -37,6 +37,7 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
+            $this->addJoueurRessources();
         }
         else if($result == 1){
             http_response_code(401);
@@ -111,6 +112,23 @@ class APIregister{
             return $number_joueur;
         }
     }
+
+    public function getAllUnivers(){
+        $allunivers = $this->controller->getAllUnivers();
+        return $allunivers;
+    }
+    public function nextUnivers(){
+        $univers = $this->getAllUnivers();
+        foreach($univers as $u){
+            $id_univers = $u['id'];
+            $number_joueur = $this->getNumberJoueurUnivers($id_univers);
+            if($number_joueur['COUNT(*)'] < 50){
+                return $id_univers;
+            }
+        }
+        return null; // Tous les univers ont atteint leur limite
+    }
+    
     public function addJoueurToUnivers(){
         if(http_response_code() != 200){
             return;
@@ -124,9 +142,21 @@ class APIregister{
         if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
             $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);            
         } else {
+            
             http_response_code(401);
-            echo "Univers is full";
+            echo "Univers " + $id_univers +" is full";
+            $id_univers = $this->nextUnivers();
         }
+    }
+
+    public function addJoueurRessources(){
+        if(http_response_code() != 200){
+            return;
+        }
+
+        $id_joueur = $this->getIdJoueur($_POST['username']);
+        $id_ressources = $this->controller->getIdRessources();
+        $ressources = $this->controller->addJoueurRessources($id_joueur['id']);
     }
     
 }

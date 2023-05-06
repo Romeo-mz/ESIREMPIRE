@@ -86,6 +86,12 @@ class DBinterface {
         return $result;
     }
     
+    public function getAllUnivers($query) {
+        $user = $this->db->prepare($query);
+        $user->execute();
+        $result = $user->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }
 
 ?>
