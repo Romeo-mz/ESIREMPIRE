@@ -87,18 +87,26 @@ export class View extends Observer
     {
         switch (type) 
         {
-            case "Mine de métal":
-                return "img/mine-metal.webp";
-            case "Chantier spatial":
+            case "CHANTIER":
                 return "img/chantier-spatial.webp";
-            case "Laboratoire":
-                return "img/laboratory.webp";
-            case "Synthétiseur de deutérium":
-                return "img/synthetiseur-deuterium.webp";
-            case "Bouclier":
-                return "img/bouclier.webp";
-            case "Usine de nanites":
+            case "LABORATOIRE":
+                return "img/laboratoire.webp";
+            case "USINE":
                 return "img/usine-nanites.webp";
+            case "MINE":
+                return "img/mine-metal.webp";
+            case "SYNTHETISEUR":
+                return "img/synthetiseur-deuterium.webp";
+            case "CENTRALE_SOLAIRE":
+                return "img/centrale-solaire.webp";
+            case "CENTRALE_FUSION":
+                return "img/centrale-fusion.webp";
+            case "ARTILLERIE":
+                return "img/artillerie.webp";
+            case "CANON":
+                return "img/canon.webp";
+            case "BOUCLIER":
+                return "img/bouclier.webp";
             default:
                 return "";
         }
