@@ -79,7 +79,8 @@ class DBinterface {
         return $result;
     }
     
-    public function getIdUnivers($query) {
+    public function getIdUnivers() {
+        $query = "SELECT id FROM univers ORDER BY id ASC LIMIT 1";
         $user = $this->db->prepare($query);
         $user->execute();
         $result = $user->fetchAll(PDO::FETCH_ASSOC);
@@ -92,6 +93,38 @@ class DBinterface {
         $result = $user->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    public function registerQuantiteRessource($idRessource, $quantite){
+   
+        $query = "INSERT INTO ressource (quantite, id_type) VALUES (:quantite, :idRessource)";
+        $quantiteRessource = $this->db->prepare($query);
+        $quantiteRessource->bindParam(':idRessource', $idRessource);
+        $quantiteRessource->bindParam(':quantite', $quantite);
+        $result = $quantiteRessource->execute();
+        return $result;
+    }
+    
+    public function updateQuantityRessource($idRessource, $idJoueur, $quantite){
+        $query = "UPDATE quantiteressource SET quantite = :quantite WHERE id_ressources = :id_ressources AND id_joueurs = :id_joueurs";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_ressources', $idRessource);
+        $stmt->bindParam(':id_joueurs', $idJoueur);
+        $stmt->bindParam(':quantite', $quantite);
+        return $stmt->execute();
+    }
+    
+    public function getQuantiteRessource($idRessource, $idJoueur){
+        $query = "SELECT quantite FROM quantiteressource WHERE id_ressources = :id_ressources AND id_joueurs = :id_joueurs";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_ressources', $idRessource);
+        $stmt->bindParam(':id_joueurs', $idJoueur);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['quantite'];
+    }
+    
+    public function getDb(){
+        return $this->db;
+    }
+    
 }
 
 ?>

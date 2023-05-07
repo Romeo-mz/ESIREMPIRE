@@ -37,7 +37,6 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
-            $this->addJoueurRessources();
         }
         else if($result == 1){
             http_response_code(401);
@@ -140,26 +139,31 @@ class APIregister{
         
 
         if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
-            $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);            
+            $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);
+            $this->addRessourcesJoueur($id_joueur['id']);            
         } else {
             
             http_response_code(401);
             echo "Univers " + $id_univers +" is full";
             $id_univers = $this->nextUnivers();
         }
-    }
 
-    public function addJoueurRessources(){
+        
+    }
+    public function addRessourcesJoueur($id_joueur){
         if(http_response_code() != 200){
             return;
         }
+        $typeRessources = array('metal', 'deuterium', 'energie');
 
-        $id_joueur = $this->getIdJoueur($_POST['username']);
-        $id_ressources = $this->controller->getIdRessources();
-        $ressources = $this->controller->addJoueurRessources($id_joueur['id']);
+        foreach ($typeRessources as $typeRessource) {
+            $idRessource = $this->controller->getIdTypeRessource($typeRessource);
+            $this->controller->registerRessource($id_joueur, $idRessource, 500);
+        }
     }
-    
 }
+
+    
 
 $controller_instance = new Authentifier();
 $api_register = new APIregister($controller_instance);

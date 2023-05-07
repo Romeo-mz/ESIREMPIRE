@@ -100,8 +100,7 @@ class Authentifier
     }
 
     public function getIdUnivers() {
-        $query = "SELECT id FROM univers ORDER BY id ASC LIMIT 1";
-        $result = $this->DBinterface->getIdUnivers($query);
+        $result = $this->DBinterface->getIdUnivers();
         
         return $result;
         
@@ -113,7 +112,21 @@ class Authentifier
         
         return $result;
     }
-    public function nextUnivers(){
-        $query 
+
+    public function getIdTypeRessource($type){
+        $query = "SELECT id FROM typeressource WHERE type = :type";
+        $result = $this->DBinterface->getDb()->prepare($query);
+        $result->bindParam(':type', $type);
+        $result->execute();
+        return $result->fetch(PDO::FETCH_ASSOC)['id'];
+    }
+    
+    public function registerRessource($id_joueur, $id_ressource, $quantite){
+
+        $result = $this->DBinterface->registerQuantiteRessource($id_ressource, $quantite);
+        print_r($this->getIdUnivers());
+        $query2 = "INSERT INTO joueurunivers (id_joueur, id_univers, id_ressource) VALUES (:id_joueur, :id_univers, :id_ressource)";
+        $params2 = array(':id_joueur' => $id_joueur, ':id_univers' => $this->getIdUnivers()[0]['id'], ':id_ressource' => $id_ressource);
+        $this->DBinterface->getDb()->prepare($query2)->execute($params2);
     }
 }
