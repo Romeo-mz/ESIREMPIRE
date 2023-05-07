@@ -231,5 +231,7 @@ $defenses = array(
         </div>
 
     </main>
+
+    <script src="js/infrastructures/application/application.js" type="module"></script>
 </body>
 </html>
