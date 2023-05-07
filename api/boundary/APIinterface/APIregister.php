@@ -145,7 +145,8 @@ class APIregister{
                 
                 $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id'], $typeRessource);
                       
-        } 
+                }
+            $this->addEmptyPlanet($id_joueur['id']);
     }
         else {
             
@@ -157,26 +158,13 @@ class APIregister{
         
     }
 
-    public function lienRessourcesJoueur($id_joueur){
-        $id_univers = $this->getIdUnivers();
-        $typeRessources = array('metal', 'deuterium', 'energie');
-
-        foreach ($typeRessources as $typeRessource) {
-            $idRessource = $this->controller->getIdTypeRessource($typeRessource);
-            $liste = $this->controller->lienRessourcesJoueur($id_joueur, $id_univers[0]['id'], $idRessource);
-        }
-        
-    }
-    public function addRessourcesJoueur($id_joueur){
+   
+    public function addEmptyPlanet($id_joueur){
         if(http_response_code() != 200){
             return;
         }
-        $typeRessources = array('metal', 'deuterium', 'energie');
-
-        foreach ($typeRessources as $typeRessource) {
-            $idRessource = $this->controller->getIdTypeRessource($typeRessource);
-            $this->controller->registerRessource($id_joueur, $idRessource, 500);
-        }
+        $id_univers = $this->getIdUnivers();
+        $this->controller->registerPlanet($id_joueur, $id_univers[0]['id']);
     }
 }
 

@@ -137,5 +137,22 @@ class Authentifier
         $result = $stmt->execute($params);
         return $result;
     }
+
+
+    public function registerPlanet($id_joueur, $id_univers){
+        $query = "UPDATE planete SET id_joueur = :id_joueur 
+                  WHERE id_joueur IS NULL 
+                  AND id_Systeme_Solaire IN 
+                      (SELECT id FROM systemesolaire 
+                       WHERE id_Galaxie IN 
+                           (SELECT id FROM galaxie 
+                            WHERE id_Univers = :id_univers))
+                  LIMIT 1";
+        $result = $this->DBinterface->getDb()->prepare($query);
+        $result->bindParam(':id_joueur', $id_joueur);
+        $result->bindParam(':id_univers', $id_univers);
+        $result->execute();
+        return $result->rowCount() > 0;
+    }
     
 }
