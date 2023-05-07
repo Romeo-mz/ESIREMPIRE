@@ -1,5 +1,7 @@
 # ESIREMPIRE
 
+![logo](https://cdn.discordapp.com/attachments/1095328768127684638/1104389062854443071/logo1_transp.png)
+
 ESIREMPIRE, un jeu de stratégie en ligne passionnant qui vous transportera dans un univers de science fascinant.
 
 ## Description
