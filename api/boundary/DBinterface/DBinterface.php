@@ -3,6 +3,8 @@
 define('SERVER', "localhost");
 define('DB_PORT', "3307");
 define('DB_NAME', "esirempire_db");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 abstract class DBinterface {
 
@@ -35,5 +37,7 @@ abstract class DBinterface {
         $stmt = $this->db->prepare($query);
         return $stmt->execute($params);
     }
-
+    
 }
+
+?>

@@ -16,14 +16,14 @@ $universes = json_decode($universes, true);
     <main>
         <div class="left">
             <div class="overlay">
-                <h1>ESIREMPIRE</h1>
+                <h1>ESIREMPIRE - Login</h1>
             </div>
            
 
         </div>
         <div class="right">
             <h1>LOGIN</h1>
-            <form action="login.php" method="post">
+            <form action="../api/boundary/APIinterface/APIlogin.php" method="post">
                 <input type="text" name="username" placeholder="Username" required>
                 
                 <input type="password" name="password" placeholder="Password" required>
