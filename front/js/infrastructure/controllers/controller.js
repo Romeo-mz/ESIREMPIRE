@@ -1,7 +1,7 @@
-import { Notifer } from "../pattern/notifier.js";
+import { Notifier } from "../pattern/notifier.js";
 import { Infrastructure } from "../models/infrastructure.js";
 
-export class Controller extends Notifer
+export class Controller extends Notifier
 {
     #infrastructures;
 
@@ -11,9 +11,9 @@ export class Controller extends Notifer
         this.#infrastructures = [];
 
         this.#infrastructures.push(new Infrastructure(1, "Ressource", 'Mine de métal', 1, 60, 15, 0));
-        this.#infrastructures.push(new Infrastructure(2, "Installation", 'Chantier spatial', 2, 75, 20, 0));
+        this.#infrastructures.push(new Infrastructure(2, "Installation", 'Chantier spatial', 0, 75, 20, 0));
         this.#infrastructures.push(new Infrastructure(3, "Installation", 'Laboratoire', 3, 90, 25, 0));
-        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'Synthétiseur de deutérium', 4, 105, 30, 0));
+        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'Synthétiseur de deutérium', 0, 105, 30, 0));
         this.#infrastructures.push(new Infrastructure(5, "Defense",'Bouclier', 5, 120, 35, 0));
     }
 

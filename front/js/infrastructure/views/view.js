@@ -4,80 +4,109 @@ export class View extends Observer
 {
     #controller;
 
-    constructor(controller)
+    constructor(controller) 
     {
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
+        this.update();
+    }
 
-        let infrastructures = this.#controller.getInfrastructures();
+    update() 
+    {
+        const infrastructures = this.#controller.getInfrastructures();
 
-        // let div_installation_image = document.getElementById("div-installation-image");
-        let div_installation_name = document.getElementById("div-installation-type");
-        let div_installation_level = document.getElementById("div-installation-level");
-        let div_installation_metal = document.getElementById("div-installation-metal");
-        let div_installation_energie = document.getElementById("div-installation-energie");
-        let div_installation_construire = document.getElementById("div-installation-construire");
-
-
-        for (let infrastructure of infrastructures) 
+        for (const infrastructure of infrastructures) 
         {
-            let div_installation = document.createElement("div");
-            div_installation.id = "div-installation-" + infrastructure.id;
-            div_installation.className = "div-installation";
-
-            let div_installation_image = document.createElement("div");
-            div_installation_image.id = "div-installation-image-" + infrastructure.id;
-            div_installation_image.className = "div-installation-image";
-            div_installation_image.style.backgroundImage = "url('img/" + infrastructure.name + ".png')";
-
-            let div_installation_name = document.createElement("div");
-            div_installation_name.id = "div-installation-name-" + infrastructure.id;
-            div_installation_name.className = "div-installation-name";
-            div_installation_name.innerHTML = infrastructure.name;
-
-            let div_installation_level = document.createElement("div");
-            div_installation_level.id = "div-installation-level-" + infrastructure.id;
-            div_installation_level.className = "div-installation-level";
-            div_installation_level.innerHTML = infrastructure.level;
-
-            let div_installation_metal = document.createElement("div");
-            div_installation_metal.id = "div-installation-metal-" + infrastructure.id;
-            div_installation_metal.className = "div-installation-metal";
-            div_installation_metal.innerHTML = infrastructure.metal;
-
-            let div_installation_energie = document.createElement("div");
-            div_installation_energie.id = "div-installation-energie-" + infrastructure.id;
-            div_installation_energie.className = "div-installation-energie";
-            div_installation_energie.innerHTML = infrastructure.energie;
-
-            let div_installation_construire = document.createElement("div");
-            div_installation_construire.id = "div-installation-construire-" + infrastructure.id;
-            div_installation_construire.className = "div-installation-construire";
-
-            if(infrastructure.temps == 0) {
-                div_installation_construire.innerHTML = "Construire";
+            if (infrastructure.type_infrastructure === "Installation") 
+            {
+                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-installations");
+            } else if (infrastructure.type_infrastructure === "Ressource") 
+            {
+                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-ressources");
+            } else if (infrastructure.type_infrastructure === "Defense") 
+            {
+                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-defenses");
             }
-            else {
-                div_installation_construire.innerHTML = "Améliorer<br>" + infrastructure.temps + "s";
-            }
+        }
+    }
 
-            // div_installation_construire.addEventListener("click", () => this.#controller.construire(infrastructure.id));
+    createOrUpdateInfrastructureElement(infrastructure, parentDivId) 
+    {
+        const prefix = infrastructure.type_infrastructure.toLowerCase();
 
-            div_installation.appendChild(div_installation_image);
-            div_installation.appendChild(div_installation_name);
-            div_installation.appendChild(div_installation_level);
-            div_installation.appendChild(div_installation_metal);
-            div_installation.appendChild(div_installation_energie);
-            div_installation.appendChild(div_installation_construire);
+        let div = this.createOrUpdateElement("div", `div-${prefix}-${infrastructure.id}`, "div-infrastructure");
+        let div_information = this.createOrUpdateElement("div", `div-${prefix}-information-${infrastructure.id}`, "div-infrastructure-information");
+        let div_image = this.createOrUpdateElement("div", `div-${prefix}-image-${infrastructure.id}`, "div-infrastructure-image");
+        let img = this.createOrUpdateElement("img", `img-${prefix}-${infrastructure.id}`, "img-infrastructure");
+        img.src = this.getImageSrcForType(infrastructure.type);
 
-            document.getElementById("div-installations").appendChild(div_installation);
+        let div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type);
+        let div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
+        let div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.metal);
+        let div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.energie);
+
+        let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-${infrastructure.id}`, "div-infrastructure-upgrade");
+        let button_upgrade = this.createOrUpdateElement(
+            "button",
+            `button-${prefix}-upgrade-${infrastructure.id}`,
+            "button-infrastructure-upgrade",
+            infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps + "s" : "Améliorer <br> " + infrastructure.temps + "s"
+        );
+
+        div_image.appendChild(img);
+        div_information.appendChild(div_information_type);
+        div_information.appendChild(div_information_level);
+        div_information.appendChild(div_information_metal);
+        div_information.appendChild(div_information_energie);
+        div_upgrade.appendChild(button_upgrade);
+
+        div.appendChild(div_image);
+        div.appendChild(div_information);
+        div.appendChild(div_upgrade);
+
+        document.getElementById(parentDivId).appendChild(div);
+    }
+
+    createOrUpdateElement(tagName, id, className, innerHTML = "") 
+    {
+        let element = document.getElementById(id);
+
+        if (!element) 
+        {
+            element = document.createElement(tagName);
+            element.id = id;
+            element.className = className;
         }
 
+        element.innerHTML = innerHTML;
+        return element;
     }
 
-    notify()
+    getImageSrcForType(type) 
     {
-        // document.getElementById("txt-counter").innerHTML = this.#controller.getCounterValue();
+        switch (type) 
+        {
+            case "Mine de métal":
+                return "img/mine-metal.webp";
+            case "Chantier spatial":
+                return "img/chantier-spatial.webp";
+            case "Laboratoire":
+                return "img/laboratory.webp";
+            case "Synthétiseur de deutérium":
+                return "img/synthetiseur-deuterium.webp";
+            case "Bouclier":
+                return "img/bouclier.webp";
+            case "Usine de nanites":
+                return "img/usine-nanites.webp";
+            default:
+                return "";
+        }
     }
+
+    notify() 
+    {
+        this.update();
+    }
+
 }
