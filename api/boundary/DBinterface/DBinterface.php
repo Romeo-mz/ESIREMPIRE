@@ -57,10 +57,11 @@ class DBinterface {
         return $result;
     }
 
-    public function registerUnivers($query, $idJoueur, $idUnivers){
+    public function registerUnivers($query, $idJoueur, $idUnivers, $idRessource){
         $user = $this->db->prepare($query);
         $user->bindParam(':idJoueur', $idJoueur);
         $user->bindParam(':idUnivers', $idUnivers);
+        $user->bindParam(':idRessource', $idRessource);
         
         // var_dump($user);
         $user->execute();

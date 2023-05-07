@@ -93,9 +93,9 @@ class Authentifier
         return $result;
     }
     
-    public function registerUnivers($idJoueur, $idUnivers){
-        $query = "INSERT INTO joueurunivers (id_Joueur, id_Univers) VALUES (:idJoueur, :idUnivers)";
-        $result = $this->DBinterface->registerUnivers($query, $idJoueur, $idUnivers);
+    public function registerUnivers($idJoueur, $idUnivers, $idRessource){
+        $query = "INSERT INTO joueurunivers (id_Joueur, id_Univers, id_Ressource) VALUES (:idJoueur, :idUnivers, :idRessource)";
+        $result = $this->DBinterface->registerUnivers($query, $idJoueur, $idUnivers, $idRessource);
         return $result;
     }
 
@@ -114,11 +114,11 @@ class Authentifier
     }
 
     public function getIdTypeRessource($type){
-        $query = "SELECT id FROM typeressource WHERE type = :type";
+        $query = "SELECT id FROM typeressource WHERE id_Type = :type AND quantite = 500";
         $result = $this->DBinterface->getDb()->prepare($query);
         $result->bindParam(':type', $type);
         $result->execute();
-        return $result->fetch(PDO::FETCH_ASSOC)['id'];
+        return $result->fetch(PDO::FETCH_ASSOC);
     }
     
     public function registerRessource($id_joueur, $id_ressource, $quantite){
@@ -129,4 +129,13 @@ class Authentifier
         $params2 = array(':id_joueur' => $id_joueur, ':id_univers' => $this->getIdUnivers()[0]['id'], ':id_ressource' => $id_ressource);
         $this->DBinterface->getDb()->prepare($query2)->execute($params2);
     }
+
+    public function lienRessourcesJoueur($id_joueur, $id_univers, $id_ressource) {
+        $query = "UPDATE joueurunivers SET id_ressource = :id_ressource WHERE id_joueur = :id_joueur AND id_univers = :id_univers";
+        $params = array(':id_joueur' => $id_joueur, ':id_univers' => $id_univers, ':id_ressource' => $id_ressource);
+        $stmt = $this->DBinterface->getDb()->prepare($query);
+        $result = $stmt->execute($params);
+        return $result;
+    }
+    
 }

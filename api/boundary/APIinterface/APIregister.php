@@ -139,15 +139,32 @@ class APIregister{
         
 
         if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
-            $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id']);
-            $this->addRessourcesJoueur($id_joueur['id']);            
-        } else {
+            $typeRessources = array('10', '11', '12');
+
+            foreach ($typeRessources as $typeRessource) {
+                
+                $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id'], $typeRessource);
+                      
+        } 
+    }
+        else {
             
             http_response_code(401);
             echo "Univers " + $id_univers +" is full";
             $id_univers = $this->nextUnivers();
         }
 
+        
+    }
+
+    public function lienRessourcesJoueur($id_joueur){
+        $id_univers = $this->getIdUnivers();
+        $typeRessources = array('metal', 'deuterium', 'energie');
+
+        foreach ($typeRessources as $typeRessource) {
+            $idRessource = $this->controller->getIdTypeRessource($typeRessource);
+            $liste = $this->controller->lienRessourcesJoueur($id_joueur, $id_univers[0]['id'], $idRessource);
+        }
         
     }
     public function addRessourcesJoueur($id_joueur){
