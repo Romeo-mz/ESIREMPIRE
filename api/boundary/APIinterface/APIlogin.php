@@ -2,16 +2,20 @@
 
 require_once('../../controller/authentifier.php');
 $controller_instance = new Authentifier();
+$session_controller = new SessionController();
+
 $api_login = new APIlogin($controller_instance);
 $api_login->request();
 
 class APIlogin
 {
     private $controller;
+    private $session_controller;
 
-    public function __construct($controller)
+    public function __construct($controller, $session_controller)
     {
         $this->controller = $controller;
+        $this->session_controller = $session_controller;
         // $this->request();
     }
 
@@ -55,6 +59,10 @@ class APIlogin
         {
             http_response_code(200);
             echo "Login successful";
+            $id = $this->controller->getIdJoueur($username)['id'];
+            $ressources = $this->controller->getRessourcesJoueur($id);
+            
+            $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
         }
         else if($result == 1)
         {
