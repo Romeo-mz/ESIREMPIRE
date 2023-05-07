@@ -5,7 +5,7 @@ require_once '../../controller/SessionController.php';
 $controller_instance = new Authentifier();
 $session_controller = new SessionController();
 
-$api_register = new APIregister($controller_instance);
+$api_register = new APIregister($controller_instance, $session_controller);
 $api_register->request();
 
 class APIregister{
@@ -45,7 +45,7 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
-            
+
             $id = $this->controller->getIdJoueur($username)['id'];
             $univers = $this->controller->getUniversJoueur($id)['id_univers'];
             $ressources = $this->controller->getRessourcesJoueur($id);

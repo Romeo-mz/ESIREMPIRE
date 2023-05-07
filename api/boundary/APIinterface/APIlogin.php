@@ -4,7 +4,7 @@ require_once('../../controller/authentifier.php');
 $controller_instance = new Authentifier();
 $session_controller = new SessionController();
 
-$api_login = new APIlogin($controller_instance);
+$api_login = new APIlogin($controller_instance, $session_controller);
 $api_login->request();
 
 class APIlogin
@@ -61,7 +61,7 @@ class APIlogin
             echo "Login successful";
             $id = $this->controller->getIdJoueur($username)['id'];
             $ressources = $this->controller->getRessourcesJoueur($id);
-            
+
             $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
         }
         else if($result == 1)
