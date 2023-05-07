@@ -49,8 +49,8 @@ export class View extends Observer
         let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-${infrastructure.id}`, "div-infrastructure-upgrade");
         let button_upgrade = this.createOrUpdateElement(
             "button",
-            `button-${prefix}-upgrade-${infrastructure.id}`,
-            "button-infrastructure-upgrade",
+            `upgrade-button-${prefix}-${infrastructure.id}`,
+            "upgrade-button",
             infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps + "s" : "Améliorer <br> " + infrastructure.temps + "s"
         );
 
