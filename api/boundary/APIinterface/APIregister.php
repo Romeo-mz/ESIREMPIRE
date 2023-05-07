@@ -5,6 +5,8 @@ require_once '../../controller/SessionController.php';
 $controller_instance = new Authentifier();
 $session_controller = new SessionController();
 
+$session_controller->startSession();
+
 $api_register = new APIregister($controller_instance, $session_controller);
 $api_register->request();
 

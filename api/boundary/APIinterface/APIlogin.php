@@ -4,6 +4,8 @@ require_once('../../controller/authentifier.php');
 $controller_instance = new Authentifier();
 $session_controller = new SessionController();
 
+$session_controller->startSession();
+
 $api_login = new APIlogin($controller_instance, $session_controller);
 $api_login->request();
 
