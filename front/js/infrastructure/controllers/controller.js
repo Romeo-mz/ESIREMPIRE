@@ -10,11 +10,11 @@ export class Controller extends Notifier
         super();
         this.#infrastructures = [];
 
-        this.#infrastructures.push(new Infrastructure(1, "Ressource", 'Mine de métal', 1, 60, 15, 0));
-        this.#infrastructures.push(new Infrastructure(2, "Installation", 'Chantier spatial', 0, 75, 20, 0));
-        this.#infrastructures.push(new Infrastructure(3, "Installation", 'Laboratoire', 3, 90, 25, 0));
-        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'Synthétiseur de deutérium', 0, 105, 30, 0));
-        this.#infrastructures.push(new Infrastructure(5, "Defense",'Bouclier', 5, 120, 35, 0));
+        this.#infrastructures.push(new Infrastructure(1, "Ressource", 'MINE', 1, 60, 15, 0));
+        this.#infrastructures.push(new Infrastructure(2, "Installation", 'CHANTIER', 0, 75, 20, 0));
+        this.#infrastructures.push(new Infrastructure(3, "Installation", 'LABORATOIRE', 3, 90, 25, 0));
+        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'SYNTHETISEUR', 0, 105, 30, 0));
+        this.#infrastructures.push(new Infrastructure(5, "Defense", 'BOUCLIER', 5, 120, 35, 0));
     }
 
     get infrastructures() { return this.#infrastructures; }

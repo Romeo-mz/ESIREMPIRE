@@ -85,6 +85,7 @@ export class View extends Observer
 
     getImageSrcForType(type) 
     {
+        console.log(type);
         switch (type) 
         {
             case "CHANTIER":
