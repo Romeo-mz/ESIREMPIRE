@@ -31,6 +31,7 @@ $universes = json_decode($universes, true);
                     <?php foreach($universes as $universe): ?>
                         <option value="<?= $universe['id'] ?>"><?= $universe['nom'] ?></option>
                     <?php endforeach; ?>
+                    
                 </select>
                 
                 <br/><br/>
