@@ -33,7 +33,7 @@ class DBlogin extends DBinterface {
 
     public function getIdUnivers(){
         $query = "SELECT id FROM univers ORDER BY id ASC LIMIT 1";
-        return $this->fetchAllRows($query);
+        return $this->fetchValue($query);
     }
 
 }

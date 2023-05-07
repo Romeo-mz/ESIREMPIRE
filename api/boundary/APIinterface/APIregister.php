@@ -1,6 +1,9 @@
 <?php
 require_once '../../controller/authentifier.php';
 
+$controller_instance = new Authentifier();
+$api_register = new APIregister($controller_instance);
+$api_register->request();
 class APIregister{
     private $controller;
 
@@ -136,18 +139,17 @@ class APIregister{
     
         $id_univers = $this->getIdUnivers();
         $id_joueur = $this->getIdJoueur($_POST['username']);
-        $number_joueur = $this->getNumberJoueurUnivers($id_univers[0]['id']);
+        $number_joueur = $this->getNumberJoueurUnivers($id_univers);
         
-
-        if($number_joueur['COUNT(*)'] < 50 && $id_joueur['id'] != null){
+        if($number_joueur < 50 && $id_joueur != null){
             $typeRessources = array('10', '11', '12');
 
             foreach ($typeRessources as $typeRessource) {
                 
-                $univers_joueur = $this->controller->registerUnivers($id_joueur['id'], $id_univers[0]['id'], $typeRessource);
+                $univers_joueur = $this->controller->registerUnivers($id_joueur, $id_univers, $typeRessource);
                       
                 }
-            $this->addEmptyPlanet($id_joueur['id']);
+            $this->addEmptyPlanet($id_joueur);
     }
         else {
             
@@ -165,12 +167,9 @@ class APIregister{
             return;
         }
         $id_univers = $this->getIdUnivers();
-        $this->controller->registerPlanet($id_joueur, $id_univers[0]['id']);
+        $this->controller->registerPlanet($id_joueur, $id_univers);
     }
 }
 
     
 
-$controller_instance = new Authentifier();
-$api_register = new APIregister($controller_instance);
-$api_register->request();
