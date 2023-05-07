@@ -1,5 +1,6 @@
 <?php
 require_once '../../controller/authentifier.php';
+
 class APIregister{
     private $controller;
 
@@ -63,7 +64,7 @@ class APIregister{
             echo "Internal server error";
         }
     }
-
+    
     public function getIdUnivers(){
         if(http_response_code() != 200){
             return;

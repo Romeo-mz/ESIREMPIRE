@@ -1,6 +1,9 @@
 <?php
 
 require_once('../../controller/authentifier.php');
+$controller_instance = new Authentifier();
+$api_login = new APIlogin($controller_instance);
+$api_login->request();
 
 class APIlogin
 {
@@ -46,7 +49,7 @@ class APIlogin
             return;
         }
         
-        $result = $this->controller->login($username, $password, $univers);
+        $result = $this->controller->login($username, $password);
         
         if($result == 0)
         {
@@ -71,8 +74,6 @@ class APIlogin
     }
 }
 
-$controller_instance = new Authentifier();
-$api_login = new APIlogin($controller_instance);
-$api_login->request();
+
 
 ?>

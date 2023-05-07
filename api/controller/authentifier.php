@@ -1,30 +1,32 @@
 <?php
 
-require_once('../../boundary/DBinterface/DBinterface.php');
+require_once('../../boundary/DBinterface/DBlogin.php');
+require_once('../../boundary/DBinterface/DBregister.php');
 
 class Authentifier
 {
-    private $DBinterface;
+    private $DBinterfaceLogin;
+    private $DBinterfaceRegister;
     public function __construct()
     {
-        $this->DBinterface = new DBinterface();
+        $this->DBinterfaceLogin = new DBlogin();
+        $this->DBinterfaceRegister = new DBregister();
     }
 
     public function login($username, $password){
 
-        $query = "SELECT * FROM joueur WHERE pseudo = :pseudo";
         
-        $result = $this->DBinterface->login($query, $username);
+        $result = $this->DBinterfaceLogin->login($username, $password);
         
         if(!$result){
             //echo "Error while preparing request";
             return 2; // code 2 : Wrong username
         }
-
-        if($result['mdp'] == $password && $username == $result['pseudo']){
-            $_SESSION['id'] = $result['id'];
-            $_SESSION['username'] = $result['pseudo'];
-            // $_SESSION['univers'] = $result['univers'];
+        print_r($result);
+        if($result[0]['mdp'] == $password && $username == $result[0]['pseudo']){
+            $_SESSION['id'] = $result[0]['id'];
+            $_SESSION['username'] = $result[0]['pseudo'];
+            //$_SESSION['univers'] = $result['univers'];
             return 0;
         }
         else if($result){
@@ -44,8 +46,7 @@ class Authentifier
         }
 
         //Check if user already exists
-        $query_user_exist = "SELECT * FROM joueur WHERE pseudo = :pseudo";
-        $user_exist = $this->DBinterface->login($query_user_exist, $username);
+        $user_exist = $this->DBinterfaceRegister->isUser($username);
         
         
         if ($user_exist) {
@@ -53,8 +54,7 @@ class Authentifier
         }
         
         //Check if email already exists
-        $query_email_exist = "SELECT * FROM joueur WHERE mail = :mail";
-        $email_exist = $this->DBinterface->isEmail($query_email_exist, $mail);
+        $email_exist = $this->DBinterfaceRegister->isEmail($mail);
 
         if ($email_exist) {
             return 5;
@@ -71,8 +71,7 @@ class Authentifier
         }
 
         //Insert user in database
-        $query = "INSERT INTO joueur (pseudo, email , mdp ) VALUES (:pseudo, :email, :mdp)";
-        $result = $this->DBinterface->register($query, $username, $password, $mail);
+        $result = $this->DBinterfaceRegister->register($username, $password, $mail);
 
         if ($result) {
             return 0;
@@ -81,60 +80,29 @@ class Authentifier
 
     }
     public function getIdJoueur($pseudo){
-        $query = "SELECT id FROM joueur WHERE pseudo = :pseudo";
-        $result = $this->DBinterface->getIdJoueur($query, $pseudo);
+        $result = $this->DBinterfaceLogin->getIdJoueur($pseudo);
         return $result;
     }
 
 
     public function getNumberJoueurUnivers($idUnivers){
-        $query = "SELECT COUNT(*) FROM joueurunivers WHERE id_Univers = :id_Univers";
-        $result = $this->DBinterface->getNumberJoueurUnivers($query, $idUnivers);
+        $result = $this->DBinterfaceLogin->getNumberJoueurUnivers($idUnivers);
         return $result;
     }
     
     public function registerUnivers($idJoueur, $idUnivers, $idRessource){
-        $query = "INSERT INTO joueurunivers (id_Joueur, id_Univers, id_Ressource) VALUES (:idJoueur, :idUnivers, :idRessource)";
-        $result = $this->DBinterface->registerUnivers($query, $idJoueur, $idUnivers, $idRessource);
+        $result = $this->DBinterfaceRegister->registerUnivers($idJoueur, $idUnivers, $idRessource);
         return $result;
     }
 
     public function getIdUnivers() {
-        $result = $this->DBinterface->getIdUnivers();
+        $result = $this->DBinterfaceLogin->getIdUnivers();
         
         return $result;
         
     }
-    
-    public function getAllUnivers() {
-        $query = "SELECT * FROM univers";
-        $result = $this->DBinterface->getAllUnivers($query);
-        
-        return $result;
-    }
-
-    public function getIdTypeRessource($type){
-        $query = "SELECT id FROM typeressource WHERE id_Type = :type AND quantite = 500";
-        $result = $this->DBinterface->getDb()->prepare($query);
-        $result->bindParam(':type', $type);
-        $result->execute();
-        return $result->fetch(PDO::FETCH_ASSOC);
-    }
-
     public function registerPlanet($id_joueur, $id_univers){
-        $query = "UPDATE planete SET id_joueur = :id_joueur 
-                  WHERE id_joueur IS NULL 
-                  AND id_Systeme_Solaire IN 
-                      (SELECT id FROM systemesolaire 
-                       WHERE id_Galaxie IN 
-                           (SELECT id FROM galaxie 
-                            WHERE id_Univers = :id_univers))
-                  LIMIT 1";
-        $result = $this->DBinterface->getDb()->prepare($query);
-        $result->bindParam(':id_joueur', $id_joueur);
-        $result->bindParam(':id_univers', $id_univers);
-        $result->execute();
-        return $result->rowCount() > 0;
+        return $this->DBinterfaceRegister->registerPlanet($id_joueur, $id_univers);
     }
     
 }
