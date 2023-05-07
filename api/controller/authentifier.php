@@ -120,24 +120,6 @@ class Authentifier
         $result->execute();
         return $result->fetch(PDO::FETCH_ASSOC);
     }
-    
-    public function registerRessource($id_joueur, $id_ressource, $quantite){
-
-        $result = $this->DBinterface->registerQuantiteRessource($id_ressource, $quantite);
-        print_r($this->getIdUnivers());
-        $query2 = "INSERT INTO joueurunivers (id_joueur, id_univers, id_ressource) VALUES (:id_joueur, :id_univers, :id_ressource)";
-        $params2 = array(':id_joueur' => $id_joueur, ':id_univers' => $this->getIdUnivers()[0]['id'], ':id_ressource' => $id_ressource);
-        $this->DBinterface->getDb()->prepare($query2)->execute($params2);
-    }
-
-    public function lienRessourcesJoueur($id_joueur, $id_univers, $id_ressource) {
-        $query = "UPDATE joueurunivers SET id_ressource = :id_ressource WHERE id_joueur = :id_joueur AND id_univers = :id_univers";
-        $params = array(':id_joueur' => $id_joueur, ':id_univers' => $id_univers, ':id_ressource' => $id_ressource);
-        $stmt = $this->DBinterface->getDb()->prepare($query);
-        $result = $stmt->execute($params);
-        return $result;
-    }
-
 
     public function registerPlanet($id_joueur, $id_univers){
         $query = "UPDATE planete SET id_joueur = :id_joueur 
