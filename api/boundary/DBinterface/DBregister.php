@@ -43,4 +43,18 @@ class DBregister extends DBinterface {
                   LIMIT 1";
         return $this->executeQuery($query, [$id_joueur, $id_univers]);
     }
+
+    public function createRessource(){
+        $typeRessources = array(1, 2, 3);
+
+        foreach ($typeRessources as $typeRessource) {
+            $query = "INSERT INTO ressource (id_Type, quantite) VALUES (?, ?)";
+            $this->executeQuery($query, [$typeRessource, 500]);
+        }
+    }
+
+    public function getIdRessources(){
+        $query = "SELECT id FROM ressource WHERE id_type IN (1,2,3) ORDER BY id ASC"    ;
+        return $this->fetchAllRows($query);
+    }
 }

@@ -104,5 +104,12 @@ class Authentifier
     public function registerPlanet($id_joueur, $id_univers){
         return $this->DBinterfaceRegister->registerPlanet($id_joueur, $id_univers);
     }
+
+    public function createRessource(){
+        return $this->DBinterfaceRegister->createRessource();
+    }
     
+    public function getIdRessources(){
+        return $this->DBinterfaceRegister->getIdRessources();
+    }
 }

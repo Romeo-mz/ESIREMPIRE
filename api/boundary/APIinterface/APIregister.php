@@ -141,12 +141,14 @@ class APIregister{
         $id_joueur = $this->getIdJoueur($_POST['username']);
         $number_joueur = $this->getNumberJoueurUnivers($id_univers);
         
-        if($number_joueur < 50 && $id_joueur != null){
-            $typeRessources = array('10', '11', '12');
+        $create_ressource = $this->controller->createRessource();
 
-            foreach ($typeRessources as $typeRessource) {
+        if($number_joueur < 50 && $id_joueur != null){
+            $id_ressources = $this->controller->getIdRessources();
+
+            foreach ($id_ressources as $id_ressource) {
                 
-                $univers_joueur = $this->controller->registerUnivers($id_joueur, $id_univers, $typeRessource);
+                $univers_joueur = $this->controller->registerUnivers($id_joueur, $id_univers, $id_ressource['id']);
                       
                 }
             $this->addEmptyPlanet($id_joueur);
