@@ -1,4 +1,5 @@
-import { Infrastructure } from "../models/infrastructure";
+import { Notifer } from "../pattern/notifier.js";
+import { Infrastructure } from "../models/infrastructure.js";
 
 export class Controller extends Notifer
 {
@@ -9,21 +10,23 @@ export class Controller extends Notifer
         super();
         this.#infrastructures = [];
 
-        this.#infrastructures.push(new Infrastructure(1, 'Mine de métal', 1, 60, 15, 0));
-        this.#infrastructures.push(new Infrastructure(2, 'Chantier spatial', 2, 75, 20, 0));
-        this.#infrastructures.push(new Infrastructure(3, 'Laboratoire', 3, 90, 25, 0));
-        this.#infrastructures.push(new Infrastructure(4, 'Synthétiseur de deutérium', 4, 105, 30, 0));
-        this.#infrastructures.push(new Infrastructure(5, 'Bouclier', 5, 120, 35, 0));
+        this.#infrastructures.push(new Infrastructure(1, "Ressource", 'Mine de métal', 1, 60, 15, 0));
+        this.#infrastructures.push(new Infrastructure(2, "Installation", 'Chantier spatial', 2, 75, 20, 0));
+        this.#infrastructures.push(new Infrastructure(3, "Installation", 'Laboratoire', 3, 90, 25, 0));
+        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'Synthétiseur de deutérium', 4, 105, 30, 0));
+        this.#infrastructures.push(new Infrastructure(5, "Defense",'Bouclier', 5, 120, 35, 0));
     }
 
     get infrastructures() { return this.#infrastructures; }
     set infrastructures(infrastructures) { this.#infrastructures = infrastructures; }
 
-    addInfrastructure(infrastructure)
-    {
-        this.#infrastructures.push(infrastructure);
-        this.notify();
-    }
+    
+
+    // addInfrastructure(infrastructure)
+    // {
+    //     this.#infrastructures.push(infrastructure);
+    //     this.notify();
+    // }
 
     getInfrastructures() { return this.#infrastructures; }
 
