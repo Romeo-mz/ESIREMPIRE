@@ -11,6 +11,9 @@ class Infrastructures
         $this->dbInterface = new DBinfrastructures();
     }
     
-    
+    public function getInfrastructures($id_Planet)
+    {
+        return $this->dbInterface->getInfrastructures($id_Planet);
+    }
 
 }

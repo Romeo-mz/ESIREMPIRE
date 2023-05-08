@@ -30,21 +30,12 @@ class APIinfrastructures
 
     private function handleGet()
     {
-        if (isset($_GET['id_SolarSystem'])) 
+        if (isset($_GET['id_Planet'])) 
         {
-            $planets = $this->controller->getPlanets($_GET['id_SolarSystem']);
-            $this->sendResponse(200, 'OK', json_encode($planets));
-        }
-        else if (isset($_GET['id_Galaxy'])) 
-        {
-            $sys_sols = $this->controller->getSystems($_GET['id_Galaxy']);
-            $this->sendResponse(200, 'OK', json_encode($sys_sols));
-        }
-        else if (isset($_GET['id_Univers'])) 
-        {
-            $galaxies = $this->controller->getGalaxies($_GET['id_Univers']);
-            $this->sendResponse(200, 'OK', json_encode($galaxies));
-        } else 
+            $infrastructures = $this->controller->getInfrastructures($_GET['id_Planet']);
+            $this->sendResponse(200, 'OK', json_encode($infrastructures));
+        } 
+        else 
         {
             $this->sendResponse(400, 'Bad Request');
         }
