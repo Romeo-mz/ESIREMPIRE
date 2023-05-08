@@ -5,6 +5,7 @@ import { Session } from "../models/session.js";
 export class Controller extends Notifier
 {
     #infrastructures;
+    #session;
 
     constructor()
     {
@@ -16,12 +17,15 @@ export class Controller extends Notifier
         this.#infrastructures.push(new Infrastructure(3, "Installation", 'LABORATOIRE', 3, 90, 25, 0));
         this.#infrastructures.push(new Infrastructure(4, "Ressource", 'SYNTHETISEUR', 0, 105, 30, 0));
         this.#infrastructures.push(new Infrastructure(5, "Defense", 'BOUCLIER', 5, 120, 35, 0));
+
+        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
     }
 
     get infrastructures() { return this.#infrastructures; }
     set infrastructures(infrastructures) { this.#infrastructures = infrastructures; }
 
-    getInfrastructures() { return this.#infrastructures; }
+    get session() { return this.#session; }
+    set session(session) { this.#session = session; }
 
     upgradeInfrastructure(id)
     {
