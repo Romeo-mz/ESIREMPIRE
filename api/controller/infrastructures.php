@@ -13,7 +13,7 @@ class Infrastructures
     
     public function getInfrastructures($id_Planet)
     {
-        return $this->dbInterface->getInfrastructures($id_Planet);
+        return $this->dbInterface->getInfrastructuresByPlanetId($id_Planet);
     }
 
 }
