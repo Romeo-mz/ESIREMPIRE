@@ -73,8 +73,8 @@ class Administration
             $nbPlanets = rand(4, 10);
             $positions = range(1, 10);
             shuffle($positions);
-            $tailleValues = array(130, 120, 110, 100, 90);
-            $tailleKeys = array(5, 4, 3, 2, 1);
+            $tailleValues = array(90, 100, 110, 120, 130, 130, 120, 110, 100, 90);
+            $tailleKeys = array(10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
             $tailleMap = array_combine($tailleKeys, $tailleValues);
 
             for ($i = 0; $i < $nbPlanets; $i++) {
