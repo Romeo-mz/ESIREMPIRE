@@ -12,13 +12,15 @@ export class Controller extends Notifier
         super();
         this.#infrastructures = [];
 
-        this.#infrastructures.push(new Infrastructure(1, "Ressource", 'MINE', 1, 60, 15, 0));
-        this.#infrastructures.push(new Infrastructure(2, "Installation", 'CHANTIER', 0, 75, 20, 0));
-        this.#infrastructures.push(new Infrastructure(3, "Installation", 'LABORATOIRE', 3, 90, 25, 0));
-        this.#infrastructures.push(new Infrastructure(4, "Ressource", 'SYNTHETISEUR', 0, 105, 30, 0));
-        this.#infrastructures.push(new Infrastructure(5, "Defense", 'BOUCLIER', 5, 120, 35, 0));
+        // this.#infrastructures.push(new Infrastructure(1, "Ressource", 'MINE', 1, 60, 15, 0));
+        // this.#infrastructures.push(new Infrastructure(2, "Installation", 'CHANTIER', 0, 75, 20, 0));
+        // this.#infrastructures.push(new Infrastructure(3, "Installation", 'LABORATOIRE', 3, 90, 25, 0));
+        // this.#infrastructures.push(new Infrastructure(4, "Ressource", 'SYNTHETISEUR', 0, 105, 30, 0));
+        // this.#infrastructures.push(new Infrastructure(5, "Defense", 'BOUCLIER', 5, 120, 35, 0));
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+
+        this.loadInfrastructureFromAPI();
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -49,21 +51,20 @@ export class Controller extends Notifier
         this.notify();
     }
 
-    getInfrastructureFromAPI() 
+    loadInfrastructureFromAPI() 
     {
         const infrastructures = [];
 
-        fetch("http://localhost:3000/infrastructures")
+        fetch("http://http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.idPlanet)
             .then(response => response.json())
             .then(data => 
             {
-                for (const infrastructure of data) 
+                data.forEach(infrastructure => 
                 {
-                    infrastructures.push(new Infrastructure(infrastructure.id, infrastructure.type_infrastructure, infrastructure.type, infrastructure.level, infrastructure.temps, infrastructure.metal, infrastructure.energie));
-                }
+                    infrastructures.push(new Infrastructure(infrastructure.id, infrastructure.type, infrastructure.name, infrastructure.level, infrastructure.metal, infrastructure.energie, infrastructure.temps));
+                });
             });
 
-        return infrastructures;
     }
         
 }
