@@ -1,5 +1,5 @@
 <?php
-$universes = file_get_contents("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIadmin.php?universes");
+$universes = file_get_contents("http://esirloc/api/boundary/APIinterface/APIadmin.php?universes");
 $universes = json_decode($universes, true);
 ?>
 

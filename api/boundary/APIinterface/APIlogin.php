@@ -1,8 +1,11 @@
 <?php
-
+require_once(__DIR__.'\..\SessionInterface.php');
+require_once('../../controller/SessionController.php');
 require_once('../../controller/authentifier.php');
+
+$session = new PHPSession();
 $controller_instance = new Authentifier();
-$session_controller = new SessionController();
+$session_controller = new SessionController($session);
 
 $session_controller->startSession();
 
@@ -65,6 +68,7 @@ class APIlogin
             $ressources = $this->controller->getRessourcesJoueur($id);
 
             $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
+            echo($_SESSION['username']);
         }
         else if($result == 1)
         {

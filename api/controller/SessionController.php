@@ -1,7 +1,5 @@
 <?php
-namespace api\controller;
-
-use api\boundary\SessionInterface;
+require_once('../SessionInterface.php');
 class SessionController
 {
     private $session;

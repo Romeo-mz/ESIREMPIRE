@@ -1,5 +1,6 @@
 <?php
-namespace api\boundary;
+
+require_once('SessionInterface.php');
 interface SessionInterface{
     public function startSession(): bool;
 
