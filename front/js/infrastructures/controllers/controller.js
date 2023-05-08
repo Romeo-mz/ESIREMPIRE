@@ -49,5 +49,21 @@ export class Controller extends Notifier
         this.notify();
     }
 
+    getInfrastructureFromAPI() 
+    {
+        const infrastructures = [];
+
+        fetch("http://localhost:3000/infrastructures")
+            .then(response => response.json())
+            .then(data => 
+            {
+                for (const infrastructure of data) 
+                {
+                    infrastructures.push(new Infrastructure(infrastructure.id, infrastructure.type_infrastructure, infrastructure.type, infrastructure.level, infrastructure.temps, infrastructure.metal, infrastructure.energie));
+                }
+            });
+
+        return infrastructures;
+    }
         
 }
