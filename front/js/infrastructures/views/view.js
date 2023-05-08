@@ -54,6 +54,11 @@ export class View extends Observer
             infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps + "s" : "Améliorer <br> " + infrastructure.temps + "s"
         );
 
+        button_upgrade.addEventListener("click", () =>
+        {
+            this.#controller.upgradeInfrastructure(infrastructure.id);
+        });
+
         div_image.appendChild(img);
         div_information.appendChild(div_information_type);
         div_information.appendChild(div_information_level);

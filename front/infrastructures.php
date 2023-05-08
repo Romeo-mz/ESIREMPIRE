@@ -48,6 +48,6 @@
 
     </main>
 
-    <script src="js/infrastructure/application/application.js" type="module"></script>
+    <script src="js/infrastructures/application/application.js" type="module"></script>
 </body>
 </html>

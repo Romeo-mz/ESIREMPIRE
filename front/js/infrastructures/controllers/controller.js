@@ -1,5 +1,6 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Infrastructure } from "../models/infrastructure.js";
+import { Session } from "../models/session.js";
 
 export class Controller extends Notifier
 {
@@ -20,44 +21,29 @@ export class Controller extends Notifier
     get infrastructures() { return this.#infrastructures; }
     set infrastructures(infrastructures) { this.#infrastructures = infrastructures; }
 
-    
-
-    // addInfrastructure(infrastructure)
-    // {
-    //     this.#infrastructures.push(infrastructure);
-    //     this.notify();
-    // }
-
     getInfrastructures() { return this.#infrastructures; }
 
-    // async loadInfrastructures() 
-    // {
-    //     const response = await fetch('http://localhost:3000/infrastructures');
-    //     const infrastructures = await response.json();
-    //     this.infrastructures = infrastructures.map(infrastructure => new Infrastructure(infrastructure.id, infrastructure.name, infrastructure.level, infrastructure.metal, infrastructure.energie, infrastructure.temps));
+    upgradeInfrastructure(id)
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
 
-    //     this.notify();
-    // }
+        if (infrastructure.level === 0)
+        {
+            infrastructure.level++;
+            infrastructure.metal += 100;
+            infrastructure.energie += 50;
+            infrastructure.temps += 10;
+        }
+        else
+        {
+            infrastructure.level++;
+            infrastructure.metal += 100;
+            infrastructure.energie += 50;
+            infrastructure.temps += 10;
+        }
 
-    // async loadInfrastructureById(id)
+        this.notify();
+    }
 
-    // {
-    //     let infrastructure = await Infrastructure.loadInfrastructureById(id);
-    //     this.#infrastructures.push(infrastructure);
-    //     this.notify();
-    // }
-
-    // async updateInfrastructure(infrastructure) 
-    // {
-    //     const response = await fetch(`http://localhost:3000/infrastructures/${infrastructure.id}`, {
-    //         method: 'PUT',
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(infrastructure)
-    //     });
-    //     const updatedInfrastructure = await response.json();
-    //     return new Infrastructure(updatedInfrastructure.id, updatedInfrastructure.name, updatedInfrastructure.level, updatedInfrastructure.metal, updatedInfrastructure.energie, updatedInfrastructure.temps);
-    // }
         
 }
