@@ -15,38 +15,40 @@ class DBinfrastructures extends DBinterface {
     public function getInfrastructuresByPlanetId($id_Planet) 
     {
         return $this->fetchAllRows('
-            SELECT 
-                i.id, 
-                i.niveau, 
-                i.nom, 
-                i.id_Planete, 
-                inst.id as id_Installation, 
-                ti.type as typeinstallation, 
-                cs.id as id_Chantier_Spatial, 
-                cs.nom as nom_Chantier_Spatial, 
-                lab.id as id_Laboratoire, lab.nom as nom_Laboratoire, 
-                r.id as id_Ressource, tr.type as typeressource, r.nom as nom_Ressource,
-                d.id as id_Defense, td.type as typedefense, d.nom as nom_Defense
-            FROM 
-                infrastructure i
-            LEFT JOIN 
-                installation inst ON i.id = inst.id_Infrastructure
-            LEFT JOIN 
-                typeinstallation ti ON inst.id_Type = ti.id
-            LEFT JOIN 
-                chantierspatial cs ON inst.id = cs.id_Installation
-            LEFT JOIN 
-                laboratoire lab ON inst.id = lab.id_Installation
-            LEFT JOIN 
-                infraressource r ON i.id = r.id_Infrastructure
-            LEFT JOIN 
-                typeinfraressource tr ON r.id_Type = tr.id
-            LEFT JOIN 
-                defense d ON i.id = d.id_Infrastructure
-            LEFT JOIN 
-                typedefense td ON d.id_Type = td.id
-            WHERE 
-                i.id_Planete = ?', [$id_Planet]);
+        SELECT 
+            i.id AS infrastructure_id,
+            i.niveau AS infrastructure_niveau,
+            ti.type AS installation_type,
+            tr.type AS ressource_type,
+            td.type AS defense_type,
+            idf.cout_metal AS installation_cout_metal,
+            idf.cout_energie AS installation_cout_energie,
+            idf.temps_construction AS installation_temps_construction,
+            rdf.cout_metal AS ressource_cout_metal,
+            rdf.cout_deuterium AS ressource_cout_deuterium,
+            rdf.cout_energie AS ressource_cout_energie,
+            rdf.temps_construction AS ressource_temps_construction,
+            rdf.production_metal AS production_metal,
+            rdf.production_energie AS production_energie,
+            rdf.production_deuterium AS production_deuterium,
+            ddf.cout_metal AS defense_cout_metal,
+            ddf.cout_deuterium AS defense_cout_deuterium,
+            ddf.cout_energie AS defense_cout_energie,
+            ddf.temps_construction AS defense_temps_construction,
+            ddf.point_attaque AS point_attaque,
+            ddf.point_defense AS point_defense
+        FROM 
+            infrastructure i
+        LEFT JOIN installation ins ON i.id = ins.id_Infrastructure
+        LEFT JOIN typeinstallation ti ON ins.id_Type_Installation = ti.id
+        LEFT JOIN installationdefaut idf ON ti.id = idf.id_Type_Installation
+        LEFT JOIN infraressource r ON i.id = r.id_Infrastructure
+        LEFT JOIN typeressource tr ON r.id_Type_Ressource = tr.id
+        LEFT JOIN ressourcedefaut rdf ON tr.id = rdf.id_Type_Ressource
+        LEFT JOIN defense d ON i.id = d.id_Infrastructure
+        LEFT JOIN typedefense td ON d.id_Type_Defense = td.id
+        LEFT JOIN defensedefaut ddf ON td.id = ddf.id_Type_Defense
+        WHERE i.id_Planete = ?;', [$id_Planet]);
     }
         
 
