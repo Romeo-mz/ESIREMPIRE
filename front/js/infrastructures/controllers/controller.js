@@ -1,7 +1,4 @@
 import { Notifier } from "../pattern/notifier.js";
-import { Infrastructure } from "../models/infrastructure.js";
-import { Chantier} from "../models/chantier.js";
-import { Laboratoire } from "../models/laboratoire.js";
 import { Installation } from "../models/installation.js";
 import { Ressource } from "../models/ressource.js";
 import { Defense } from "../models/defense.js";
@@ -16,12 +13,6 @@ export class Controller extends Notifier
     {
         super();
         this.#infrastructures = [];
-
-        // this.#infrastructures.push(new Infrastructure(1, "Ressource", 'MINE', 1, 60, 15, 0));
-        // this.#infrastructures.push(new Infrastructure(2, "Installation", 'CHANTIER', 0, 75, 20, 0));
-        // this.#infrastructures.push(new Infrastructure(3, "Installation", 'LABORATOIRE', 3, 90, 25, 0));
-        // this.#infrastructures.push(new Infrastructure(4, "Ressource", 'SYNTHETISEUR', 0, 105, 30, 0));
-        // this.#infrastructures.push(new Infrastructure(5, "Defense", 'BOUCLIER', 5, 120, 35, 0));
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
 
@@ -56,51 +47,167 @@ export class Controller extends Notifier
         this.notify();
     }
 
-    loadInfrastructureFromAPI() 
-    {
-        const infrastructures = [];
+    // loadInfrastructureFromAPI() 
+    // {
+    //     const infrastructures = [];
 
+    //     fetch("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
+    //         .then(response => response.json())
+    //         .then(data => 
+    //         {
+    //             for(let i = 0; i < data.length; i++)
+    //             {
+    //                 if(data[i].installation_type != null)
+    //                 {
+    //                     infrastructures.push(
+    //                         new Installation(
+    //                             data[i].infrastructure_id, 
+    //                             data[i].infrastructure_niveau,
+    //                             data[i].installation_type,
+    //                             data[i].installation_cout_metal,
+    //                             data[i].installation_cout_energie,
+    //                             data[i].installation_temps_construction
+    //                         )
+    //                     );
+    //                 }
+    //                 else if(data[i].resource_type != null)
+    //                 {
+    //                     infrastructures.push(
+    //                         new Ressource(
+    //                             data[i].infrastructure_id, 
+    //                             data[i].infrastructure_niveau,
+    //                             data[i].ressource_type,
+    //                             data[i].ressource_cout_metal,
+    //                             data[i].ressource_cout_energie,
+    //                             data[i].ressource_cout_deuterium,
+    //                             data[i].ressource_temps_construction,
+    //                             data[i].ressource_production_metal,
+    //                             data[i].ressource_production_energie,
+    //                             data[i].ressource_production_deuterium
+    //                         )
+    //                     );
+    //                 }
+    //                 else if(data[i].defense_type != null)
+    //                 {
+    //                     infrastructures.push(
+    //                         new Defense(
+    //                             data[i].infrastructure_id, 
+    //                             data[i].infrastructure_niveau,
+    //                             data[i].defense_type,
+    //                             data[i].defense_cout_metal,
+    //                             data[i].defense_cout_energie,
+    //                             data[i].defense_cout_deuterium,
+    //                             data[i].defense_temps_construction,
+    //                             data[i].defense_point_attaque,
+    //                             data[i].defense_point_defense
+    //                         )
+    //                     );
+    //                 }
+    //             }
+
+    //             this.#infrastructures = infrastructures;
+                
+    //         });
+
+    // }
+
+    generateDefaultInfrastructures() {
+        const defaultInfrastructures = [
+            new Defense(null, 0, "Artillerie laser", 10, 20, 30, 40, 50, 60),
+            new Defense(null, 0, "Canon a ions", 20, 30, 40, 50, 60, 70),
+            new Defense(null, 0, "Bouclier", 10, 20, 30, 40, 50, 60),
+            new Installation(null, 0, "Chantier spatial", 10, 20, 30),
+            new Installation(null, 0, "Laboratoire", 10, 20, 30),
+            new Installation(null, 0, "Usine de nanites", 10, 20, 30),
+            new Ressource(null, 0, "Mine de metal", 10, 20, 30, 40, null, null),
+            new Ressource(null, 0, "Synthetiseur de deuterium", 10, 20, 30, null, null, 40, null),
+            new Ressource(null, 0, "Centrale solaire", 10, 20, 30, null, 40, null, 50),
+            new Ressource(null, 0, "Centrale a fusion", 10, 20, 30, null, 40, null, 50, 60)
+        ];
+    
+        return defaultInfrastructures;
+    }
+
+    mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
+        const mergedInfrastructures = [];
+    
+        defaultInfrastructures.forEach(defaultInfra => {
+            const existingInfra = existingInfrastructures.find(
+                infra => infra.type === defaultInfra.type
+            );
+    
+            if (existingInfra) {
+                mergedInfrastructures.push(existingInfra);
+            } else {
+                mergedInfrastructures.push(defaultInfra);
+            }
+        });
+    
+        return mergedInfrastructures;
+    }
+
+    loadInfrastructureFromAPI() {
+        const infrastructures = [];
+    
         fetch("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
             .then(response => response.json())
-            .then(data => 
-            {
+            .then(data => {
+                
                 for(let i = 0; i < data.length; i++)
                 {
-                    if(data[i].id_Installation != null)
+                    if(data[i].installation_type != null)
                     {
-                        if(data[i].id_Chantier_Spatial != null)
-                        {
-                            infrastructures.push(new Chantier(data[i].id_Chantier_Spatial, data[i].nom_Chantier_Spatial));
-                        }
-                        else if(data[i].id_Laboratoire != null)
-                        {
-                            infrastructures.push(new Laboratoire(data[i].id_Laboratoire, data[i].nom_Laboratoire));
-                        }
-                        else
-                        {
-                            infrastructures.push(new Usine(data[i].id_Installation, data[i].nom_Installation));
-                        }
+                        infrastructures.push(
+                            new Installation(
+                                data[i].infrastructure_id, 
+                                data[i].infrastructure_niveau,
+                                data[i].installation_type,
+                                data[i].installation_cout_metal,
+                                data[i].installation_cout_energie,
+                                data[i].installation_temps_construction
+                            )
+                        );
                     }
-                    else if(data[i].id_Ressource != null)
+                    else if(data[i].resource_type != null)
                     {
-                        if(data[i].typeressource == "METAL") {var nom = "Mine de métal";}
-                        else if(data[i].typeressource == "SYNTHETISEUR") {var nom = "Synthétiseur de deutérium";}
-                        else if(data[i].typeressource == "CENTRALE_SOLAIRE") {var nom = "Centrale électrique solaire";}
-                        else if(data[i].typeressource == "CENTRALE_FUSION") {var nom = "Centrale électrique de fusion";}
-                        infrastructures.push(new Ressource(data[i].id_Ressource, nom, data[i].typeressource));
+                        infrastructures.push(
+                            new Ressource(
+                                data[i].infrastructure_id, 
+                                data[i].infrastructure_niveau,
+                                data[i].ressource_type,
+                                data[i].ressource_cout_metal,
+                                data[i].ressource_cout_energie,
+                                data[i].ressource_cout_deuterium,
+                                data[i].ressource_temps_construction,
+                                data[i].ressource_production_metal,
+                                data[i].ressource_production_energie,
+                                data[i].ressource_production_deuterium
+                            )
+                        );
                     }
-                    else if(data[i].id_Defense != null)
+                    else if(data[i].defense_type != null)
                     {
-                        if(data[i].typedefense == "ARTILLERIE") {var nom = "Artillerie laser";}
-                        else if(data[i].typedefense == "CANON") {var nom = "Canon à ions";}
-                        else if(data[i].typedefense == "BOUCLIER") {var nom = "Bouclier";}
-                        infrastructures.push(new Defense(data[i].id_Defense, nom, data[i].typedefense));
+                        infrastructures.push(
+                            new Defense(
+                                data[i].infrastructure_id, 
+                                data[i].infrastructure_niveau,
+                                data[i].defense_type,
+                                data[i].defense_cout_metal,
+                                data[i].defense_cout_energie,
+                                data[i].defense_cout_deuterium,
+                                data[i].defense_temps_construction,
+                                data[i].defense_point_attaque,
+                                data[i].defense_point_defense
+                            )
+                        );
                     }
                 }
-
-                console.log(infrastructures);
+    
+                const defaultInfrastructures = this.generateDefaultInfrastructures();
+                const mergedInfrastructures = this.mergeInfrastructures(defaultInfrastructures, infrastructures);
+    
+                console.log(mergedInfrastructures);
             });
-
     }
         
 }

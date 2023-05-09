@@ -1,22 +1,19 @@
+import { Infrastructure } from "./infrastructure.js";
+
 export class Installation extends Infrastructure {
 
-    #id_Installation;
     #type_installation;
     #cout_metal;
     #cout_energie;
     #temps_construction;
 
-    constructor(id, level, id_Installation, type_installation, cout_metal, cout_energie, temps_construction) {
+    constructor(id, level, type_installation, cout_metal, cout_energie, temps_construction) {
         super(id, level);
-        this.#id_Installation = id_Installation;
         this.#type_installation = type_installation;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;
         this.#temps_construction = temps_construction;
     }
-
-    get id_Installation() { return this.#id_Installation; }
-    set id_Installation(id_Installation) { this.#id_Installation = id_Installation; }
 
     get type_installation() { return this.#type_installation; }
     set type_installation(type_installation) { this.#type_installation = type_installation; }

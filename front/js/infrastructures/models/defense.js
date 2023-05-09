@@ -1,6 +1,7 @@
-export class Defense extends Infrastructure {
+import { Infrastructure } from "./infrastructure.js";
 
-    #id_Defense;
+export class Defense extends Infrastructure 
+{
     #type_defense;
     #cout_metal;
     #cout_energie;
@@ -9,9 +10,8 @@ export class Defense extends Infrastructure {
     #point_attaque;
     #point_defense;
 
-    constructor(id, level, id_Defense, type_defense, cout_metal, cout_energie, cout_deuterium, temps_construction, point_attaque, point_defense) {
+    constructor(id, level, type_defense, cout_metal, cout_energie, cout_deuterium, temps_construction, point_attaque, point_defense) {
         super(id, level);
-        this.#id_Defense = id_Defense;
         this.#type_defense = type_defense;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;
@@ -20,12 +20,6 @@ export class Defense extends Infrastructure {
         this.#point_attaque = point_attaque;
         this.#point_defense = point_defense;
     }
-
-    get id_Defense() { return this.#id_Defense; }
-    set id_Defense(id_Defense) { this.#id_Defense = id_Defense; }
-
-    get nom() { return this.#nom; }
-    set nom(nom) { this.#nom = nom; }
 
     get type_defense() { return this.#type_defense; }
     set type_defense(type_defense) { this.#type_defense = type_defense; }

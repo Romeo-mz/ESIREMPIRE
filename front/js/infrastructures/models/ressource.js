@@ -1,6 +1,7 @@
-export class Ressource extends Infrastructure {
+import { Infrastructure } from "./infrastructure.js";
 
-    #id_Ressource;
+export class Ressource extends Infrastructure 
+{
     #type_ressource;
     #cout_metal;
     #cout_energie;
@@ -10,9 +11,8 @@ export class Ressource extends Infrastructure {
     #production_energie;
     #production_deuterium;
 
-    constructor(id, level, id_Ressource, type_ressource, cout_metal, cout_energie, cout_deuterium, temps_construction, production_metal, production_energie, production_deuterium) {
+    constructor(id, level, type_ressource, cout_metal, cout_energie, cout_deuterium, temps_construction, production_metal, production_energie, production_deuterium) {
         super(id, level);
-        this.#id_Ressource = id_Ressource;
         this.#type_ressource = type_ressource;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;
@@ -22,9 +22,6 @@ export class Ressource extends Infrastructure {
         this.#production_energie = production_energie;
         this.#production_deuterium = production_deuterium;
     }
-
-    get id_Ressource() { return this.#id_Ressource; }
-    set id_Ressource(id_Ressource) { this.#id_Ressource = id_Ressource; }
 
     get type_ressource() { return this.#type_ressource; }
     set type_ressource(type_ressource) { this.#type_ressource = type_ressource; }
