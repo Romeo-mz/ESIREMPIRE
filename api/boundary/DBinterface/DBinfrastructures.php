@@ -28,15 +28,15 @@ class DBinfrastructures extends DBinterface {
             rdf.cout_deuterium AS ressource_cout_deuterium,
             rdf.cout_energie AS ressource_cout_energie,
             rdf.temps_construction AS ressource_temps_construction,
-            rdf.production_metal AS production_metal,
-            rdf.production_energie AS production_energie,
-            rdf.production_deuterium AS production_deuterium,
+            rdf.production_metal AS ressource_production_metal,
+            rdf.production_energie AS ressource_production_energie,
+            rdf.production_deuterium AS ressource_production_deuterium,
             ddf.cout_metal AS defense_cout_metal,
             ddf.cout_deuterium AS defense_cout_deuterium,
             ddf.cout_energie AS defense_cout_energie,
             ddf.temps_construction AS defense_temps_construction,
-            ddf.point_attaque AS point_attaque,
-            ddf.point_defense AS point_defense
+            ddf.point_attaque AS defense_point_attaque,
+            ddf.point_defense AS defense_point_defense
         FROM 
             infrastructure i
         LEFT JOIN installation ins ON i.id = ins.id_Infrastructure
