@@ -25,8 +25,8 @@ class DBinfrastructures extends DBinterface {
                 cs.id as id_Chantier_Spatial, 
                 cs.nom as nom_Chantier_Spatial, 
                 lab.id as id_Laboratoire, lab.nom as nom_Laboratoire, 
-                r.id as id_Ressource, tr.type as typeressource, 
-                d.id as id_Defense, td.type as typedefense
+                r.id as id_Ressource, tr.type as typeressource, r.nom as nom_Ressource,
+                d.id as id_Defense, td.type as typedefense, d.nom as nom_Defense
             FROM 
                 infrastructure i
             LEFT JOIN 

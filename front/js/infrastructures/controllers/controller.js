@@ -1,5 +1,10 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Infrastructure } from "../models/infrastructure.js";
+import { Chantier} from "../models/chantier.js";
+import { Laboratoire } from "../models/laboratoire.js";
+import { Installation } from "../models/installation.js";
+import { Ressource } from "../models/ressource.js";
+import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
 
 export class Controller extends Notifier
@@ -55,14 +60,45 @@ export class Controller extends Notifier
     {
         const infrastructures = [];
 
-        fetch("http://http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.idPlanet)
+        fetch("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
             .then(response => response.json())
             .then(data => 
             {
-                data.forEach(infrastructure => 
+                for(let i = 0; i < data.length; i++)
                 {
-                    infrastructures.push(new Infrastructure(infrastructure.id, infrastructure.type, infrastructure.name, infrastructure.level, infrastructure.metal, infrastructure.energie, infrastructure.temps));
-                });
+                    if(data[i].id_Installation != null)
+                    {
+                        if(data[i].id_Chantier_Spatial != null)
+                        {
+                            infrastructures.push(new Chantier(data[i].id_Chantier_Spatial, data[i].nom_Chantier_Spatial));
+                        }
+                        else if(data[i].id_Laboratoire != null)
+                        {
+                            infrastructures.push(new Laboratoire(data[i].id_Laboratoire, data[i].nom_Laboratoire));
+                        }
+                        else
+                        {
+                            infrastructures.push(new Usine(data[i].id_Installation, data[i].nom_Installation));
+                        }
+                    }
+                    else if(data[i].id_Ressource != null)
+                    {
+                        if(data[i].typeressource == "METAL") {var nom = "Mine de métal";}
+                        else if(data[i].typeressource == "SYNTHETISEUR") {var nom = "Synthétiseur de deutérium";}
+                        else if(data[i].typeressource == "CENTRALE_SOLAIRE") {var nom = "Centrale électrique solaire";}
+                        else if(data[i].typeressource == "CENTRALE_FUSION") {var nom = "Centrale électrique de fusion";}
+                        infrastructures.push(new Ressource(data[i].id_Ressource, nom, data[i].typeressource));
+                    }
+                    else if(data[i].id_Defense != null)
+                    {
+                        if(data[i].typedefense == "ARTILLERIE") {var nom = "Artillerie laser";}
+                        else if(data[i].typedefense == "CANON") {var nom = "Canon à ions";}
+                        else if(data[i].typedefense == "BOUCLIER") {var nom = "Bouclier";}
+                        infrastructures.push(new Defense(data[i].id_Defense, nom, data[i].typedefense));
+                    }
+                }
+
+                console.log(infrastructures);
             });
 
     }
