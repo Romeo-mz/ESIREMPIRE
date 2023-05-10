@@ -59,10 +59,10 @@ export class Controller extends Notifier
             new Installation(-4, 0, "Chantier spatial", 10, 20, 30),
             new Installation(-5, 0, "Laboratoire", 10, 20, 30),
             new Installation(-6, 0, "Usine de nanites", 10, 20, 30),
-            new Ressource(-7, 0, "Mine de metal", 10, 20, 30, 40, null, null),
-            new Ressource(-8, 0, "Synthetiseur de deuterium", 10, 20, 30, null, null, 40, null),
-            new Ressource(-9, 0, "Centrale solaire", 10, 20, 30, null, 40, null, 50),
-            new Ressource(-10, 0, "Centrale a fusion", 10, 20, 30, null, 40, null, 50, 60)
+            new Ressource(-7, 0, "Mine de metal", 10, 20, 30, 40, 50, null, null),
+            new Ressource(-8, 0, "Synthetiseur de deuterium", 10, 20, 30, 50, null, 40, 30),
+            new Ressource(-9, 0, "Centrale solaire", 10, 20, 30, 55, 40, null, 50),
+            new Ressource(-10, 0, "Centrale a fusion", 10, 20, 30, 100, 40, null, 50, 60)
         ];
     
         return defaultInfrastructures;
