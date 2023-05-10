@@ -52,6 +52,17 @@ export class Controller extends Notifier
     }
 
     generateDefaultInfrastructures() {
+
+        const infrastructures = [];
+    
+        fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?default_defense")
+            .then(response => response.json())
+            .then(data => {
+                
+                console.log(data);
+
+            });
+
         const defaultInfrastructures = [
             new Defense(-1, 0, "Artillerie laser", 10, 20, 30, 40, 50, 60),
             new Defense(-2, 0, "Canon a ions", 20, 30, 40, 50, 60, 70),

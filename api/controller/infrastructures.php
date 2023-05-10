@@ -16,4 +16,19 @@ class Infrastructures
         return $this->dbInterface->getInfrastructuresByPlanetId($id_Planet);
     }
 
+    public function getDefaultDefense()
+    {
+        return $this->dbInterface->getDefaultDefense();
+    }
+
+    public function getDefaultInstallation()
+    {
+        return $this->dbInterface->getDefaultInstallation();
+    }
+
+    public function getDefaultRessource()
+    {
+        return $this->dbInterface->getDefaultRessource();
+    }
+
 }

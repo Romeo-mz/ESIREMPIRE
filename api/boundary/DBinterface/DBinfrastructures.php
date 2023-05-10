@@ -50,7 +50,52 @@ class DBinfrastructures extends DBinterface {
         LEFT JOIN defensedefaut ddf ON td.id = ddf.id_Type_Defense
         WHERE i.id_Planete = ?;', [$id_Planet]);
     }
-        
+
+    public function getDefaultDefense()
+    {
+        return $this->fetchAllRows('
+        SELECT
+            td.type,
+            ddf.cout_metal AS defense_cout_metal,
+            ddf.cout_deuterium AS defense_cout_deuterium,
+            ddf.cout_energie AS defense_cout_energie,
+            ddf.temps_construction AS defense_temps_construction,
+            ddf.point_attaque AS defense_point_attaque,
+            ddf.point_defense AS defense_point_defense
+        FROM
+            defensedefaut ddf
+        LEFT JOIN typedefense td ON ddf.id_Type_Defense = td.id;');
+    }        
+
+    public function getDefaultInstallation()
+    {
+        return $this->fetchAllRows('
+        SELECT
+            ti.type,
+            idf.cout_metal AS installation_cout_metal,
+            idf.cout_energie AS installation_cout_energie,
+            idf.temps_construction AS installation_temps_construction
+        FROM
+            installationdefaut idf
+        LEFT JOIN typeinstallation ti ON idf.id_Type_Installation = ti.id;');
+    }
+
+    public function getDefaultRessource()
+    {
+        return $this->fetchAllRows('
+        SELECT
+            tr.type,
+            rdf.cout_metal AS ressource_cout_metal,
+            rdf.cout_deuterium AS ressource_cout_deuterium,
+            rdf.cout_energie AS ressource_cout_energie,
+            rdf.temps_construction AS ressource_temps_construction,
+            rdf.production_metal AS ressource_production_metal,
+            rdf.production_energie AS ressource_production_energie,
+            rdf.production_deuterium AS ressource_production_deuterium
+        FROM
+            ressourcedefaut rdf
+        LEFT JOIN typeinfraressource tr ON rdf.id_Type_Ressource = tr.id;');
+    }
 
 }
 

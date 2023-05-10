@@ -34,7 +34,22 @@ class APIinfrastructures
         {
             $infrastructures = $this->controller->getInfrastructures($_GET['id_Planet']);
             $this->sendResponse(200, 'OK', json_encode($infrastructures));
-        } 
+        }
+        else if(isset($_GET['default_defense']))
+        {
+            $default_infrastructures = $this->controller->getDefaultDefense();
+            $this->sendResponse(200, 'OK', json_encode($default_infrastructures));
+        }
+        else if(isset($_GET['default_installation']))
+        {
+            $default_infrastructures = $this->controller->getDefaultInstallation();
+            $this->sendResponse(200, 'OK', json_encode($default_infrastructures));
+        }
+        else if(isset($_GET['default_ressource']))
+        {
+            $default_infrastructures = $this->controller->getDefaultRessource();
+            $this->sendResponse(200, 'OK', json_encode($default_infrastructures));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');
