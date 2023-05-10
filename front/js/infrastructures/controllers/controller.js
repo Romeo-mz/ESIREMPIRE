@@ -15,8 +15,6 @@ export class Controller extends Notifier
         this.#infrastructures = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
-
-        this.loadInfrastructureFromAPI();
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -94,7 +92,8 @@ export class Controller extends Notifier
         return mergedInfrastructures;
     }
 
-    loadInfrastructureFromAPI() {
+    loadInfrastructureFromAPI() 
+    {
         const infrastructures = [];
     
         fetch("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
@@ -154,8 +153,12 @@ export class Controller extends Notifier
                 const defaultInfrastructures = this.generateDefaultInfrastructures();
                 const mergedInfrastructures = this.mergeInfrastructures(defaultInfrastructures, infrastructures);
     
-                this.infrastructures = mergedInfrastructures;
+                
+                this.#infrastructures = mergedInfrastructures;
+
+                this.notify();
             });
+        
     }
         
 }
