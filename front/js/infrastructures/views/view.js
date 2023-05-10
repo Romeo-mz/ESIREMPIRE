@@ -50,19 +50,30 @@ export class View extends Observer
         let div_information_metal = null;
         let div_information_energie = null;
 
-        if(prefix === "defense") {
+        if(prefix === "defense") 
+        {
+            // this.#type_defense = type_defense;
+            // this.#cout_metal = cout_metal;
+            // this.#cout_energie = cout_energie;
+            // this.#cout_deuterium = cout_deuterium;
+            // this.#temps_construction = temps_construction;
+            // this.#point_attaque = point_attaque;
+            // this.#point_defense = point_defense;
+
             div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_defense);
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.metal);
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.energie);
         }
-        else if(prefix === "installation") {
+        else if(prefix === "installation") 
+        {
             div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_installation);
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.metal);
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.energie);
         }
-        else if(prefix === "ressource") {
+        else if(prefix === "ressource") 
+        {
             div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_ressource);
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.metal);
