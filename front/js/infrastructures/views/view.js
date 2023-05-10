@@ -130,7 +130,7 @@ export class View extends Observer
 
             button_upgrade.addEventListener("click", () =>
             {
-                this.#controller.upgradeInfrastructure(infrastructure.id);
+                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
             });
 
             div_image.appendChild(img);
@@ -189,7 +189,7 @@ export class View extends Observer
 
             button_upgrade.addEventListener("click", () =>
             {
-                this.#controller.upgradeInfrastructure(infrastructure.id);
+                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
             });
 
             div_image.appendChild(img);

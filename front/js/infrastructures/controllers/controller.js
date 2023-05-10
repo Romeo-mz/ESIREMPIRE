@@ -49,9 +49,10 @@ export class Controller extends Notifier
         })
         .then(response => response.json())
         .then(data => {
-            // infrastructure.id = data.infrastructure_id;
+            this.loadInfrastructureFromAPI();
             this.notify();
         });
+
     }
 
     loadeDefaultInfrastructures() {

@@ -61,14 +61,17 @@ class APIinfrastructures
 
     private function handlePost()
     {
+        // decode json post data
+        $data = json_decode(file_get_contents('php://input'), true);
+        
         if (isset($_POST['id_Planet']) && isset($_POST['id_Infrastructure']) && isset($_POST['level'])) 
         {
             $this->controller->updateInfrastructure($_POST['id_Planet'], $_POST['id_Infrastructure'], $_POST['level']);
             $this->sendResponse(200, 'OK');
         }
-        else if (isset($_POST['id_Planet']) && isset($_POST['type'])) 
+        else if (isset($data['id_Planet']) && isset($data['type'])) 
         {
-            $this->controller->buildInfrastructure($_POST['id_Planet'], $_POST['type']);
+            $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
             $this->sendResponse(200, 'OK');
         }
         else 
