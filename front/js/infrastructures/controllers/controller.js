@@ -25,24 +25,30 @@ export class Controller extends Notifier
 
     upgradeInfrastructure(id)
     {
+        if(id == null)
+        {
+            this.createInfrastructure();
+        }
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
-
-        if (infrastructure.level === 0)
-        {
-            infrastructure.level++;
-            infrastructure.metal += 100;
-            infrastructure.energie += 50;
-            infrastructure.temps += 10;
-        }
-        else
-        {
-            infrastructure.level++;
-            infrastructure.metal += 100;
-            infrastructure.energie += 50;
-            infrastructure.temps += 10;
-        }
-
+        infrastructure.level++;
         this.notify();
+    }
+
+    createInfrastructureToAPI()
+    {
+        // const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === null);
+        // const infrastructureData = infrastructure.getInfrastructureData();
+        // infrastructureData.id_Planet = this.#session.id_Planet;
+
+        // fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIcreateInfrastructure.php", {
+        //     method: 'POST',
+        //     body: JSON.stringify(infrastructureData)
+        // })
+        // .then(response => response.json())
+        // .then(data => {
+        //     infrastructure.id = data.infrastructure_id;
+        //     this.notify();
+        // });
     }
 
     generateDefaultInfrastructures() {
