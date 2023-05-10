@@ -25,9 +25,9 @@ export class Controller extends Notifier
 
     upgradeInfrastructure(id)
     {
-        if(id == null)
+        if(id < 0)
         {
-            this.createInfrastructure();
+            this.createInfrastructureToAPI();
         }
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
         infrastructure.level++;
@@ -53,16 +53,16 @@ export class Controller extends Notifier
 
     generateDefaultInfrastructures() {
         const defaultInfrastructures = [
-            new Defense(null, 0, "Artillerie laser", 10, 20, 30, 40, 50, 60),
-            new Defense(null, 0, "Canon a ions", 20, 30, 40, 50, 60, 70),
-            new Defense(null, 0, "Bouclier", 10, 20, 30, 40, 50, 60),
-            new Installation(null, 0, "Chantier spatial", 10, 20, 30),
-            new Installation(null, 0, "Laboratoire", 10, 20, 30),
-            new Installation(null, 0, "Usine de nanites", 10, 20, 30),
-            new Ressource(null, 0, "Mine de metal", 10, 20, 30, 40, null, null),
-            new Ressource(null, 0, "Synthetiseur de deuterium", 10, 20, 30, null, null, 40, null),
-            new Ressource(null, 0, "Centrale solaire", 10, 20, 30, null, 40, null, 50),
-            new Ressource(null, 0, "Centrale a fusion", 10, 20, 30, null, 40, null, 50, 60)
+            new Defense(-1, 0, "Artillerie laser", 10, 20, 30, 40, 50, 60),
+            new Defense(-2, 0, "Canon a ions", 20, 30, 40, 50, 60, 70),
+            new Defense(-3, 0, "Bouclier", 10, 20, 30, 40, 50, 60),
+            new Installation(-4, 0, "Chantier spatial", 10, 20, 30),
+            new Installation(-5, 0, "Laboratoire", 10, 20, 30),
+            new Installation(-6, 0, "Usine de nanites", 10, 20, 30),
+            new Ressource(-7, 0, "Mine de metal", 10, 20, 30, 40, null, null),
+            new Ressource(-8, 0, "Synthetiseur de deuterium", 10, 20, 30, null, null, 40, null),
+            new Ressource(-9, 0, "Centrale solaire", 10, 20, 30, null, 40, null, 50),
+            new Ressource(-10, 0, "Centrale a fusion", 10, 20, 30, null, 40, null, 50, 60)
         ];
     
         return defaultInfrastructures;

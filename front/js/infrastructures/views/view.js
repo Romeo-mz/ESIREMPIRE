@@ -58,7 +58,7 @@ export class View extends Observer
 
             img.src = this.getImageSrcForType(infrastructure.type_installation);
 
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-installation-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_installation);
+            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-installation-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_installation + "</b>");
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-installation-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-installation-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-installation-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
@@ -104,7 +104,7 @@ export class View extends Observer
 
             img.src = this.getImageSrcForType(infrastructure.type_ressource);
 
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-ressource-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_ressource);
+            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-ressource-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_ressource + "</b>");
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-ressource-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-ressource-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
@@ -157,7 +157,7 @@ export class View extends Observer
 
             img.src = this.getImageSrcForType(infrastructure.type_defense);
 
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-defense-${infrastructure.id}`, "div-infrastructure-type", infrastructure.type_defense);
+            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-defense-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_defense + "</b>");
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-defense-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-defense-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-defense-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
