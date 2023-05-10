@@ -7,12 +7,14 @@ import { Session } from "../models/session.js";
 export class Controller extends Notifier
 {
     #infrastructures;
+    #defaultInfrastructures;
     #session;
 
     constructor()
     {
         super();
         this.#infrastructures = [];
+        this.#defaultInfrastructures = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
     }
@@ -53,30 +55,75 @@ export class Controller extends Notifier
 
     generateDefaultInfrastructures() {
 
-        const infrastructures = [];
+        let count = 0;
     
         fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?default_defense")
             .then(response => response.json())
             .then(data => {
                 
-                console.log(data);
+                for(let i = 0; i < data.length; i++)
+                {
+                    this.#defaultInfrastructures.push(
+                        new Defense(
+                            count--,
+                            0,
+                            data[i].type,
+                            data[i].defense_cout_metal,
+                            data[i].defense_cout_energie,
+                            data[i].defense_cout_deuterium,
+                            data[i].defense_temps_construction,
+                            data[i].defense_points_attaque,
+                            data[i].defense_points_defense
+                        )
+                    );
+                }
 
             });
 
-        const defaultInfrastructures = [
-            new Defense(-1, 0, "Artillerie laser", 10, 20, 30, 40, 50, 60),
-            new Defense(-2, 0, "Canon a ions", 20, 30, 40, 50, 60, 70),
-            new Defense(-3, 0, "Bouclier", 10, 20, 30, 40, 50, 60),
-            new Installation(-4, 0, "Chantier spatial", 10, 20, 30),
-            new Installation(-5, 0, "Laboratoire", 10, 20, 30),
-            new Installation(-6, 0, "Usine de nanites", 10, 20, 30),
-            new Ressource(-7, 0, "Mine de metal", 10, 20, 30, 40, 50, null, null),
-            new Ressource(-8, 0, "Synthetiseur de deuterium", 10, 20, 30, 50, null, 40, 30),
-            new Ressource(-9, 0, "Centrale solaire", 10, 20, 30, 55, 40, null, 50),
-            new Ressource(-10, 0, "Centrale a fusion", 10, 20, 30, 100, 40, null, 50, 60)
-        ];
-    
-        return defaultInfrastructures;
+        fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?default_installation")
+            .then(response => response.json())
+            .then(data => {
+
+                for(let i = 0; i < data.length; i++)
+                {
+                    this.#defaultInfrastructures.push(
+                        new Installation(
+                            count--,
+                            0,
+                            data[i].type,
+                            data[i].installation_cout_metal,
+                            data[i].installation_cout_energie,
+                            data[i].installation_temps_construction
+                        )
+                    );
+                }
+
+            });
+
+        fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?default_ressource")
+            .then(response => response.json())
+            .then(data => {
+
+                for(let i = 0; i < data.length; i++)
+                {
+                    this.#defaultInfrastructures.push(
+                        new Ressource(
+                            count--,
+                            0,
+                            data[i].type,
+                            data[i].ressource_cout_metal,
+                            data[i].ressource_cout_energie,
+                            data[i].ressource_cout_deuterium,
+                            data[i].ressource_temps_construction,
+                            data[i].ressource_production_metal,
+                            data[i].ressource_production_energie,
+                            data[i].ressource_production_deuterium
+                        )
+                    );
+                }
+
+            });
+
     }
 
     mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
@@ -167,10 +214,8 @@ export class Controller extends Notifier
                     }
                 }
     
-                const defaultInfrastructures = this.generateDefaultInfrastructures();
-                const mergedInfrastructures = this.mergeInfrastructures(defaultInfrastructures, infrastructures);
+                const mergedInfrastructures = this.mergeInfrastructures(this.#defaultInfrastructures, infrastructures);
     
-                
                 this.#infrastructures = mergedInfrastructures;
 
                 this.notify();
