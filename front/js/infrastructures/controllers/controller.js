@@ -33,6 +33,8 @@ export class Controller extends Notifier
         }
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
         infrastructure.level++;
+        this.loadeDefaultInfrastructures();
+        this.loadInfrastructureFromAPI();
         this.notify();
     }
 
@@ -47,16 +49,12 @@ export class Controller extends Notifier
             method: 'POST',
             body: JSON.stringify(infrastructureData)
         })
-        .then(response => response.json())
-        .then(data => {
-            this.loadInfrastructureFromAPI();
-            this.notify();
-        });
 
     }
 
     loadeDefaultInfrastructures() {
 
+        const defaultInfrastructures = [];
         let count = 0;
     
         fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?default_defense")
@@ -65,7 +63,7 @@ export class Controller extends Notifier
                 
                 for(let i = 0; i < data.length; i++)
                 {
-                    this.#defaultInfrastructures.push(
+                    defaultInfrastructures.push(
                         new Defense(
                             count--,
                             0,
@@ -88,7 +86,7 @@ export class Controller extends Notifier
 
                 for(let i = 0; i < data.length; i++)
                 {
-                    this.#defaultInfrastructures.push(
+                    defaultInfrastructures.push(
                         new Installation(
                             count--,
                             0,
@@ -108,7 +106,7 @@ export class Controller extends Notifier
 
                 for(let i = 0; i < data.length; i++)
                 {
-                    this.#defaultInfrastructures.push(
+                    defaultInfrastructures.push(
                         new Ressource(
                             count--,
                             0,
@@ -125,6 +123,8 @@ export class Controller extends Notifier
                 }
 
             });
+
+        this.#defaultInfrastructures = defaultInfrastructures;
 
     }
 
