@@ -106,12 +106,18 @@ export class View extends Observer
 
             div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-ressource-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_ressource + "</b>");
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-ressource-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
-            div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-ressource-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
-            div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
-            div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
-            div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal);
-            div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie);
-            div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium);
+            if (infrastructure.cout_metal !== null)
+                div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-ressource-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
+            if (infrastructure.cout_energie !== null)
+                div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
+            if (infrastructure.cout_deuterium !== null)
+                div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
+            if(infrastructure.production_metal !== null)
+                div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal);
+            if(infrastructure.production_energie !== null)
+                div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie);
+            if(infrastructure.production_deuterium !== null)
+                div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium);
 
 
             let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-ressource-${infrastructure.id}`, "div-infrastructure-upgrade");
@@ -130,12 +136,18 @@ export class View extends Observer
             div_image.appendChild(img);
             div_information.appendChild(div_information_type);
             div_information.appendChild(div_information_level);
-            div_information.appendChild(div_information_metal);
-            div_information.appendChild(div_information_energie);
-            div_information.appendChild(div_information_deuterium);
-            div_information.appendChild(div_production_metal);
-            div_information.appendChild(div_production_energie);
-            div_information.appendChild(div_production_deuterium);
+            if(infrastructure.cout_metal !== null)
+                div_information.appendChild(div_information_metal);
+            if(infrastructure.cout_energie !== null)
+                div_information.appendChild(div_information_energie);
+            if(infrastructure.cout_deuterium !== null)
+                div_information.appendChild(div_information_deuterium);
+            if(infrastructure.production_metal !== null)
+                div_information.appendChild(div_production_metal);
+            if(infrastructure.production_energie !== null)
+                div_information.appendChild(div_production_energie);
+            if(infrastructure.production_deuterium !== null)
+                div_information.appendChild(div_production_deuterium);
             div_upgrade.appendChild(button_upgrade);
 
             div.appendChild(div_image);
@@ -160,7 +172,8 @@ export class View extends Observer
             div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-defense-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_defense + "</b>");
             div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-defense-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
             div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-defense-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
-            div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-defense-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
+            if(infrastructure.cout_energie !== null)
+                div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-defense-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
             div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-defense-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
             div_point_attaque = this.createOrUpdateElement("div", `div-${prefix}-point-attaque-defense-${infrastructure.id}`, "div-infrastructure-point-attaque", "Point d'attaque: " + infrastructure.point_attaque);
             div_point_defense = this.createOrUpdateElement("div", `div-${prefix}-point-defense-defense-${infrastructure.id}`, "div-infrastructure-point-defense", "Point de défense: " + infrastructure.point_defense);
@@ -183,7 +196,8 @@ export class View extends Observer
             div_information.appendChild(div_information_type);
             div_information.appendChild(div_information_level);
             div_information.appendChild(div_information_metal);
-            div_information.appendChild(div_information_energie);
+            if(infrastructure.cout_energie !== null)
+                div_information.appendChild(div_information_energie);
             div_information.appendChild(div_information_deuterium);
             div_information.appendChild(div_point_attaque);
             div_information.appendChild(div_point_defense);
