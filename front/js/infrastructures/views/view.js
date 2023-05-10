@@ -1,4 +1,7 @@
 import { Observer } from "../pattern/observer.js";
+import { Installation } from "../models/installation.js";
+import { Ressource } from "../models/ressource.js";
+import { Defense } from "../models/defense.js";
 
 export class View extends Observer 
 {
@@ -9,31 +12,32 @@ export class View extends Observer
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
-        this.update();
     }
 
     update() 
     {
+        console.log("update");
         const infrastructures = this.#controller.infrastructures;
+        console.log(infrastructures);
 
-        for (const infrastructure of infrastructures) 
-        {
-            if (infrastructure.type_infrastructure === "Installation") 
-            {
-                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-installations");
-            } else if (infrastructure.type_infrastructure === "Ressource") 
-            {
-                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-ressources");
-            } else if (infrastructure.type_infrastructure === "Defense") 
-            {
-                this.createOrUpdateInfrastructureElement(infrastructure, "div-list-defenses");
+        infrastructures.forEach(infra => {
+
+            if(infra instanceof Defense) {
+                this.createOrUpdateInfrastructureElement(infra, "div-list-defenses");
             }
-        }
+            else if(infra instanceof Installation) {
+                this.createOrUpdateInfrastructureElement(infra, "div-list-installations");
+            }
+            else if(infra instanceof Ressource) {
+                this.createOrUpdateInfrastructureElement(infra, "div-list-ressources");
+            }
+            
+        });
     }
 
     createOrUpdateInfrastructureElement(infrastructure, parentDivId) 
-    {
-        const prefix = infrastructure.type_infrastructure.toLowerCase();
+    {        
+        const prefix = infrastructure.type.toLowerCase();
 
         let div = this.createOrUpdateElement("div", `div-${prefix}-${infrastructure.id}`, "div-infrastructure");
         let div_information = this.createOrUpdateElement("div", `div-${prefix}-information-${infrastructure.id}`, "div-infrastructure-information");
@@ -90,28 +94,27 @@ export class View extends Observer
 
     getImageSrcForType(type) 
     {
-        console.log(type);
         switch (type) 
         {
-            case "CHANTIER":
+            case "Chantier spatial":
                 return "img/chantier-spatial.webp";
-            case "LABORATOIRE":
+            case "Laboratoire":
                 return "img/laboratoire.webp";
-            case "USINE":
+            case "Usine de nanites":
                 return "img/usine-nanites.webp";
-            case "MINE":
+            case "Mine de metal":
                 return "img/mine-metal.webp";
-            case "SYNTHETISEUR":
+            case "Synthetiseur de deuterium":
                 return "img/synthetiseur-deuterium.webp";
-            case "CENTRALE_SOLAIRE":
+            case "Centrale solaire":
                 return "img/centrale-solaire.webp";
-            case "CENTRALE_FUSION":
+            case "Centrale a fusion":
                 return "img/centrale-fusion.webp";
-            case "ARTILLERIE":
+            case "Artillerie laser":
                 return "img/artillerie.webp";
-            case "CANON":
+            case "Canon a ions":
                 return "img/canon.webp";
-            case "BOUCLIER":
+            case "Bouclier":
                 return "img/bouclier.webp";
             default:
                 return "";
