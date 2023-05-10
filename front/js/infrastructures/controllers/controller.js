@@ -154,7 +154,7 @@ export class Controller extends Notifier
                 const defaultInfrastructures = this.generateDefaultInfrastructures();
                 const mergedInfrastructures = this.mergeInfrastructures(defaultInfrastructures, infrastructures);
     
-                console.log(mergedInfrastructures);
+                this.infrastructures = mergedInfrastructures;
             });
     }
         
