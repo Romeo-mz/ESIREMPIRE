@@ -99,7 +99,7 @@ class DBinfrastructures extends DBinterface {
 
     public function getLastInsertId()
     {
-        return $this->fetchOneRow('SELECT id FROM infrastructure ORDER BY id DESC LIMIT 1;')['id'];
+        return $this->fetchValue('SELECT id FROM infrastructure ORDER BY id DESC LIMIT 1;');
     }
 
     public function buildInfrastructure($id_Planet, $type)
@@ -111,11 +111,11 @@ class DBinfrastructures extends DBinterface {
         switch ($type) {
             case 'Chantier spatial':
                 $this->executeQuery('
-                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 1);', [$id_Infrastructure]);
+                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 2);', [$id_Infrastructure]);
                 break;
             case 'Laboratoire':
                 $this->executeQuery('
-                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 2);', [$id_Infrastructure]);
+                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 1);', [$id_Infrastructure]);
                 break;
             case 'Usine de nanites':
                 $this->executeQuery('
