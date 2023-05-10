@@ -96,7 +96,7 @@ export class Controller extends Notifier
     {
         const infrastructures = [];
     
-        fetch("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
+        fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php?id_Planet=" + this.#session.id_Planet)
             .then(response => response.json())
             .then(data => {
                 
