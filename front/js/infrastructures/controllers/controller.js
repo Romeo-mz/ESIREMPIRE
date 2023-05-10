@@ -130,12 +130,24 @@ export class Controller extends Notifier
 
     mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
         const mergedInfrastructures = [];
-    
+
         defaultInfrastructures.forEach(defaultInfra => {
-            const existingInfra = existingInfrastructures.find(
-                infra => infra.type === defaultInfra.type
-            );
-    
+
+            let existingInfra = null;
+            
+            if(defaultInfra instanceof Defense)
+            {
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+            }
+            else if(defaultInfra instanceof Installation)
+            {
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+            }
+            else if(defaultInfra instanceof Ressource)
+            {
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+            }
+
             if (existingInfra) {
                 mergedInfrastructures.push(existingInfra);
             } else {

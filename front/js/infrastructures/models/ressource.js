@@ -12,7 +12,7 @@ export class Ressource extends Infrastructure
     #production_deuterium;
 
     constructor(id, level, type_ressource, cout_metal, cout_energie, cout_deuterium, temps_construction, production_metal, production_energie, production_deuterium) {
-        super(id, level);
+        super(id, level, "RESSOURCE");
         this.#type_ressource = type_ressource;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;

@@ -8,7 +8,7 @@ export class Installation extends Infrastructure {
     #temps_construction;
 
     constructor(id, level, type_installation, cout_metal, cout_energie, temps_construction) {
-        super(id, level);
+        super(id, level, "INSTALLATION");
         this.#type_installation = type_installation;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;

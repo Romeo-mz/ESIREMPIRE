@@ -11,7 +11,7 @@ export class Defense extends Infrastructure
     #point_defense;
 
     constructor(id, level, type_defense, cout_metal, cout_energie, cout_deuterium, temps_construction, point_attaque, point_defense) {
-        super(id, level);
+        super(id, level, "DEFENSE");
         this.#type_defense = type_defense;
         this.#cout_metal = cout_metal;
         this.#cout_energie = cout_energie;
