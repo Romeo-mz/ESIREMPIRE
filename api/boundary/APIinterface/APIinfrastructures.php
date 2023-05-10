@@ -68,7 +68,7 @@ class APIinfrastructures
         }
         else if (isset($_POST['id_Planet']) && isset($_POST['type'])) 
         {
-            $this->controller->buildInfrastructure($_POST['id_Planet'], $_POST['id_Infrastructure'], $_POST['level']);
+            $this->controller->buildInfrastructure($_POST['id_Planet'], $_POST['type']);
             $this->sendResponse(200, 'OK');
         }
         else 

@@ -97,5 +97,62 @@ class DBinfrastructures extends DBinterface {
         LEFT JOIN typeinfraressource tr ON rdf.id_Type_Ressource = tr.id;');
     }
 
+    public function getLastInsertId()
+    {
+        return $this->fetchOneRow('SELECT id FROM infrastructure ORDER BY id DESC LIMIT 1;')['id'];
+    }
+
+    public function buildInfrastructure($id_Planet, $type)
+    {
+        $this->executeQuery('
+        INSERT INTO infrastructure (id_Planete) VALUES (?);', [$id_Planet]);
+        $id_Infrastructure = $this->getLastInsertId();
+
+        switch ($type) {
+            case 'Chantier spatial':
+                $this->executeQuery('
+                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 1);', [$id_Infrastructure]);
+                break;
+            case 'Laboratoire':
+                $this->executeQuery('
+                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 2);', [$id_Infrastructure]);
+                break;
+            case 'Usine de nanites':
+                $this->executeQuery('
+                INSERT INTO installation (id_Infrastructure, id_Type_Installation) VALUES (?, 3);', [$id_Infrastructure]);
+                break;
+            case 'Mine de metal':
+                $this->executeQuery('
+                INSERT INTO infraressource (id_Infrastructure, id_Type_Ressource) VALUES (?, 1);', [$id_Infrastructure]);
+                break;
+            case 'Synthetiseur de deuterium':
+                $this->executeQuery('
+                INSERT INTO infraressource (id_Infrastructure, id_Type_Ressource) VALUES (?, 2);', [$id_Infrastructure]);
+                break;
+            case 'Centrale solaire':
+                $this->executeQuery('
+                INSERT INTO infraressource (id_Infrastructure, id_Type_Ressource) VALUES (?, 3);', [$id_Infrastructure]);
+                break;
+            case 'Centrale a fusion':
+                $this->executeQuery('
+                INSERT INTO infraressource (id_Infrastructure, id_Type_Ressource) VALUES (?, 4);', [$id_Infrastructure]);
+                break;
+            case 'Artillerie laser':
+                $this->executeQuery('
+                INSERT INTO defense (id_Infrastructure, id_Type_Defense) VALUES (?, 1);', [$id_Infrastructure]);
+                break;
+            case 'Canon a ions':
+                $this->executeQuery('
+                INSERT INTO defense (id_Infrastructure, id_Type_Defense) VALUES (?, 2);', [$id_Infrastructure]);
+                break;
+            case 'Bouclier':
+                $this->executeQuery('
+                INSERT INTO defense (id_Infrastructure, id_Type_Defense) VALUES (?, 3);', [$id_Infrastructure]);
+                break;
+        }
+
+        return $id_Infrastructure;
+    }
+
 }
 

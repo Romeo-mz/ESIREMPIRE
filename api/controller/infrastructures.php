@@ -31,4 +31,9 @@ class Infrastructures
         return $this->dbInterface->getDefaultRessource();
     }
 
+    public function buildInfrastructure($id_Planet, $type)
+    {
+        $this->dbInterface->buildInfrastructure($id_Planet, $type);
+    }
+
 }
