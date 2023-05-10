@@ -25,35 +25,36 @@ export class Controller extends Notifier
     get session() { return this.#session; }
     set session(session) { this.#session = session; }
 
-    upgradeInfrastructure(id)
+    upgradeInfrastructure(id, type)
     {
         if(id < 0)
         {
-            this.createInfrastructureToAPI();
+            this.createInfrastructureToAPI(type);
         }
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
         infrastructure.level++;
         this.notify();
     }
 
-    createInfrastructureToAPI()
+    createInfrastructureToAPI(type)
     {
-        // const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === null);
-        // const infrastructureData = infrastructure.getInfrastructureData();
-        // infrastructureData.id_Planet = this.#session.id_Planet;
+        const infrastructureData = {
+            id_Planet: this.#session.id_Planet,
+            type: type
+        };
 
-        // fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIcreateInfrastructure.php", {
-        //     method: 'POST',
-        //     body: JSON.stringify(infrastructureData)
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     infrastructure.id = data.infrastructure_id;
-        //     this.notify();
-        // });
+        fetch("http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php", {
+            method: 'POST',
+            body: JSON.stringify(infrastructureData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // infrastructure.id = data.infrastructure_id;
+            this.notify();
+        });
     }
 
-    generateDefaultInfrastructures() {
+    loadeDefaultInfrastructures() {
 
         let count = 0;
     
@@ -72,8 +73,8 @@ export class Controller extends Notifier
                             data[i].defense_cout_energie,
                             data[i].defense_cout_deuterium,
                             data[i].defense_temps_construction,
-                            data[i].defense_points_attaque,
-                            data[i].defense_points_defense
+                            data[i].defense_point_attaque,
+                            data[i].defense_point_defense
                         )
                     );
                 }

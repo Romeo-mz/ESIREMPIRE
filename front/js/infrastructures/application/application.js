@@ -5,6 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
     const myView = new View(myController);
 
-    myController.generateDefaultInfrastructures();
+    myController.loadeDefaultInfrastructures();
     myController.loadInfrastructureFromAPI();
 }); 
