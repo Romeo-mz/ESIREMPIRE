@@ -73,15 +73,15 @@ export class Controller extends Notifier
             
             if(defaultInfra instanceof Defense)
             {
-                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_defense === defaultInfra.type_defense);
             }
             else if(defaultInfra instanceof Installation)
             {
-                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_installation === defaultInfra.type_installation);
             }
             else if(defaultInfra instanceof Ressource)
             {
-                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type === defaultInfra.type);
+                existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_ressource === defaultInfra.type_ressource);
             }
 
             if (existingInfra) {
