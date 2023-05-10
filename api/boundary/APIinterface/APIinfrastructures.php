@@ -22,6 +22,9 @@ class APIinfrastructures
             case 'GET':
                 $this->handleGet();
                 break;
+            case 'POST':
+                $this->handlePost();
+                break;
             default:
                 $this->sendResponse(405, 'Method Not Allowed');
                 break;
@@ -49,6 +52,24 @@ class APIinfrastructures
         {
             $default_infrastructures = $this->controller->getDefaultRessource();
             $this->sendResponse(200, 'OK', json_encode($default_infrastructures));
+        }
+        else 
+        {
+            $this->sendResponse(400, 'Bad Request');
+        }
+    }
+
+    private function handlePost()
+    {
+        if (isset($_POST['id_Planet']) && isset($_POST['id_Infrastructure']) && isset($_POST['level'])) 
+        {
+            $this->controller->updateInfrastructure($_POST['id_Planet'], $_POST['id_Infrastructure'], $_POST['level']);
+            $this->sendResponse(200, 'OK');
+        }
+        else if (isset($_POST['id_Planet']) && isset($_POST['type'])) 
+        {
+            $this->controller->buildInfrastructure($_POST['id_Planet'], $_POST['id_Infrastructure'], $_POST['level']);
+            $this->sendResponse(200, 'OK');
         }
         else 
         {
