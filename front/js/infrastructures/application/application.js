@@ -5,6 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
     const myView = new View(myController);
 
-    myController.loadeDefaultInfrastructures();
-    myController.loadInfrastructureFromAPI();
+    myController.loadDefaultInfrastructures()
+        .then(() => {
+            console.log("Success to load default infra")
+            myController.loadInfrastructureFromAPI()
+                .then(() => {
+                    console.log("Success to load Infra")
+                })
+                .catch(error => {
+                    console.log("Error while loading infra")
+                });
+        })
+        .catch(error => {
+            console.log("Error while loading default infra")
+        });
+    
 }); 

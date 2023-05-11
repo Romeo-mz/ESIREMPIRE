@@ -17,7 +17,6 @@ export class View extends Observer
     update() 
     {
         const infrastructures = this.#controller.infrastructures;
-        console.log(infrastructures);
 
         infrastructures.forEach(infra => {
 
