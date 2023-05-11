@@ -32,17 +32,34 @@ export class Controller extends Notifier
         return response.json();
     }
     
-    async upgradeInfrastructure(id, type) {
-        if (id < 0) {
+    async upgradeInfrastructure(id, type) 
+    {
+        if (id < 0) 
+        {
             await this.createInfrastructureToAPI(type);
         }
     
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
         infrastructure.level++;
+        this.upgradeInfrastructureToAPI(infrastructure.id);
         this.notify();
     }
+
+    async upgradeInfrastructureToAPI(id_Infrastructure)
+    {
+        const infrastructureData = {
+            id_Planet: this.#session.id_Planet,
+            id_Infrastructure: id_Infrastructure
+        };
     
-    async createInfrastructureToAPI(type) {
+        await fetch(API_BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(infrastructureData)
+        });
+    }
+    
+    async createInfrastructureToAPI(type) 
+    {
         const infrastructureData = {
             id_Planet: this.#session.id_Planet,
             type: type
