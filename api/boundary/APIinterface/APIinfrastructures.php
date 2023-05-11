@@ -64,9 +64,9 @@ class APIinfrastructures
         // decode json post data
         $data = json_decode(file_get_contents('php://input'), true);
         
-        if (isset($_POST['id_Planet']) && isset($_POST['id_Infrastructure']) && isset($_POST['level'])) 
+        if (isset($data['id_Planet']) && isset($data['id_Infrastructure'])) 
         {
-            $this->controller->updateInfrastructure($_POST['id_Planet'], $_POST['id_Infrastructure'], $_POST['level']);
+            $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
             $this->sendResponse(200, 'OK');
         }
         else if (isset($data['id_Planet']) && isset($data['type'])) 

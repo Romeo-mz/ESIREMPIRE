@@ -154,5 +154,10 @@ class DBinfrastructures extends DBinterface {
         return $id_Infrastructure;
     }
 
+    public function upgradeInfrastructure($id_Planet, $id_Infrastructure) 
+    {
+        return $this->executeQuery('UPDATE infrastructure SET niveau = niveau + 1 WHERE id = ?;', [$id_Infrastructure]);
+    }
+
 }
 

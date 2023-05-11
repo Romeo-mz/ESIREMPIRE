@@ -36,4 +36,9 @@ class Infrastructures
         $this->dbInterface->buildInfrastructure($id_Planet, $type);
     }
 
+    public function upgradeInfrastructure($id_Planet, $id_Infrastructure)
+    {
+        $this->dbInterface->upgradeInfrastructure($id_Planet, $id_Infrastructure);
+    }
+
 }
