@@ -13,11 +13,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log("Success to load Infra")
                 })
                 .catch(error => {
-                    console.log("Error while loading infra")
+                    alert("Error while loading infra - please refresh the page")
                 });
         })
         .catch(error => {
-            console.log("Error while loading default infra")
+            alert("Error while loading default infra - please refresh the page")
         });
     
 }); 

@@ -100,10 +100,6 @@ export class Controller extends Notifier
     
     mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
         const mergedInfrastructures = [];
-
-        console.log(defaultInfrastructures)
-        console.log(existingInfrastructures)
-
     
         defaultInfrastructures.forEach(defaultInfra => {
             let existingInfra = null;
