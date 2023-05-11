@@ -43,7 +43,7 @@ class DBinfrastructures extends DBinterface {
         LEFT JOIN typeinstallation ti ON ins.id_Type_Installation = ti.id
         LEFT JOIN installationdefaut idf ON ti.id = idf.id_Type_Installation
         LEFT JOIN infraressource r ON i.id = r.id_Infrastructure
-        LEFT JOIN typeressource tr ON r.id_Type_Ressource = tr.id
+        LEFT JOIN typeinfraressource tr ON r.id_Type_Ressource = tr.id
         LEFT JOIN ressourcedefaut rdf ON tr.id = rdf.id_Type_Ressource
         LEFT JOIN defense d ON i.id = d.id_Infrastructure
         LEFT JOIN typedefense td ON d.id_Type_Defense = td.id

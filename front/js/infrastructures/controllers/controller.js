@@ -4,6 +4,8 @@ import { Ressource } from "../models/ressource.js";
 import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
 
+const API_BASE_URL = "http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+
 export class Controller extends Notifier
 {
     #infrastructures;
@@ -33,8 +35,7 @@ export class Controller extends Notifier
         }
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
         infrastructure.level++;
-        this.loadeDefaultInfrastructures();
-        this.loadInfrastructureFromAPI();
+
         this.notify();
     }
 
@@ -181,7 +182,7 @@ export class Controller extends Notifier
                             )
                         );
                     }
-                    else if(data[i].resource_type != null)
+                    else if(data[i].ressource_type != null)
                     {
                         infrastructures.push(
                             new Ressource(
