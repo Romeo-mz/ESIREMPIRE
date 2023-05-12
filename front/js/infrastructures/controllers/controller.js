@@ -36,12 +36,112 @@ export class Controller extends Notifier
     {
         if (id < 0) 
         {
-            await this.createInfrastructureToAPI(type);
+            await this.createInfrastructureToAPI(type)
+                .then(
+                    this.loadDefaultInfrastructures()
+                        .then(() => {
+                            console.log("Success to load default infra")
+                            this.loadInfrastructureFromAPI()
+                                .then(() => {
+                                    console.log("Success to load Infra")
+                                    // get the index where infrastructure.id == id from this.#infrastructures and remove it
+                                    const index = this.#infrastructures.findIndex(infrastructure => infrastructure.id === id);
+                                    this.#infrastructures.splice(index, 1);
+                                })
+                                .catch(error => {
+                                    alert("Error while loading infra - please refresh the page")
+                                });
+                        })
+                        .catch(error => {
+                            alert("Error while loading default infra - please refresh the page")
+                        })
+                ).catch(error => {
+                    alert("Error while creating infra - please refresh the page:" + error)
+                });
         }
     
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+
         infrastructure.level++;
+
+        if(infrastructure instanceof Installation) 
+        {
+            if(infrastructure.type_installation === "Chantier spatial")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+            else if(infrastructure.type_installation === "Laboratoire")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+            else if(infrastructure.type_installation === "Usine de nanites")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+        }
+        else if (infrastructure instanceof Ressource)
+        {
+            if(infrastructure.type_ressource === "Mine de metal")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.production_metal = Math.round(infrastructure.production_metal * 1.5 * 100) / 100;
+            }
+            else if(infrastructure.type_ressource === "Synthetiseur de deuterium")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.production_deuterium = Math.round(infrastructure.production_deuterium * 1.3 * 100) / 100;
+            }
+            else if(infrastructure.type_ressource === "Centrale solaire")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.production_energie = Math.round(infrastructure.production_energie * 1.4 * 100) / 100;
+            }
+            else if(infrastructure.type_ressource === "Centrale a fusion")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.production_energie = Math.round(infrastructure.production_energie * 2);
+            }
+        }
+        else if (infrastructure instanceof Defense)
+        {
+            if(infrastructure.type_defense === "Artillerie laser")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+            else if(infrastructure.type_defense === "Canon a ions")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+                infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+            else if(infrastructure.type_defense === "Bouclier")
+            {
+                infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.5);
+                infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.5);
+                infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.5);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+            }
+        }
+
+
         this.upgradeInfrastructureToAPI(infrastructure.id);
+
         this.notify();
     }
 
@@ -147,9 +247,9 @@ export class Controller extends Notifier
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.installation_type,
-                    item.installation_cout_metal,
-                    item.installation_cout_energie,
-                    item.installation_temps_construction
+                    (item.installation_cout_metal*(1.6^(item.infrastructure_niveau-1))),
+                    (item.installation_cout_energie*(1.6^(item.infrastructure_niveau-1))),
+                    (item.installation_temps_construction*(2^(item.infrastructure_niveau-1)))
                 );
             } else if (item.ressource_type != null) {
                 return new Ressource(

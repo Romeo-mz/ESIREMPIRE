@@ -17,6 +17,7 @@ export class View extends Observer
     update() 
     {
         const infrastructures = this.#controller.infrastructures;
+        console.log(infrastructures);
 
         infrastructures.forEach(infra => {
 
@@ -112,11 +113,11 @@ export class View extends Observer
             if (infrastructure.cout_deuterium !== null)
                 div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
             if(infrastructure.production_metal !== null)
-                div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal);
+                div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal * 60 + "/min");
             if(infrastructure.production_energie !== null)
-                div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie);
+                div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie * 60 + "/min");
             if(infrastructure.production_deuterium !== null)
-                div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium);
+                div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium * 60 + "/min");
 
 
             let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-ressource-${infrastructure.id}`, "div-infrastructure-upgrade");
