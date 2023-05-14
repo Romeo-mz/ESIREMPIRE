@@ -13,6 +13,21 @@
             <h1>Infrastructures</h1>
         </div>
 
+        <div class="div-ressources">
+            <div class="div-ressource">
+                <img class="img-ressource" src="img/metal.png" alt="metal">
+                <p class="number-ressource" id="metal">200000</p>
+            </div>
+            <div class="div-ressource">
+                <img class="img-ressource" src="img/energie.png" alt="energie">
+                <p class="number-ressource" id="energie">100000</p>
+            </div>
+            <div class="div-ressource">
+                <img class="img-ressource" src="img/deuterium.png" alt="deuterium">
+                <p class="number-ressource" id="deuterium">100000</p>
+            </div>
+        </div>
+
         <hr class="infra-hr">
 
         <div class="div-infrastructures">
