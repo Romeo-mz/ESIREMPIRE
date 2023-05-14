@@ -14,6 +14,41 @@ export class View extends Observer
         this.#controller.addObserver(this);
     }
 
+    updateRessources() {
+        const ressources = this.#controller.quantiteRessource;
+        console.log(ressources);
+
+        this.createOrUpdateRessourceElement(ressources);
+    }
+
+    createOrUpdateRessourceElement(ressource) 
+    {
+        const resourceContainer = document.getElementById("div-ressources");
+      
+        const createResourceElement = (resourceType, resourceName, resourceValue) => {
+            const div = this.createOrUpdateElement("div", `div-${resourceName}`, "div-ressource");
+            const img = this.createOrUpdateElement("img", `img-${resourceName}`, "img-ressource");
+            const p = this.createOrUpdateElement("p", `p-${resourceName}`, "number-ressource", resourceValue);
+
+            img.src = `img/${resourceType}.png`;
+            img.alt = resourceType;
+
+            div.appendChild(img);
+            div.appendChild(p);
+      
+            return div;
+        };
+      
+        const resourceTypes = ["metal", "energie", "deuterium"];
+      
+        for (const resourceType of resourceTypes) 
+        {
+            const resourceElement = createResourceElement(resourceType, resourceType, ressource[resourceType]);
+            resourceContainer.appendChild(resourceElement);
+        }
+      }
+      
+
     update() 
     {
         const infrastructures = this.#controller.infrastructures;

@@ -3,6 +3,7 @@ import { Installation } from "../models/installation.js";
 import { Ressource } from "../models/ressource.js";
 import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
+import { QuantiteRessource } from "../models/quantiteressource.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
@@ -11,6 +12,7 @@ export class Controller extends Notifier
     #infrastructures;
     #defaultInfrastructures;
     #session;
+    #quantiteRessource;
 
     constructor()
     {
@@ -19,6 +21,7 @@ export class Controller extends Notifier
         this.#defaultInfrastructures = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+        this.#quantiteRessource = new QuantiteRessource(1, 1000, 2, 1000, 3, 1000);
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -26,6 +29,9 @@ export class Controller extends Notifier
 
     get session() { return this.#session; }
     set session(session) { this.#session = session; }
+
+    get quantiteRessource() { return this.#quantiteRessource; }
+    set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
 
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
