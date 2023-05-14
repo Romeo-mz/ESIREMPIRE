@@ -322,7 +322,6 @@ export class Controller extends Notifier
     {
         const ressourceData = {
             id_Ressource: id,
-            type: type,
             quantite: quantite
         };
 

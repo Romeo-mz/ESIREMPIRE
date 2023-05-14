@@ -81,6 +81,11 @@ class APIinfrastructures
 
             $this->sendResponse(200, 'OK', json_encode($response));
         }
+        else if (isset($data['id_Ressource']) && isset($data['quantite']))
+        {
+            $this->controller->updateQuantityRessource($data['id_Ressource'], $data['quantite']);
+            $this->sendResponse(200, 'OK');
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');

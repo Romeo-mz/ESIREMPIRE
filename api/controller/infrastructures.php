@@ -46,4 +46,9 @@ class Infrastructures
         return $this->dbInterface->getQuantityRessourcePlayer($id_Player, $id_Universe);
     }
 
+    public function updateQuantityRessource($id_Ressource, $quantite)
+    {
+        $this->dbInterface->updateQuantityRessource($id_Ressource, $quantite);
+    }
+
 }
