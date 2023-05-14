@@ -159,5 +159,21 @@ class DBinfrastructures extends DBinterface {
         return $this->executeQuery('UPDATE infrastructure SET niveau = niveau + 1 WHERE id = ?;', [$id_Infrastructure]);
     }
 
+    public function getQuantityRessourcePlayer($id_Player, $id_Universe)
+    {
+        return $this->fetchAllRows('
+        SELECT
+            ju.id_Ressource,
+            tr.type,
+            r.quantite
+        FROM
+            joueurunivers ju
+        LEFT JOIN ressource r ON r.id = ju.id_Ressource
+        LEFT JOIN typeressource tr ON tr.id = r.id_Type
+        WHERE
+            ju.id_Joueur = ? AND
+            ju.id_Univers = ?;', [$id_Player, $id_Universe]);
+    }
+
 }
 

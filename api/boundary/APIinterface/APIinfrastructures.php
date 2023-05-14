@@ -53,6 +53,11 @@ class APIinfrastructures
             $default_infrastructures = $this->controller->getDefaultRessource();
             $this->sendResponse(200, 'OK', json_encode($default_infrastructures));
         }
+        else if(isset($_GET['quantity_ressource_player']) && isset($_GET['id_Player']) && isset($_GET['id_Universe']))
+        {
+            $quantity_ressource_player = $this->controller->getQuantityRessourcePlayer($_GET['id_Player'], $_GET['id_Universe']);
+            $this->sendResponse(200, 'OK', json_encode($quantity_ressource_player));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');
@@ -66,13 +71,12 @@ class APIinfrastructures
         
         if (isset($data['id_Planet']) && isset($data['id_Infrastructure'])) 
         {
-           $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
+            $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
             $this->sendResponse(200, 'OK');
         }
         else if (isset($data['id_Planet']) && isset($data['type'])) 
         {
             $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
-            // create json response with id_New_Infrastructure
             $response = array('id_New_Infrastructure' => $id_New_Infrastructure);
 
             $this->sendResponse(200, 'OK', json_encode($response));

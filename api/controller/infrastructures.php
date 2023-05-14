@@ -41,4 +41,9 @@ class Infrastructures
         $this->dbInterface->upgradeInfrastructure($id_Planet, $id_Infrastructure);
     }
 
+    public function getQuantityRessourcePlayer($id_Player, $id_Universe)
+    {
+        return $this->dbInterface->getQuantityRessourcePlayer($id_Player, $id_Universe);
+    }
+
 }
