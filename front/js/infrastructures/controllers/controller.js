@@ -236,50 +236,96 @@ export class Controller extends Notifier
             if (infrastructure.type_installation === "Chantier spatial") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
             }
             else if (infrastructure.type_installation === "Laboratoire") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
             }
             else if (infrastructure.type_installation === "Usine de nanites") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
             }
         }
         else if (infrastructure instanceof Ressource) {
             if (infrastructure.type_ressource === "Mine de metal") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
             }
             else if (infrastructure.type_ressource === "Synthetiseur de deuterium") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
             }
             else if (infrastructure.type_ressource === "Centrale solaire") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "DEUTERIUM", infrastructure.cout_deuterium);
             }
             else if (infrastructure.type_ressource === "Centrale a fusion") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "DEUTERIUM", infrastructure.cout_deuterium);
             }
         }
         else if (infrastructure instanceof Defense) {
             if (infrastructure.type_defense === "Artillerie laser") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "DEUTERIUM", infrastructure.cout_deuterium);
             }
             else if (infrastructure.type_defense === "Canon a ions") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "DEUTERIUM", infrastructure.cout_deuterium);
             }
             else if (infrastructure.type_defense === "Bouclier") {
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
                 this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+
+                this.decreaseRessourceToAPI(infrastructure.id, "METAL", infrastructure.cout_metal);
+                this.decreaseRessourceToAPI(infrastructure.id, "ENERGIE", infrastructure.cout_energie);
+                this.decreaseRessourceToAPI(infrastructure.id, "DEUTERIUM", infrastructure.cout_deuterium);
             }
         }
 
+    }
+
+    decreaseRessourceToAPI(id, type, quantite) 
+    {
+        const ressourceData = {
+            id_Planet: this.#session.id_Planet,
+            id_Infrastructure: id,
+            type: type,
+            quantite: quantite
+        };
+
+        fetch(API_BASE_URL, {
+            method: 'PUT',
+            body: JSON.stringify(ressourceData)
+        });
     }
 
     async upgradeInfrastructureToAPI(id_Infrastructure)
