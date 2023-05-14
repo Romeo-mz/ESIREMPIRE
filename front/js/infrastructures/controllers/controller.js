@@ -318,7 +318,7 @@ export class Controller extends Notifier
 
     }
 
-    decreaseRessourceToAPI(id, type, quantite) 
+    async decreaseRessourceToAPI(id, type, quantite) 
     {
         const ressourceData = {
             id_Ressource: id,
