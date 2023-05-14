@@ -40,7 +40,6 @@ export class Controller extends Notifier
                 console.log("Success to create infra:", dataToReturn);
                 
                 if(dataToReturn > 0){
-                    // edit id with the new id
                     const infra = this.#infrastructures.find(infrastructure => infrastructure.id === id).id = dataToReturn;
                     id = dataToReturn;
                 }
@@ -48,7 +47,6 @@ export class Controller extends Notifier
 
             } catch (error) {
                 alert("Error while creating infra - please refresh the page:" + error);
-                // Gérez l'erreur ici
             }
         }
 
@@ -184,7 +182,7 @@ export class Controller extends Notifier
         const defaultInfrastructures = [
             ...defenseData.map((data, count) => new Defense(
                 count2--,
-                0,
+                "0",
                 data.type,
                 data.defense_cout_metal,
                 data.defense_cout_energie,
@@ -195,7 +193,7 @@ export class Controller extends Notifier
             )),
             ...installationData.map((data, count) => new Installation(
                 count2--,
-                0,
+                "0",
                 data.type,
                 data.installation_cout_metal,
                 data.installation_cout_energie,
@@ -203,7 +201,7 @@ export class Controller extends Notifier
             )),
             ...ressourceData.map((data, count) => new Ressource(
                 count2--,
-                0,
+                "0",
                 data.type,
                 data.ressource_cout_metal,
                 data.ressource_cout_energie,

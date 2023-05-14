@@ -1,3 +1,5 @@
+imagines that you are a software engineer and you are currently developping a MVC javascript view. You have to refact and optimized this view:
+```
 update() {
     const infrastructures = this.#controller.infrastructures;
     console.log(infrastructures);
@@ -144,13 +146,4 @@ createOrUpdateInfrastructureElement(infrastructure, parentDivId) {
     }
 
 }
-createOrUpdateElement(tagName, id, className, innerHTML = "") {
-    let element = document.getElementById(id);
-    if (!element) {
-        element = document.createElement(tagName);
-        element.id = id;
-        element.className = className;
-    }
-    element.innerHTML = innerHTML;
-    return element;
-}
+```

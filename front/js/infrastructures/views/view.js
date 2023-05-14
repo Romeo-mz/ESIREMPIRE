@@ -85,7 +85,7 @@ export class View extends Observer
                 "button",
                 `upgrade-installation-button-${prefix}-${infrastructure.id}`,
                 "upgrade-button",
-                infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
             );
 
             button_upgrade.addEventListener("click", () =>
@@ -141,7 +141,7 @@ export class View extends Observer
                 "button",
                 `upgrade-ressource-button-${prefix}-${infrastructure.id}`,
                 "upgrade-button",
-                infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
             );
 
             button_upgrade.addEventListener("click", () =>
@@ -200,7 +200,7 @@ export class View extends Observer
                 "button",
                 `upgrade-defense-button-${prefix}-${infrastructure.id}`,
                 "upgrade-button",
-                infrastructure.level === 0 ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
             );
 
             button_upgrade.addEventListener("click", () =>
