@@ -17,9 +17,17 @@ export class View extends Observer
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
 
+        this.removePreviousRessources();
+
         ressources.forEach(ressource => {
             this.createOrUpdateRessourceElement(ressource);
         });
+    }
+
+    removePreviousRessources() {
+        while (document.getElementById("div-ressources").firstChild) {
+            document.getElementById("div-ressources").removeChild(document.getElementById("div-ressources").firstChild);
+        }
     }
 
     createOrUpdateRessourceElement(ressource) 

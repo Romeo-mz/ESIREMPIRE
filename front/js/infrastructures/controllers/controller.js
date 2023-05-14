@@ -49,12 +49,6 @@ export class Controller extends Notifier
 
         this.decreaseRessource(id, type);
 
-        // if(!this.decreaseRessource(id, type))
-        // {
-        //     alert("Erreur lors de la diminution des ressources");
-        //     return;
-        // }
-
         if (id < 0) {
             try {
                 const dataToReturn = await this.createInfrastructureToAPI(id, type);
@@ -321,12 +315,12 @@ export class Controller extends Notifier
     async decreaseRessourceToAPI(id, type, quantite) 
     {
         const ressourceData = {
-            id_Ressource: id,
-            quantite: quantite
+            id_Ressource: parseInt(id),
+            quantite: parseInt(quantite)
         };
 
         fetch(API_BASE_URL, {
-            method: 'PUT',
+            method: 'POST',
             body: JSON.stringify(ressourceData)
         });
     }
