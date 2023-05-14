@@ -321,8 +321,7 @@ export class Controller extends Notifier
     decreaseRessourceToAPI(id, type, quantite) 
     {
         const ressourceData = {
-            id_Planet: this.#session.id_Planet,
-            id_Infrastructure: id,
+            id_Ressource: id,
             type: type,
             quantite: quantite
         };
