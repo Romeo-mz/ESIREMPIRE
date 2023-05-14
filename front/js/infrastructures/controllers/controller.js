@@ -165,57 +165,38 @@ export class Controller extends Notifier
             const jsonData = await response.json();
             const dataToReturn = jsonData.id_New_Infrastructure;
     
-            return dataToReturn; // Retourne la valeur à la fonction appelante
+            return dataToReturn;
         } catch (error) {
             console.error('Erreur:', error);
-            throw error; // Propage l'erreur à la fonction appelante
+            throw error;
         }
     }
     
     
     async loadDefaultInfrastructures() {
-        const defenseData = await this.fetchData("?default_defense");
-        const installationData = await this.fetchData("?default_installation");
-        const ressourceData = await this.fetchData("?default_ressource");
-    
-        let count2 = -1;
+        const [defenseData, installationData, ressourceData] = await Promise.all([
+            this.fetchData("?default_defense"),
+            this.fetchData("?default_installation"),
+            this.fetchData("?default_ressource")
+        ]);
+      
+        let negativeID = -1;
+      
         const defaultInfrastructures = [
-            ...defenseData.map((data, count) => new Defense(
-                count2--,
-                "0",
-                data.type,
-                data.defense_cout_metal,
-                data.defense_cout_energie,
-                data.defense_cout_deuterium,
-                data.defense_temps_construction,
-                data.defense_point_attaque,
-                data.defense_point_defense
-            )),
-            ...installationData.map((data, count) => new Installation(
-                count2--,
-                "0",
-                data.type,
-                data.installation_cout_metal,
-                data.installation_cout_energie,
-                data.installation_temps_construction
-            )),
-            ...ressourceData.map((data, count) => new Ressource(
-                count2--,
-                "0",
-                data.type,
-                data.ressource_cout_metal,
-                data.ressource_cout_energie,
-                data.ressource_cout_deuterium,
-                data.ressource_temps_construction,
-                data.ressource_production_metal,
-                data.ressource_production_energie,
-                data.ressource_production_deuterium
-            ))
+            ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
+                new Defense(negativeID--, "0", type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense)
+            ),
+            ...installationData.map(({ type, installation_cout_metal, installation_cout_energie, installation_temps_construction }) =>
+                new Installation(negativeID--, "0", type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
+            ),
+            ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
+                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
+            )
         ];
-    
-        
+      
         this.#defaultInfrastructures = defaultInfrastructures;
-    }
+      }
+      
     
     mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
         const mergedInfrastructures = [];
@@ -249,19 +230,19 @@ export class Controller extends Notifier
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.installation_type,
-                    (item.installation_cout_metal*(1.6^(item.infrastructure_niveau-1))),
-                    (item.installation_cout_energie*(1.6^(item.infrastructure_niveau-1))),
-                    (item.installation_temps_construction*(2^(item.infrastructure_niveau-1)))
+                    Math.round(item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
+                    Math.round(item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
+                    item.installation_temps_construction * (2 ** (item.infrastructure_niveau - 1))
                 );
             } else if (item.ressource_type != null) {
                 return new Ressource(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.ressource_type,
-                    item.ressource_cout_metal,
-                    item.ressource_cout_energie,
-                    item.ressource_cout_deuterium,
-                    item.ressource_temps_construction,
+                    Math.round(item.ressource_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
+                    Math.round(item.ressource_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
+                    Math.round(item.ressource_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
+                    item.ressource_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
                     item.ressource_production_metal,
                     item.ressource_production_energie,
                     item.ressource_production_deuterium
@@ -271,10 +252,10 @@ export class Controller extends Notifier
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.defense_type,
-                    item.defense_cout_metal,
-                    item.defense_cout_energie,
-                    item.defense_cout_deuterium,
-                    item.defense_temps_construction,
+                    Math.round(item.defense_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
+                    Math.round(item.defense_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
+                    Math.round(item.defense_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
+                    item.defense_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
                     item.defense_point_attaque,
                     item.defense_point_defense
                 );
@@ -284,7 +265,6 @@ export class Controller extends Notifier
         const mergedInfrastructures = this.mergeInfrastructures(this.#defaultInfrastructures, infrastructures);
         this.#infrastructures = mergedInfrastructures;
 
-        // this.notify();
     }
         
 }
