@@ -33,7 +33,7 @@ class Infrastructures
 
     public function buildInfrastructure($id_Planet, $type)
     {
-        $this->dbInterface->buildInfrastructure($id_Planet, $type);
+        return $this->dbInterface->buildInfrastructure($id_Planet, $type);
     }
 
     public function upgradeInfrastructure($id_Planet, $id_Infrastructure)

@@ -66,13 +66,16 @@ class APIinfrastructures
         
         if (isset($data['id_Planet']) && isset($data['id_Infrastructure'])) 
         {
-            $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
+           $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
             $this->sendResponse(200, 'OK');
         }
         else if (isset($data['id_Planet']) && isset($data['type'])) 
         {
-            $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
-            $this->sendResponse(200, 'OK');
+            $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
+            // create json response with id_New_Infrastructure
+            $response = array('id_New_Infrastructure' => $id_New_Infrastructure);
+
+            $this->sendResponse(200, 'OK', json_encode($response));
         }
         else 
         {

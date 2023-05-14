@@ -19,6 +19,8 @@ export class View extends Observer
         const infrastructures = this.#controller.infrastructures;
         console.log(infrastructures);
 
+        this.removePreviousInfrastructures();
+
         infrastructures.forEach(infra => {
 
             if(infra instanceof Defense) 
@@ -34,6 +36,20 @@ export class View extends Observer
                 this.createOrUpdateInfrastructureElement(infra, "div-list-ressources");
             }
             
+        });
+    }
+
+    removePreviousInfrastructures() {
+        const parentDivs = [
+            document.getElementById("div-list-defenses"),
+            document.getElementById("div-list-installations"),
+            document.getElementById("div-list-ressources")
+        ];
+    
+        parentDivs.forEach(parentDiv => {
+            while (parentDiv.firstChild) {
+                parentDiv.removeChild(parentDiv.firstChild);
+            }
         });
     }
 

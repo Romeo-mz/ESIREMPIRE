@@ -4,7 +4,7 @@ import { Ressource } from "../models/ressource.js";
 import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
 
-const API_BASE_URL = "http://esirempire/esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
 export class Controller extends Notifier
 {
@@ -34,32 +34,24 @@ export class Controller extends Notifier
     
     async upgradeInfrastructure(id, type) 
     {
-        if (id < 0) 
-        {
-            await this.createInfrastructureToAPI(type)
-                .then(
-                    this.loadDefaultInfrastructures()
-                        .then(() => {
-                            console.log("Success to load default infra")
-                            this.loadInfrastructureFromAPI()
-                                .then(() => {
-                                    console.log("Success to load Infra")
-                                    // get the index where infrastructure.id == id from this.#infrastructures and remove it
-                                    const index = this.#infrastructures.findIndex(infrastructure => infrastructure.id === id);
-                                    this.#infrastructures.splice(index, 1);
-                                })
-                                .catch(error => {
-                                    alert("Error while loading infra - please refresh the page")
-                                });
-                        })
-                        .catch(error => {
-                            alert("Error while loading default infra - please refresh the page")
-                        })
-                ).catch(error => {
-                    alert("Error while creating infra - please refresh the page:" + error)
-                });
+        if (id < 0) {
+            try {
+                const dataToReturn = await this.createInfrastructureToAPI(id, type);
+                console.log("Success to create infra:", dataToReturn);
+                
+                if(dataToReturn > 0){
+                    // edit id with the new id
+                    const infra = this.#infrastructures.find(infrastructure => infrastructure.id === id).id = dataToReturn;
+                    id = dataToReturn;
+                }
+
+
+            } catch (error) {
+                alert("Error while creating infra - please refresh the page:" + error);
+                // Gérez l'erreur ici
+            }
         }
-    
+
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
 
         infrastructure.level++;
@@ -139,7 +131,6 @@ export class Controller extends Notifier
             }
         }
 
-
         this.upgradeInfrastructureToAPI(infrastructure.id);
 
         this.notify();
@@ -158,18 +149,31 @@ export class Controller extends Notifier
         });
     }
     
-    async createInfrastructureToAPI(type) 
-    {
+    async createInfrastructureToAPI(id, type) {
         const infrastructureData = {
             id_Planet: this.#session.id_Planet,
             type: type
         };
     
-        await fetch(API_BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(infrastructureData)
-        });
+        try {
+            const response = await fetch(API_BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(infrastructureData),
+            });
+    
+            const jsonData = await response.json();
+            const dataToReturn = jsonData.id_New_Infrastructure;
+    
+            return dataToReturn; // Retourne la valeur à la fonction appelante
+        } catch (error) {
+            console.error('Erreur:', error);
+            throw error; // Propage l'erreur à la fonction appelante
+        }
     }
+    
     
     async loadDefaultInfrastructures() {
         const defenseData = await this.fetchData("?default_defense");
@@ -282,7 +286,7 @@ export class Controller extends Notifier
         const mergedInfrastructures = this.mergeInfrastructures(this.#defaultInfrastructures, infrastructures);
         this.#infrastructures = mergedInfrastructures;
 
-        this.notify();
+        // this.notify();
     }
         
 }

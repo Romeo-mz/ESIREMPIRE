@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             myController.loadInfrastructureFromAPI()
                 .then(() => {
                     console.log("Success to load Infra")
+                    myController.notify();
                 })
                 .catch(error => {
                     alert("Error while loading infra - please refresh the page")
