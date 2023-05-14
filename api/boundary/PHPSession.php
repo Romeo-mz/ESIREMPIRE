@@ -11,4 +11,6 @@ interface SessionInterface{
     public function unsetSessionVar(string $varName);
 
     public function destroySession(): bool;
+
+    public function storeJoueur($username, $id, $univers);
 }

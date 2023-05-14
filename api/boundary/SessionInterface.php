@@ -28,12 +28,12 @@ class PHPSession implements SessionInterface
         return session_destroy();
     }
 
-    public function storeJoueur($username, $id, $univers, $ressources)
+    public function storeJoueur($username, $id, $univers)
     {
         $_SESSION['username'] = $username;
         $_SESSION['id'] = $id;
         $_SESSION['univers'] = $univers;
-        $_SESSION['ressources'] = $ressources;
+    
     }
     public function getSessionId(): string
     {

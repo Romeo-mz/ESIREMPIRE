@@ -33,4 +33,8 @@ class SessionController
     {
         return $this->session->destroySession();
     }
+
+    public function storeJoueur($username, $id, $univers){
+        return $this->session->storeJoueur($username, $id, $univers);
+    }
 }

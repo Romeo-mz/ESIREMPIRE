@@ -1,9 +1,12 @@
 <?php
 require_once '../../controller/authentifier.php';
 require_once '../../controller/SessionController.php';
+require_once(__DIR__.'\..\SessionInterface.php');
+
+$session = new PHPSession();
 
 $controller_instance = new Authentifier();
-$session_controller = new SessionController();
+$session_controller = new SessionController($session);
 
 $session_controller->startSession();
 
@@ -48,11 +51,10 @@ class APIregister{
             echo "Register successful";
             $this->addJoueurToUnivers();
 
-            $id = $this->controller->getIdJoueur($username)['id'];
-            $univers = $this->controller->getUniversJoueur($id)['id_univers'];
-            $ressources = $this->controller->getRessourcesJoueur($id);
+            $id = $this->controller->getIdJoueur($username);
+            $univers = $this->controller->getIdUnivers();
 
-            $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
+            $this->session_controller->storeJoueur($username, $id, $univers);
         }
         else if($result == 1){
             http_response_code(401);
@@ -154,7 +156,7 @@ class APIregister{
         $number_joueur = $this->getNumberJoueurUnivers($id_univers);
         
         $create_ressource = $this->controller->createRessource();
-
+        print_r($number_joueur);
         if($number_joueur < 50 && $id_joueur != null){
             $id_ressources = $this->controller->getIdRessources();
 
