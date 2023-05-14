@@ -40,6 +40,21 @@ export class Controller extends Notifier
     
     async upgradeInfrastructure(id, type) 
     {
+
+        if(!this.checkEnoughRessource(id, type))
+        {
+            alert("Pas assez de ressources");
+            return;
+        }
+
+        this.decreaseRessource(id, type);
+
+        // if(!this.decreaseRessource(id, type))
+        // {
+        //     alert("Erreur lors de la diminution des ressources");
+        //     return;
+        // }
+
         if (id < 0) {
             try {
                 const dataToReturn = await this.createInfrastructureToAPI(id, type);
@@ -138,6 +153,133 @@ export class Controller extends Notifier
         this.upgradeInfrastructureToAPI(infrastructure.id);
 
         this.notify();
+    }
+
+    checkEnoughRessource(id, type) 
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+
+        const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
+        const quantiteEnergie = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite);
+        const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
+
+        if (infrastructure instanceof Installation) {
+            if (infrastructure.type_installation === "Chantier spatial") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_installation === "Laboratoire") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_installation === "Usine de nanites") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+        }
+        else if (infrastructure instanceof Ressource) {
+            if (infrastructure.type_ressource === "Mine de metal") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_ressource === "Synthetiseur de deuterium") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_ressource === "Centrale solaire") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteDeuterium < infrastructure.cout_deuterium) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_ressource === "Centrale a fusion") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+        }
+        else if (infrastructure instanceof Defense) {
+            if (infrastructure.type_defense === "Artillerie laser") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_defense === "Canon a ions") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+            else if (infrastructure.type_defense === "Bouclier") {
+                if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
+
+    decreaseRessource(id, type) 
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+
+        const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
+        const quantiteEnergie = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite;
+        const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
+
+        if (infrastructure instanceof Installation) {
+            if (infrastructure.type_installation === "Chantier spatial") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            }
+            else if (infrastructure.type_installation === "Laboratoire") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            }
+            else if (infrastructure.type_installation === "Usine de nanites") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            }
+        }
+        else if (infrastructure instanceof Ressource) {
+            if (infrastructure.type_ressource === "Mine de metal") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            }
+            else if (infrastructure.type_ressource === "Synthetiseur de deuterium") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            }
+            else if (infrastructure.type_ressource === "Centrale solaire") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+            }
+            else if (infrastructure.type_ressource === "Centrale a fusion") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+            }
+        }
+        else if (infrastructure instanceof Defense) {
+            if (infrastructure.type_defense === "Artillerie laser") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+            }
+            else if (infrastructure.type_defense === "Canon a ions") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+            }
+            else if (infrastructure.type_defense === "Bouclier") {
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+                this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
+            }
+        }
+
     }
 
     async upgradeInfrastructureToAPI(id_Infrastructure)
