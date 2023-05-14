@@ -11,7 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
             myController.loadInfrastructureFromAPI()
                 .then(() => {
                     console.log("Success to load Infra")
-                    myController.notify();
+                    myController.loadQuantitiesRessource()
+                        .then(() => {
+                            console.log("Success to load quantities ressource")
+                            myController.notify();
+                        }
+                        )
+                        .catch(error => {
+                            alert("Error while loading quantities ressource - please refresh the page")
+                        }
+                        );
+    
                 })
                 .catch(error => {
                     alert("Error while loading infra - please refresh the page")
@@ -21,6 +31,5 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Error while loading default infra - please refresh the page")
         });
 
-    myView.updateRessources();
     
 }); 

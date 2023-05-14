@@ -21,7 +21,7 @@ export class Controller extends Notifier
         this.#defaultInfrastructures = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
-        this.#quantiteRessource = new QuantiteRessource(1, 1000, 2, 1000, 3, 1000);
+        this.#quantiteRessource = [];
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -178,6 +178,14 @@ export class Controller extends Notifier
         }
     }
     
+    async loadQuantitiesRessource() {
+        const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
+
+        this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
+            new QuantiteRessource(id_Ressource, type, quantite)
+        );
+
+    }
     
     async loadDefaultInfrastructures() {
         const [defenseData, installationData, ressourceData] = await Promise.all([
@@ -201,8 +209,7 @@ export class Controller extends Notifier
         ];
       
         this.#defaultInfrastructures = defaultInfrastructures;
-      }
-      
+    }     
     
     mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
         const mergedInfrastructures = [];

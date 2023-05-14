@@ -16,40 +16,31 @@ export class View extends Observer
 
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
-        console.log(ressources);
 
-        this.createOrUpdateRessourceElement(ressources);
+        ressources.forEach(ressource => {
+            this.createOrUpdateRessourceElement(ressource);
+        });
     }
 
     createOrUpdateRessourceElement(ressource) 
     {
-        const resourceContainer = document.getElementById("div-ressources");
-      
-        const createResourceElement = (resourceType, resourceName, resourceValue) => {
-            const div = this.createOrUpdateElement("div", `div-${resourceName}`, "div-ressource");
-            const img = this.createOrUpdateElement("img", `img-${resourceName}`, "img-ressource");
-            const p = this.createOrUpdateElement("p", `p-${resourceName}`, "number-ressource", resourceValue);
+        const prefix = ressource.type.toLowerCase();
 
-            img.src = `img/${resourceType}.png`;
-            img.alt = resourceType;
+        let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
+        let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
+        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
 
-            div.appendChild(img);
-            div.appendChild(p);
-      
-            return div;
-        };
-      
-        const resourceTypes = ["metal", "energie", "deuterium"];
-      
-        for (const resourceType of resourceTypes) 
-        {
-            const resourceElement = createResourceElement(resourceType, resourceType, ressource[resourceType]);
-            resourceContainer.appendChild(resourceElement);
-        }
-      }
+        img.src = `img/${prefix}.png`;
+        img.alt = prefix;
+
+        div.appendChild(img);
+        div.appendChild(p);
+
+        document.getElementById("div-ressources").appendChild(div);
+    }
       
 
-    update() 
+    updateInfrastructures() 
     {
         const infrastructures = this.#controller.infrastructures;
         console.log(infrastructures);
@@ -309,7 +300,8 @@ export class View extends Observer
 
     notify() 
     {
-        this.update();
+        this.updateInfrastructures();
+        this.updateRessources();
     }
 
 }
