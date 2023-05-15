@@ -199,5 +199,25 @@ class DBinfrastructures extends DBinterface {
                 tn.id_Technologie_Necessaire = tt2.id;');
     }
 
+    public function getInfraTechnoRequired()
+    {
+        return $this->fetchAllRows('
+            SELECT
+                itn.niveau,
+                tt.type AS Type_Technologie,
+                ti.type AS Type_Installation,
+                td.type AS Type_Defense,
+                tr.type AS Type_Ressource
+            FROM infratechnologienecessaire AS itn
+            LEFT JOIN typetechnologie AS tt
+                ON itn.id_Technologie = tt.id
+            LEFT JOIN typeinstallation AS ti
+                ON itn.id_Type_Installation = ti.id
+            LEFT JOIN typedefense AS td
+                ON itn.id_Type_Defense = td.id
+            LEFT JOIN typeinfraressource AS tr
+                ON itn.id_Type_Ressource = tr.id;');
+    }
+
 }
 

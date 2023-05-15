@@ -56,4 +56,9 @@ class Infrastructures
         return $this->dbInterface->getTechnoRequired();
     }
 
+    public function getInfraTechnoRequired()
+    {
+        return $this->dbInterface->getInfraTechnoRequired();
+    }
+
 }

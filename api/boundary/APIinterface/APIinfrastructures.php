@@ -62,6 +62,10 @@ class APIinfrastructures
         {
             $techno_required = $this->controller->getTechnoRequired();
             $this->sendResponse(200, 'OK', json_encode($techno_required));
+        }else if(isset($_GET['infra_techno_required']))
+        {
+            $infra_techno_required = $this->controller->getInfraTechnoRequired();
+            $this->sendResponse(200, 'OK', json_encode($infra_techno_required));
         }
         else 
         {
