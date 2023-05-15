@@ -527,5 +527,23 @@ export class Controller extends Notifier
         
         this.#infraTechnoRequired = infraTechnos;
     }
+
+    async loadTechnologies() {
+        const data = await this.fetchData(`?technologies`);
+
+        // const technos = data.map(item => {
+        //     return new Technologie(
+        //         item.technologie_id,
+        //         item.technologie_type,
+        //         item.technologie_nom,
+        //         item.technologie_cout_metal,
+        //         item.technologie_cout_energie,
+        //         item.technologie_cout_deuterium,
+        //         item.technologie_temps_construction
+        //     );
+        // });
+        
+        this.#technologies = technos;
+    }
         
 }
