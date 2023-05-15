@@ -219,5 +219,20 @@ class DBinfrastructures extends DBinterface {
                 ON itn.id_Type_Ressource = tr.id;');
     }
 
+    public function getTechnologies($id_Labo)
+    {
+        return $this->fetchAllRows('
+            SELECT
+                technologie.id,
+                technologie.niveau,
+                typetechnologie.type AS type_technologie
+            FROM
+                technologie
+            JOIN
+                typetechnologie ON technologie.id_Type = typetechnologie.id
+            WHERE
+            technologie.id_Laboratoire = ?;', [$id_Labo]);
+    }
+
 }
 
