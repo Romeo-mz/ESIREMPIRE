@@ -4,6 +4,7 @@ import { Ressource } from "../models/ressource.js";
 import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
 import { QuantiteRessource } from "../models/quantiteressource.js";
+import { TechnoRequired } from "../models/technorequired.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
@@ -13,15 +14,17 @@ export class Controller extends Notifier
     #defaultInfrastructures;
     #session;
     #quantiteRessource;
+    #technoRequired;
 
     constructor()
     {
         super();
         this.#infrastructures = [];
         this.#defaultInfrastructures = [];
+        this.#quantiteRessource = [];
+        this.#technoRequired = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
-        this.#quantiteRessource = [];
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -466,6 +469,20 @@ export class Controller extends Notifier
         const mergedInfrastructures = this.mergeInfrastructures(this.#defaultInfrastructures, infrastructures);
         this.#infrastructures = mergedInfrastructures;
 
+    }
+
+    async loadTechnoRequired() {
+        const data = await this.fetchData(`?techno_required`);
+
+        const technos = data.map(item => {
+            return new TechnoRequired(
+                item.techno,
+                item.techno_required,
+                item.techno_required_niveau
+            );
+        });
+        
+        this.#technoRequired = technos;
     }
         
 }

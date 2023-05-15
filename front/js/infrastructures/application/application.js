@@ -14,7 +14,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     myController.loadQuantitiesRessource()
                         .then(() => {
                             console.log("Success to load quantities ressource")
-                            myController.notify();
+                            myController.loadTechnoRequired()
+                                .then(() => {
+                                    console.log("Success to load techno required")
+                                    myController.notify();
+                                }
+                                )
+                                .catch(error => {
+                                    alert("Error while loading techno required - please refresh the page")
+                                }
+                                );
                         }
                         )
                         .catch(error => {
