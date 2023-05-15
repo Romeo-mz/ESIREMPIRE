@@ -69,25 +69,28 @@ export class Controller extends Notifier
 
         infrastructure.level++;
 
+        // Find "Usine de nanites level"
+        const usineNanitesLevel = this.#infrastructures.find(infrastructure => infrastructure.type_installation === "Usine de nanites").level;
+
         if(infrastructure instanceof Installation) 
         {
             if(infrastructure.type_installation === "Chantier spatial")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
             else if(infrastructure.type_installation === "Laboratoire")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
             else if(infrastructure.type_installation === "Usine de nanites")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
         }
         else if (infrastructure instanceof Ressource)
@@ -96,28 +99,28 @@ export class Controller extends Notifier
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
                 infrastructure.production_metal = Math.round(infrastructure.production_metal * 1.5 * 100) / 100;
             }
             else if(infrastructure.type_ressource === "Synthetiseur de deuterium")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
                 infrastructure.production_deuterium = Math.round(infrastructure.production_deuterium * 1.3 * 100) / 100;
             }
             else if(infrastructure.type_ressource === "Centrale solaire")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
                 infrastructure.production_energie = Math.round(infrastructure.production_energie * 1.4 * 100) / 100;
             }
             else if(infrastructure.type_ressource === "Centrale a fusion")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
                 infrastructure.production_energie = Math.round(infrastructure.production_energie * 2);
             }
         }
@@ -127,20 +130,20 @@ export class Controller extends Notifier
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
             else if(infrastructure.type_defense === "Canon a ions")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
                 infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
             else if(infrastructure.type_defense === "Bouclier")
             {
                 infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.5);
                 infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.5);
                 infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.5);
-                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * 2);
+                infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
             }
         }
 
