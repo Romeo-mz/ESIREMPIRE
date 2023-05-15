@@ -476,13 +476,15 @@ export class Controller extends Notifier
 
         const technos = data.map(item => {
             return new TechnoRequired(
-                item.techno,
-                item.techno_required,
-                item.techno_required_niveau
+                item.technologie,
+                item.technologie_necessaire,
+                item.technologie_necessaire_niveau
             );
         });
         
         this.#technoRequired = technos;
+
+        console.log(this.#technoRequired);
     }
         
 }
