@@ -17,6 +17,7 @@ export class Controller extends Notifier
     #quantiteRessource;
     #technoRequired;
     #infraTechnoRequired;
+    #technologiesPlayer;
 
     constructor()
     {
@@ -26,6 +27,7 @@ export class Controller extends Notifier
         this.#quantiteRessource = [];
         this.#technoRequired = [];
         this.#infraTechnoRequired = [];
+        this.#technologiesPlayer = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
     }
@@ -529,7 +531,7 @@ export class Controller extends Notifier
     }
 
     async loadTechnologies() {
-        const data = await this.fetchData(`?technologies`);
+        const data = await this.fetchData(`?technologies&id_Planet=${this.#session.id_Planet}`);
 
         // const technos = data.map(item => {
         //     return new Technologie(
@@ -543,7 +545,7 @@ export class Controller extends Notifier
         //     );
         // });
         
-        this.#technologies = technos;
+        this.#technologiesPlayer = technos;
     }
         
 }
