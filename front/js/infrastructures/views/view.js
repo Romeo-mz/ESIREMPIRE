@@ -14,16 +14,33 @@ export class View extends Observer
         this.#controller.addObserver(this);
     }
 
-    // <div class="strip-techno-required-list" id="strip-techno-required-list-installations">
-    //     <div class="strip-techno-required-list-item">
-    //     <div class="strip-techno-required-list-item-title">
-    //         <h4>Technologie 1</h4>
-    //     </div>
-    //     <div class="strip-techno-required-list-item-content">
-    //         <p>Contenu</p>
-    //     </div>
-//          </div>
-    // </div>
+    
+
+    // updateTechnologiesRequired()
+    // {
+    //     const technologies = this.#controller.technoRequired;
+
+    //     this.removePreviousTechnologiesRequired();
+
+    //     technologies.forEach(techno => {
+    //         this.createOrUpdateTechnologieElement(techno);
+    //     });
+    // }
+
+    createOrUpdateTechnologieElement(techno)
+    {
+        // <div class="strip-techno-required-list" id="strip-techno-required-list-installations">
+        //     <div class="strip-techno-required-list-item">
+        //         <div class="strip-techno-required-list-item-title">
+        //             <h4>Technologie 1</h4>
+        //         </div>
+        //         <div class="strip-techno-required-list-item-content">
+        //             <p>Contenu</p>
+        //         </div>
+        //     </div>
+        // </div>
+
+    }
 
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;

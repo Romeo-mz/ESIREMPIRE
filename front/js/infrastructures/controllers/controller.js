@@ -36,6 +36,9 @@ export class Controller extends Notifier
     get quantiteRessource() { return this.#quantiteRessource; }
     set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
 
+    get technoRequired() { return this.#technoRequired; }
+    set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
+
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
