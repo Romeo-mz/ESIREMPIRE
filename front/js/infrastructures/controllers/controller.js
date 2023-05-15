@@ -48,6 +48,9 @@ export class Controller extends Notifier
     get infraTechnoRequired() { return this.#infraTechnoRequired; }
     set infraTechnoRequired(infraTechnoRequired) { this.#infraTechnoRequired = infraTechnoRequired; }
 
+    get technologiesPlayer() { return this.#technologiesPlayer; }
+    set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
+
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
@@ -534,12 +537,10 @@ export class Controller extends Notifier
 
     async loadTechnologies() 
     {
-        // find in this.#infrastructures laboratoire
         const laboratoireID = this.#infrastructures.find(infra => infra.type_installation === "Laboratoire").id_installation;
         
         if (laboratoireID > 0)
         {
-            console.log(laboratoireID);
             const data = await this.fetchData(`?technologies&id_Labo=${laboratoireID}`);
             // console.log(data);
 
@@ -553,8 +554,6 @@ export class Controller extends Notifier
             
             this.#technologiesPlayer = technos;
         }
-
-        console.log(this.#technologiesPlayer);
     }
         
 }

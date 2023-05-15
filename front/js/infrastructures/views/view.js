@@ -167,32 +167,44 @@ export class View extends Observer
 
             div.appendChild(div_image);
             div.appendChild(div_information);
-            div.appendChild(div_upgrade);
-
-            document.getElementById(parentDivId).appendChild(div);
 
             const infratechnorequired = this.#controller.infraTechnoRequired;
+            const technoPlayer = this.#controller.technologiesPlayer;
 
             infratechnorequired.forEach(infratechno => {
                 if(infratechno.infra_type === infrastructure.type_installation) 
                 {
-                    // <div class="strip-techno-required-list" id="strip-techno-required-list-installations">
-                    //     <div class="strip-techno-required-list-item">
-                    //         <div class="strip-techno-required-list-item-title">
-                    //             <h4>Technologie 1</h4>
-                    //         </div>
-                    //         <div class="strip-techno-required-list-item-content">
-                    //             <p>Contenu</p>
-                    //         </div>
-                    //     </div>
-                    // </div>
-                    // Create strip with this html structure under the div_upgrade
+                    technoPlayer.forEach(techno => {
+                        if(techno.type_technologie === infratechno.techno_type) 
+                        {
+                            if(!(techno.level >= infratechno.techno_level)) 
+                            {
+                                let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                                let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                                let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                                let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                                let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                                let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
 
-                        let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", infratechno.technoRequired + " niveau " + infratechno.technoRequiredLevel + " requis");
+                                div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
 
-                        div.appendChild(p_strip_techno_required_list_item_content);
+                                button_upgrade.disabled = true;
+                                button_upgrade.innerHTML = "Technologie requise";
+
+                                div.appendChild(div_strip_techno_required_list);
+                            }
+                        }
+                    });
                 }
             });
+
+            div.appendChild(div_upgrade);
+
+            document.getElementById(parentDivId).appendChild(div);
 
         }
         else if(infrastructure instanceof Ressource) 
@@ -257,9 +269,45 @@ export class View extends Observer
 
             div.appendChild(div_image);
             div.appendChild(div_information);
+
+            const infratechnorequired = this.#controller.infraTechnoRequired;
+            const technoPlayer = this.#controller.technologiesPlayer;
+
+            infratechnorequired.forEach(infratechno => {
+                if(infratechno.infra_type === infrastructure.type_ressource) 
+                {
+                    technoPlayer.forEach(techno => {
+                        if(techno.type_technologie === infratechno.techno_type) 
+                        {
+                            if(!(techno.level >= infratechno.techno_level)) 
+                            {
+                                let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                                let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                                let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                                let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                                let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                                let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
+
+                                div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                                button_upgrade.disabled = true;
+                                button_upgrade.innerHTML = "Technologie requise";
+
+                                div.appendChild(div_strip_techno_required_list);
+                            }
+                        }
+                    });
+                }
+            });
+
             div.appendChild(div_upgrade);
 
             document.getElementById(parentDivId).appendChild(div);
+
         }
         else if(infrastructure instanceof Defense) 
         {
@@ -310,6 +358,41 @@ export class View extends Observer
 
             div.appendChild(div_image);
             div.appendChild(div_information);
+
+            const infratechnorequired = this.#controller.infraTechnoRequired;
+            const technoPlayer = this.#controller.technologiesPlayer;
+
+            infratechnorequired.forEach(infratechno => {
+                if(infratechno.infra_type === infrastructure.type_defense) 
+                {
+                    technoPlayer.forEach(techno => {
+                        if(techno.type_technologie === infratechno.techno_type) 
+                        {
+                            if(!(techno.level >= infratechno.techno_level)) 
+                            {
+                                let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                                let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                                let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                                let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                                let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                                let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
+
+                                div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                                div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                                div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                                button_upgrade.disabled = true;
+                                button_upgrade.innerHTML = "Technologie requise";
+
+                                div.appendChild(div_strip_techno_required_list);
+                            }
+                        }
+                    });
+                }
+            });
+
             div.appendChild(div_upgrade);
 
             document.getElementById(parentDivId).appendChild(div);
