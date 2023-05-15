@@ -361,15 +361,19 @@ export class View extends Observer
 
             const infratechnorequired = this.#controller.infraTechnoRequired;
             const technoPlayer = this.#controller.technologiesPlayer;
+            const technoRequired = this.#controller.technoRequired;
 
             infratechnorequired.forEach(infratechno => {
                 if(infratechno.infra_type === infrastructure.type_defense) 
                 {
                     technoPlayer.forEach(techno => {
-                        if(techno.type_technologie === infratechno.techno_type) 
+                        if(techno.type === infratechno.technoRequired) 
                         {
+                            console.log(techno.type);
+                            console.log(infratechno.technoRequired);
                             if(!(techno.level >= infratechno.techno_level)) 
                             {
+                                const technoRequired2 = techno.type_technologie;
                                 let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
                                 let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
                                 let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
@@ -387,7 +391,37 @@ export class View extends Observer
                                 button_upgrade.innerHTML = "Technologie requise";
 
                                 div.appendChild(div_strip_techno_required_list);
+
+                                // console.log(technoRequired2)
+                                // Check if technorequired require a techno
+                                technoRequired.forEach(techno2 => {
+                                    // console.log(technoRequired.technoRequired)
+                                    if(techno2.techno === technoRequired2) 
+                                    {
+                                        if(!(techno2.level >= technoRequired.technoRequiredLevel)){
+                                            let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                                            let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                                            let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                                            let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                                            let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", techno2.technoRequired);
+                                            let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + techno2.technoRequiredLevel);
+
+                                            div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                                            div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                                            div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                                            div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                                            div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                                            div.appendChild(div_strip_techno_required_list);
+                                        }
+
+                                    }
+                                }
+                                );
+
                             }
+
+                            
                         }
                     });
                 }
