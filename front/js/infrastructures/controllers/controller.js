@@ -6,6 +6,7 @@ import { Session } from "../models/session.js";
 import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
 import { InfraTechnoRequired } from "../models/infratechnorequired.js";
+import { Technologie } from "../models/technologie.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
@@ -403,7 +404,7 @@ export class Controller extends Notifier
                 new Defense(negativeID--, "0", type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense)
             ),
             ...installationData.map(({ type, installation_cout_metal, installation_cout_energie, installation_temps_construction }) =>
-                new Installation(negativeID--, "0", type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
+                new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
             ),
             ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
                 new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
@@ -444,6 +445,7 @@ export class Controller extends Notifier
                 return new Installation(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
+                    item.installation_id,
                     item.installation_type,
                     Math.round(item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
                     Math.round(item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
@@ -530,22 +532,34 @@ export class Controller extends Notifier
         this.#infraTechnoRequired = infraTechnos;
     }
 
-    async loadTechnologies() {
-        const data = await this.fetchData(`?technologies&id_Planet=${this.#session.id_Planet}`);
+    async loadTechnologies() 
+    {
+        // find in this.#infrastructures laboratoire
+        const laboratoireID = this.#infrastructures.find(infra => infra.type_installation === "Laboratoire").id;
 
-        // const technos = data.map(item => {
-        //     return new Technologie(
-        //         item.technologie_id,
-        //         item.technologie_type,
-        //         item.technologie_nom,
-        //         item.technologie_cout_metal,
-        //         item.technologie_cout_energie,
-        //         item.technologie_cout_deuterium,
-        //         item.technologie_temps_construction
-        //     );
-        // });
         
+        
+        if (laboratoireID > 0)
+        {
+            console.log(laboratoireID);
+            const data = await this.fetchData(`?technologies&id_Labo=${laboratoireID}`);
+
+            const technos = data.map(item => {
+                return new Technologie(
+                    item.id,
+                    item.niveau,
+                    item.type_technologie
+                );
+            });
+        }
+        else 
+        {
+            const technos = [];
+        }
+
         this.#technologiesPlayer = technos;
+
+        console.log(this.#technologiesPlayer);
     }
         
 }

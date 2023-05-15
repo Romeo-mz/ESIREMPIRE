@@ -21,6 +21,7 @@ class DBinfrastructures extends DBinterface {
             ti.type AS installation_type,
             tr.type AS ressource_type,
             td.type AS defense_type,
+            ins.id AS installation_id,
             idf.cout_metal AS installation_cout_metal,
             idf.cout_energie AS installation_cout_energie,
             idf.temps_construction AS installation_temps_construction,
