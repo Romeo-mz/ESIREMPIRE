@@ -499,11 +499,30 @@ export class Controller extends Notifier
         const data = await this.fetchData(`?infra_techno_required`);
 
         const infraTechnos = data.map(item => {
-            return new InfraTechnoRequired(
-                item.infrastructure_type,
-                item.technologie_necessaire,
-                item.technologie_necessaire_niveau
-            );
+            if(item.Type_Installation !== null)
+            {
+                return new InfraTechnoRequired(
+                    item.Type_Installation,
+                    item.Type_Technologie,
+                    item.niveau
+                );
+            }
+            else if(item.Type_Ressource !== null)
+            {
+                return new InfraTechnoRequired(
+                    item.Type_Ressource,
+                    item.Type_Technologie,
+                    item.niveau
+                );
+            }
+            else if(item.Type_Defense !== null)
+            {
+                return new InfraTechnoRequired(
+                    item.Type_Defense,
+                    item.Type_Technologie,
+                    item.niveau
+                );
+            }
         });
         
         this.#infraTechnoRequired = infraTechnos;

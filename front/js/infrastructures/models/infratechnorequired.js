@@ -1,21 +1,21 @@
 export class InfraTechnoRequired
 {
-    #infra;
+    #infra_type;
     #technoRequired;
     #technoRequiredLevel;
 
-    constructor(infra, technoRequired, technoRequiredLevel)
+    constructor(infra_type, technoRequired, technoRequiredLevel)
     {
-        this.#infra = infra;
+        this.#infra_type = infra_type;
         this.#technoRequired = technoRequired;
         this.#technoRequiredLevel = technoRequiredLevel;
     }
 
-    get infra() { return this.#infra; }
+    get infra_type() { return this.#infra_type; }
     get technoRequired() { return this.#technoRequired; }
     get technoRequiredLevel() { return this.#technoRequiredLevel; }
 
-    set infra(infra) { this.#infra = infra; }
+    set infra_type(infra_type) { this.#infra_type = infra_type; }
     set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
     set technoRequiredLevel(technoRequiredLevel) { this.#technoRequiredLevel = technoRequiredLevel; }
 
