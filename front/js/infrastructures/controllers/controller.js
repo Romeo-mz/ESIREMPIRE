@@ -535,14 +535,13 @@ export class Controller extends Notifier
     async loadTechnologies() 
     {
         // find in this.#infrastructures laboratoire
-        const laboratoireID = this.#infrastructures.find(infra => infra.type_installation === "Laboratoire").id;
-
-        
+        const laboratoireID = this.#infrastructures.find(infra => infra.type_installation === "Laboratoire").id_installation;
         
         if (laboratoireID > 0)
         {
             console.log(laboratoireID);
             const data = await this.fetchData(`?technologies&id_Labo=${laboratoireID}`);
+            // console.log(data);
 
             const technos = data.map(item => {
                 return new Technologie(
@@ -551,13 +550,9 @@ export class Controller extends Notifier
                     item.type_technologie
                 );
             });
+            
+            this.#technologiesPlayer = technos;
         }
-        else 
-        {
-            const technos = [];
-        }
-
-        this.#technologiesPlayer = technos;
 
         console.log(this.#technologiesPlayer);
     }
