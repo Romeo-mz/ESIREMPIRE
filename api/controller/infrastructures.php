@@ -61,4 +61,9 @@ class Infrastructures
         return $this->dbInterface->getInfraTechnoRequired();
     }
 
+    public function getTechnologies($id_Labo)
+    {
+        return $this->dbInterface->getTechnologies($id_Labo);
+    }
+
 }
