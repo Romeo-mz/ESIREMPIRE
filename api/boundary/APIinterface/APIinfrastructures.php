@@ -58,6 +58,11 @@ class APIinfrastructures
             $quantity_ressource_player = $this->controller->getQuantityRessourcePlayer($_GET['id_Player'], $_GET['id_Universe']);
             $this->sendResponse(200, 'OK', json_encode($quantity_ressource_player));
         }
+        else if(isset($_GET['techno_required']))
+        {
+            $techno_required = $this->controller->getTechnoRequired();
+            $this->sendResponse(200, 'OK', json_encode($techno_required));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');

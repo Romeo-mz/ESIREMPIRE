@@ -51,4 +51,9 @@ class Infrastructures
         $this->dbInterface->updateQuantityRessource($id_Ressource, $quantite);
     }
 
+    public function getTechnoRequired()
+    {
+        return $this->dbInterface->getTechnoRequired();
+    }
+
 }
