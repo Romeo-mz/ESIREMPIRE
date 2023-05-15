@@ -17,7 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
                             myController.loadTechnoRequired()
                                 .then(() => {
                                     console.log("Success to load techno required")
-                                    myController.notify();
+                                    myController.loadInfraTechnoRequired()
+                                        .then(() => {
+                                            console.log("Success to load infra techno required")
+                                            myController.notify();
+                                        }
+                                        )
+                                        .catch(error => {
+                                            alert("Error while loading techno required - please refresh the page")
+                                        }
+                                        );
                                 }
                                 )
                                 .catch(error => {
