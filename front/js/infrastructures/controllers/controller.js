@@ -526,8 +526,6 @@ export class Controller extends Notifier
         });
         
         this.#infraTechnoRequired = infraTechnos;
-
-        console.log(this.#infraTechnoRequired);
     }
         
 }

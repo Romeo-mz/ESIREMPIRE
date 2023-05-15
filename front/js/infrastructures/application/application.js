@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         }
                                         )
                                         .catch(error => {
-                                            alert("Error while loading techno required - please refresh the page")
+                                            alert("Error while loading infra techno required - please refresh the page")
                                         }
                                         );
                                 }

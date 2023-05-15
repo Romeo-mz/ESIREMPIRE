@@ -27,8 +27,8 @@ export class View extends Observer
     //     });
     // }
 
-    createOrUpdateTechnologieElement(techno)
-    {
+    // createOrUpdateTechnologieElement(techno)
+    // {
         // <div class="strip-techno-required-list" id="strip-techno-required-list-installations">
         //     <div class="strip-techno-required-list-item">
         //         <div class="strip-techno-required-list-item-title">
@@ -40,7 +40,7 @@ export class View extends Observer
         //     </div>
         // </div>
 
-    }
+    // }
 
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
@@ -155,25 +155,8 @@ export class View extends Observer
                 this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
             });
 
-            const infratechnorequired = this.#controller.infratechnorequired;
+            
 
-            if(infratechnorequired.infra_type === "Chantier spatial" || infratechnorequired.infra_type === "Laboratoire" || infratechnorequired.infra_type === "Usine de nanites")
-            {
-                let div_techno_required = this.createOrUpdateElement("div", `div-${prefix}-techno-required-${infrastructure.id}`, "div-infrastructure-techno-required");
-                let div_techno_required_list = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-${infrastructure.id}`, "div-infrastructure-techno-required-list");
-                let div_techno_required_list_title = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-title-${infrastructure.id}`, "div-infrastructure-techno-required-list-title", "Technologies requises");
-                let div_techno_required_list_content = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-content-${infrastructure.id}`, "div-infrastructure-techno-required-list-content");
-
-                infrastructure.technologie_necessaire.forEach(techno => {
-                    let div_techno_required_list_content_item = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-content-item-${techno.id}`, "div-infrastructure-techno-required-list-content-item", techno.nom + " " + techno.niveau);
-                    div_techno_required_list_content.appendChild(div_techno_required_list_content_item);
-                });
-
-                div_techno_required_list.appendChild(div_techno_required_list_title);
-                div_techno_required_list.appendChild(div_techno_required_list_content);
-                div_techno_required.appendChild(div_techno_required_list);
-                div_information.appendChild(div_techno_required);
-            }
 
             div_image.appendChild(img);
             div_information.appendChild(div_information_type);
@@ -187,6 +170,30 @@ export class View extends Observer
             div.appendChild(div_upgrade);
 
             document.getElementById(parentDivId).appendChild(div);
+
+            const infratechnorequired = this.#controller.infraTechnoRequired;
+
+            infratechnorequired.forEach(infratechno => {
+                if(infratechno.infra_type === infrastructure.type_installation) 
+                {
+                    // <div class="strip-techno-required-list" id="strip-techno-required-list-installations">
+                    //     <div class="strip-techno-required-list-item">
+                    //         <div class="strip-techno-required-list-item-title">
+                    //             <h4>Technologie 1</h4>
+                    //         </div>
+                    //         <div class="strip-techno-required-list-item-content">
+                    //             <p>Contenu</p>
+                    //         </div>
+                    //     </div>
+                    // </div>
+                    // Create strip with this html structure under the div_upgrade
+
+                        let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", infratechno.technoRequired + " niveau " + infratechno.technoRequiredLevel + " requis");
+
+                        div.appendChild(p_strip_techno_required_list_item_content);
+                }
+            });
+
         }
         else if(infrastructure instanceof Ressource) 
         {
