@@ -155,6 +155,26 @@ export class View extends Observer
                 this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
             });
 
+            const infratechnorequired = this.#controller.infratechnorequired;
+
+            if(infratechnorequired.infra_type === "Chantier spatial" || infratechnorequired.infra_type === "Laboratoire" || infratechnorequired.infra_type === "Usine de nanites")
+            {
+                let div_techno_required = this.createOrUpdateElement("div", `div-${prefix}-techno-required-${infrastructure.id}`, "div-infrastructure-techno-required");
+                let div_techno_required_list = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-${infrastructure.id}`, "div-infrastructure-techno-required-list");
+                let div_techno_required_list_title = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-title-${infrastructure.id}`, "div-infrastructure-techno-required-list-title", "Technologies requises");
+                let div_techno_required_list_content = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-content-${infrastructure.id}`, "div-infrastructure-techno-required-list-content");
+
+                infrastructure.technologie_necessaire.forEach(techno => {
+                    let div_techno_required_list_content_item = this.createOrUpdateElement("div", `div-${prefix}-techno-required-list-content-item-${techno.id}`, "div-infrastructure-techno-required-list-content-item", techno.nom + " " + techno.niveau);
+                    div_techno_required_list_content.appendChild(div_techno_required_list_content_item);
+                });
+
+                div_techno_required_list.appendChild(div_techno_required_list_title);
+                div_techno_required_list.appendChild(div_techno_required_list_content);
+                div_techno_required.appendChild(div_techno_required_list);
+                div_information.appendChild(div_techno_required);
+            }
+
             div_image.appendChild(img);
             div_information.appendChild(div_information_type);
             div_information.appendChild(div_information_level);
