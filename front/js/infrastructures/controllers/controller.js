@@ -5,6 +5,7 @@ import { Defense } from "../models/defense.js";
 import { Session } from "../models/session.js";
 import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
+import { InfraTechnoRequired } from "../models/infratechnorequired.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
@@ -15,6 +16,7 @@ export class Controller extends Notifier
     #session;
     #quantiteRessource;
     #technoRequired;
+    #infraTechnoRequired;
 
     constructor()
     {
@@ -23,6 +25,7 @@ export class Controller extends Notifier
         this.#defaultInfrastructures = [];
         this.#quantiteRessource = [];
         this.#technoRequired = [];
+        this.#infraTechnoRequired = [];
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
     }
@@ -38,6 +41,9 @@ export class Controller extends Notifier
 
     get technoRequired() { return this.#technoRequired; }
     set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
+
+    get infraTechnoRequired() { return this.#infraTechnoRequired; }
+    set infraTechnoRequired(infraTechnoRequired) { this.#infraTechnoRequired = infraTechnoRequired; }
 
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
@@ -486,8 +492,23 @@ export class Controller extends Notifier
         });
         
         this.#technoRequired = technos;
+    }
 
-        console.log(this.#technoRequired);
+    async loadInfraTechnoRequired()
+    {
+        const data = await this.fetchData(`?infra_techno_required`);
+
+        const infraTechnos = data.map(item => {
+            return new InfraTechnoRequired(
+                item.infrastructure_type,
+                item.technologie_necessaire,
+                item.technologie_necessaire_niveau
+            );
+        });
+        
+        this.#infraTechnoRequired = infraTechnos;
+
+        console.log(this.#infraTechnoRequired);
     }
         
 }
