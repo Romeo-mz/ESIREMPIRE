@@ -399,7 +399,6 @@ export class View extends Observer
                         button_upgrade.innerHTML = "Technologie requise";
 
                         div.appendChild(div_strip_techno_required_list);
-
                     }
                 }
             });
