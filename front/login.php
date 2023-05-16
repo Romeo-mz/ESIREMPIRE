@@ -1,3 +1,8 @@
+<?php
+$universes = file_get_contents("http://localhost:5550/ESIREMPIRE/api/boundary/APIinterface/APIadmin.php?universes");
+$universes = json_decode($universes, true);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,8 +28,9 @@
                 
                 <input type="password" name="password" placeholder="Password" required>
                 <select name="univers" id="univers-select">
-                    <option value="">--Choisissez un univers--</option>
-                    <option value="1">Univers 1</option>
+                    <?php foreach($universes as $universe): ?>
+                        <option value="<?= $universe['id'] ?>"><?= $universe['nom'] ?></option>
+                    <?php endforeach; ?>
                 </select>
                 
                 <br/><br/>

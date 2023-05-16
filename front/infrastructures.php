@@ -23,6 +23,7 @@
             <div class="div-infrastructures-title">
                 <h2>Installations</h2>
             </div>
+
             <div class="div-list-infrastructures" id="div-list-installations">
                 
             </div>
@@ -34,6 +35,7 @@
             <div class="div-infrastructures-title">
                 <h2>Ressources</h2>
             </div>
+
             <div class="div-list-infrastructures" id="div-list-ressources">
                 
             </div>
@@ -42,9 +44,11 @@
         <hr class="infra-hr">
 
         <div class="div-infrastructures">
+
             <div class="div-infrastructures-title">
                 <h2>Défenses</h2>
             </div>
+          
             <div class="div-list-infrastructures" id="div-list-defenses">
                 
             </div>
@@ -53,5 +57,6 @@
     </main>
 
     <script src="js/infrastructures/application/application.js" type="module"></script>
+
 </body>
 </html>
