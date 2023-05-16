@@ -152,7 +152,11 @@ export class View extends Observer
 
             button_upgrade.addEventListener("click", () =>
             {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
+                button_upgrade.disabled = true;
+                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+                setTimeout(() => {
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
+                }, infrastructure.temps_construction * 1000);
             });
 
             
@@ -245,7 +249,12 @@ export class View extends Observer
 
             button_upgrade.addEventListener("click", () =>
             {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
+                button_upgrade.disabled = true;
+                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+                setTimeout(() =>
+                {
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
+                }, infrastructure.temps_construction * 1000);
             });
 
             div_image.appendChild(img);
@@ -338,7 +347,12 @@ export class View extends Observer
 
             button_upgrade.addEventListener("click", () =>
             {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
+                button_upgrade.disabled = true;
+                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+                setTimeout(() =>
+                {
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
+                }, infrastructure.temps_construction * 1000);
             });
 
             div_image.appendChild(img);
