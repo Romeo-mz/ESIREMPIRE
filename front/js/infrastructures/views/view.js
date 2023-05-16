@@ -115,6 +115,276 @@ export class View extends Observer
         });
     }
 
+    createInstallationElements(infrastructure, prefix, div, div_information, div_image, img) 
+    {
+        let div_information_type = null;
+        let div_information_level = null;
+        let div_information_metal = null;
+        let div_information_energie = null;
+
+        img.src = this.getImageSrcForType(infrastructure.type_installation);
+
+        div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-installation-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_installation + "</b>");
+        div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-installation-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
+        div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-installation-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
+        div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-installation-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
+
+
+        let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-installation-${infrastructure.id}`, "div-infrastructure-upgrade");
+        let button_upgrade = this.createOrUpdateElement(
+            "button",
+            `upgrade-installation-button-${prefix}-${infrastructure.id}`,
+            "upgrade-button",
+            infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+        );
+
+        button_upgrade.addEventListener("click", () =>
+        {
+            button_upgrade.disabled = true;
+            button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+            setTimeout(() => {
+                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
+            }, infrastructure.temps_construction * 1000);
+        });
+
+        div_image.appendChild(img);
+        div_information.appendChild(div_information_type);
+        div_information.appendChild(div_information_level);
+        div_information.appendChild(div_information_metal);
+        div_information.appendChild(div_information_energie);
+        div_upgrade.appendChild(button_upgrade);
+
+        div.appendChild(div_image);
+        div.appendChild(div_information);
+
+        const infratechnorequired = this.#controller.infraTechnoRequired;
+        const technoPlayer = this.#controller.technologiesPlayer;
+
+        (infratechnorequired).forEach(infratechno => {
+            if(infratechno.infra_type === infrastructure.type_installation) 
+            {
+                let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
+
+                if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
+                {
+                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
+
+                    div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                    button_upgrade.disabled = true;
+                    button_upgrade.innerHTML = "Technologie requise";
+
+                    div.appendChild(div_strip_techno_required_list);
+                    
+                }
+            }
+        });
+
+        div.appendChild(div_upgrade);
+    }
+
+    createRessourceElements(infrastructure, prefix, div, div_information, div_image, img)
+    {
+        let div_information_type = null;
+        let div_information_level = null;
+        let div_information_metal = null;
+        let div_information_energie = null;
+        let div_information_deuterium = null;
+        let div_production_metal = null;
+        let div_production_energie = null;
+        let div_production_deuterium = null;
+
+        img.src = this.getImageSrcForType(infrastructure.type_ressource);
+
+        div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-ressource-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_ressource + "</b>");
+        div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-ressource-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
+        if (infrastructure.cout_metal !== null)
+            div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-ressource-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
+        if (infrastructure.cout_energie !== null)
+            div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
+        if (infrastructure.cout_deuterium !== null)
+            div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
+        if(infrastructure.production_metal !== null)
+            div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal * 60 + "/min");
+        if(infrastructure.production_energie !== null)
+            div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie * 60 + "/min");
+        if(infrastructure.production_deuterium !== null)
+            div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium * 60 + "/min");
+
+
+        let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-ressource-${infrastructure.id}`, "div-infrastructure-upgrade");
+        let button_upgrade = this.createOrUpdateElement(
+            "button",
+            `upgrade-ressource-button-${prefix}-${infrastructure.id}`,
+            "upgrade-button",
+            infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+        );
+
+        button_upgrade.addEventListener("click", () =>
+        {
+            button_upgrade.disabled = true;
+            button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+            setTimeout(() =>
+            {
+                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
+            }, infrastructure.temps_construction * 1000);
+        });
+
+        div_image.appendChild(img);
+        div_information.appendChild(div_information_type);
+        div_information.appendChild(div_information_level);
+        if(infrastructure.cout_metal !== null)
+            div_information.appendChild(div_information_metal);
+        if(infrastructure.cout_energie !== null)
+            div_information.appendChild(div_information_energie);
+        if(infrastructure.cout_deuterium !== null)
+            div_information.appendChild(div_information_deuterium);
+        if(infrastructure.production_metal !== null)
+            div_information.appendChild(div_production_metal);
+        if(infrastructure.production_energie !== null)
+            div_information.appendChild(div_production_energie);
+        if(infrastructure.production_deuterium !== null)
+            div_information.appendChild(div_production_deuterium);
+        div_upgrade.appendChild(button_upgrade);
+
+        div.appendChild(div_image);
+        div.appendChild(div_information);
+
+        const infratechnorequired = this.#controller.infraTechnoRequired;
+        const technoPlayer = this.#controller.technologiesPlayer;
+
+        (infratechnorequired).forEach(infratechno => {
+            if(infratechno.infra_type === infrastructure.type_ressource) 
+            {
+                let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
+
+                if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
+                {
+                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
+
+                    div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                    button_upgrade.disabled = true;
+                    button_upgrade.innerHTML = "Technologie requise";
+
+                    div.appendChild(div_strip_techno_required_list);
+                    
+                }
+            }
+        });
+
+        div.appendChild(div_upgrade);
+    }
+
+    createDefenseElements(infrastructure, prefix, div, div_information, div_image, img)
+    {
+        let div_information_type = null;
+        let div_information_level = null;
+        let div_information_metal = null;
+        let div_information_energie = null;
+        let div_information_deuterium = null;
+        let div_point_attaque = null;
+        let div_point_defense = null;
+
+        img.src = this.getImageSrcForType(infrastructure.type_defense);
+
+        div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-defense-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_defense + "</b>");
+        div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-defense-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
+        div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-defense-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
+        if(infrastructure.cout_energie !== null)
+            div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-defense-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
+        div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-defense-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
+        div_point_attaque = this.createOrUpdateElement("div", `div-${prefix}-point-attaque-defense-${infrastructure.id}`, "div-infrastructure-point-attaque", "Point d'attaque: " + infrastructure.point_attaque);
+        div_point_defense = this.createOrUpdateElement("div", `div-${prefix}-point-defense-defense-${infrastructure.id}`, "div-infrastructure-point-defense", "Point de défense: " + infrastructure.point_defense);
+
+
+        let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-defense-${infrastructure.id}`, "div-infrastructure-upgrade");
+        let button_upgrade = this.createOrUpdateElement(
+            "button",
+            `upgrade-defense-button-${prefix}-${infrastructure.id}`,
+            "upgrade-button",
+            infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
+        );
+
+        button_upgrade.addEventListener("click", () =>
+        {
+            button_upgrade.disabled = true;
+            button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
+            setTimeout(() =>
+            {
+                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
+            }, infrastructure.temps_construction * 1000);
+        });
+
+        div_image.appendChild(img);
+        div_information.appendChild(div_information_type);
+        div_information.appendChild(div_information_level);
+        div_information.appendChild(div_information_metal);
+        if(infrastructure.cout_energie !== null)
+            div_information.appendChild(div_information_energie);
+        div_information.appendChild(div_information_deuterium);
+        div_information.appendChild(div_point_attaque);
+        div_information.appendChild(div_point_defense);
+        div_upgrade.appendChild(button_upgrade);
+
+        div.appendChild(div_image);
+        div.appendChild(div_information);
+
+        const infratechnorequired = this.#controller.infraTechnoRequired;
+        const technoPlayer = this.#controller.technologiesPlayer;
+        const technoRequired = this.#controller.technoRequired;
+
+        console.log(technoPlayer);
+
+        (infratechnorequired).forEach(infratechno => {
+            if(infratechno.infra_type === infrastructure.type_defense) 
+            {
+                let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
+
+                if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
+                {
+                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
+                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
+                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
+                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
+                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
+                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
+
+                    div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
+                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
+                    div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
+
+                    button_upgrade.disabled = true;
+                    button_upgrade.innerHTML = "Technologie requise";
+
+                    div.appendChild(div_strip_techno_required_list);
+                }
+            }
+        });
+
+        div.appendChild(div_upgrade);
+    }
+    
     createOrUpdateInfrastructureElement(infrastructure, parentDivId) 
     {        
         const prefix = infrastructure.type;
@@ -123,291 +393,21 @@ export class View extends Observer
         let div_information = this.createOrUpdateElement("div", `div-${prefix}-information-${infrastructure.id}`, "div-infrastructure-information");
         let div_image = this.createOrUpdateElement("div", `div-${prefix}-image-${infrastructure.id}`, "div-infrastructure-image");
         let img = this.createOrUpdateElement("img", `img-${prefix}-${infrastructure.id}`, "img-infrastructure");
-        
 
         if(infrastructure instanceof Installation) 
         {
-
-            let div_information_type = null;
-            let div_information_level = null;
-            let div_information_metal = null;
-            let div_information_energie = null;
-
-
-            img.src = this.getImageSrcForType(infrastructure.type_installation);
-
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-installation-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_installation + "</b>");
-            div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-installation-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
-            div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-installation-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
-            div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-installation-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
-
-
-            let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-installation-${infrastructure.id}`, "div-infrastructure-upgrade");
-            let button_upgrade = this.createOrUpdateElement(
-                "button",
-                `upgrade-installation-button-${prefix}-${infrastructure.id}`,
-                "upgrade-button",
-                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
-            );
-
-            button_upgrade.addEventListener("click", () =>
-            {
-                button_upgrade.disabled = true;
-                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-                setTimeout(() => {
-                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
-                }, infrastructure.temps_construction * 1000);
-            });
-
-            
-
-
-            div_image.appendChild(img);
-            div_information.appendChild(div_information_type);
-            div_information.appendChild(div_information_level);
-            div_information.appendChild(div_information_metal);
-            div_information.appendChild(div_information_energie);
-            div_upgrade.appendChild(button_upgrade);
-
-            div.appendChild(div_image);
-            div.appendChild(div_information);
-
-            const infratechnorequired = this.#controller.infraTechnoRequired;
-            const technoPlayer = this.#controller.technologiesPlayer;
-
-            (infratechnorequired).forEach(infratechno => {
-                if(infratechno.infra_type === infrastructure.type_installation) 
-                {
-                    let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
-
-                    if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
-                    {
-                        let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
-                        let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
-                        let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
-                        let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
-                        let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
-                        let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
-
-                        div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
-
-                        button_upgrade.disabled = true;
-                        button_upgrade.innerHTML = "Technologie requise";
-
-                        div.appendChild(div_strip_techno_required_list);
-                        
-                    }
-                }
-            });
-
-            div.appendChild(div_upgrade);
-
-            document.getElementById(parentDivId).appendChild(div);
-
+            this.createInstallationElements(infrastructure, prefix, div, div_information, div_image, img);
         }
         else if(infrastructure instanceof Ressource) 
         {
-
-            let div_information_type = null;
-            let div_information_level = null;
-            let div_information_metal = null;
-            let div_information_energie = null;
-            let div_information_deuterium = null;
-            let div_production_metal = null;
-            let div_production_energie = null;
-            let div_production_deuterium = null;
-
-            img.src = this.getImageSrcForType(infrastructure.type_ressource);
-
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-ressource-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_ressource + "</b>");
-            div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-ressource-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
-            if (infrastructure.cout_metal !== null)
-                div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-ressource-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
-            if (infrastructure.cout_energie !== null)
-                div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
-            if (infrastructure.cout_deuterium !== null)
-                div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
-            if(infrastructure.production_metal !== null)
-                div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal * 60 + "/min");
-            if(infrastructure.production_energie !== null)
-                div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie * 60 + "/min");
-            if(infrastructure.production_deuterium !== null)
-                div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium * 60 + "/min");
-
-
-            let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-ressource-${infrastructure.id}`, "div-infrastructure-upgrade");
-            let button_upgrade = this.createOrUpdateElement(
-                "button",
-                `upgrade-ressource-button-${prefix}-${infrastructure.id}`,
-                "upgrade-button",
-                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
-            );
-
-            button_upgrade.addEventListener("click", () =>
-            {
-                button_upgrade.disabled = true;
-                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-                setTimeout(() =>
-                {
-                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
-                }, infrastructure.temps_construction * 1000);
-            });
-
-            div_image.appendChild(img);
-            div_information.appendChild(div_information_type);
-            div_information.appendChild(div_information_level);
-            if(infrastructure.cout_metal !== null)
-                div_information.appendChild(div_information_metal);
-            if(infrastructure.cout_energie !== null)
-                div_information.appendChild(div_information_energie);
-            if(infrastructure.cout_deuterium !== null)
-                div_information.appendChild(div_information_deuterium);
-            if(infrastructure.production_metal !== null)
-                div_information.appendChild(div_production_metal);
-            if(infrastructure.production_energie !== null)
-                div_information.appendChild(div_production_energie);
-            if(infrastructure.production_deuterium !== null)
-                div_information.appendChild(div_production_deuterium);
-            div_upgrade.appendChild(button_upgrade);
-
-            div.appendChild(div_image);
-            div.appendChild(div_information);
-
-            const infratechnorequired = this.#controller.infraTechnoRequired;
-            const technoPlayer = this.#controller.technologiesPlayer;
-
-            (infratechnorequired).forEach(infratechno => {
-                if(infratechno.infra_type === infrastructure.type_ressource) 
-                {
-                    let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
-
-                    if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
-                    {
-                        let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
-                        let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
-                        let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
-                        let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
-                        let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
-                        let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
-
-                        div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
-
-                        button_upgrade.disabled = true;
-                        button_upgrade.innerHTML = "Technologie requise";
-
-                        div.appendChild(div_strip_techno_required_list);
-                        
-                    }
-                }
-            });
-
-            div.appendChild(div_upgrade);
-
-            document.getElementById(parentDivId).appendChild(div);
-
+            this.createRessourceElements(infrastructure, prefix, div, div_information, div_image, img);
         }
         else if(infrastructure instanceof Defense) 
         {
-
-            let div_information_type = null;
-            let div_information_level = null;
-            let div_information_metal = null;
-            let div_information_energie = null;
-            let div_information_deuterium = null;
-            let div_point_attaque = null;
-            let div_point_defense = null;
-
-            img.src = this.getImageSrcForType(infrastructure.type_defense);
-
-            div_information_type = this.createOrUpdateElement("div", `div-${prefix}-type-defense-${infrastructure.id}`, "div-infrastructure-type", "<b>" + infrastructure.type_defense + "</b>");
-            div_information_level = this.createOrUpdateElement("div", `div-${prefix}-level-defense-${infrastructure.id}`, "div-infrastructure-level", "Niveau: " + infrastructure.level);
-            div_information_metal = this.createOrUpdateElement("div", `div-${prefix}-metal-defense-${infrastructure.id}`, "div-infrastructure-metal", "Métal: " + infrastructure.cout_metal);
-            if(infrastructure.cout_energie !== null)
-                div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-defense-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
-            div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-defense-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
-            div_point_attaque = this.createOrUpdateElement("div", `div-${prefix}-point-attaque-defense-${infrastructure.id}`, "div-infrastructure-point-attaque", "Point d'attaque: " + infrastructure.point_attaque);
-            div_point_defense = this.createOrUpdateElement("div", `div-${prefix}-point-defense-defense-${infrastructure.id}`, "div-infrastructure-point-defense", "Point de défense: " + infrastructure.point_defense);
-
-
-            let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-defense-${infrastructure.id}`, "div-infrastructure-upgrade");
-            let button_upgrade = this.createOrUpdateElement(
-                "button",
-                `upgrade-defense-button-${prefix}-${infrastructure.id}`,
-                "upgrade-button",
-                infrastructure.level === "0" ? "Construire <br>" + infrastructure.temps_construction + "s" : "Améliorer <br> " + infrastructure.temps_construction + "s"
-            );
-
-            button_upgrade.addEventListener("click", () =>
-            {
-                button_upgrade.disabled = true;
-                button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-                setTimeout(() =>
-                {
-                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
-                }, infrastructure.temps_construction * 1000);
-            });
-
-            div_image.appendChild(img);
-            div_information.appendChild(div_information_type);
-            div_information.appendChild(div_information_level);
-            div_information.appendChild(div_information_metal);
-            if(infrastructure.cout_energie !== null)
-                div_information.appendChild(div_information_energie);
-            div_information.appendChild(div_information_deuterium);
-            div_information.appendChild(div_point_attaque);
-            div_information.appendChild(div_point_defense);
-            div_upgrade.appendChild(button_upgrade);
-
-            div.appendChild(div_image);
-            div.appendChild(div_information);
-
-            const infratechnorequired = this.#controller.infraTechnoRequired;
-            const technoPlayer = this.#controller.technologiesPlayer;
-            const technoRequired = this.#controller.technoRequired;
-
-            console.log(technoPlayer);
-
-            (infratechnorequired).forEach(infratechno => {
-                if(infratechno.infra_type === infrastructure.type_defense) 
-                {
-                    let techno = technoPlayer.find(techno => techno.type === infratechno.technoRequired);
-
-                    if(techno === undefined || techno.level < infratechno.technoRequiredLevel)
-                    {
-                        let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-${prefix}-${infrastructure.id}`, "strip-techno-required-list");
-                        let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item");
-                        let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title");
-                        let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content");
-                        let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-title", infratechno.technoRequired);
-                        let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-${prefix}-${infrastructure.id}`, "strip-techno-required-list-item-content", "Niveau: " + infratechno.technoRequiredLevel);
-
-                        div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
-                        div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
-                        div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
-
-                        button_upgrade.disabled = true;
-                        button_upgrade.innerHTML = "Technologie requise";
-
-                        div.appendChild(div_strip_techno_required_list);
-                    }
-                }
-            });
-
-            div.appendChild(div_upgrade);
-
-            document.getElementById(parentDivId).appendChild(div);
-
+            this.createDefenseElements(infrastructure, prefix, div, div_information, div_image, img);
         }
+
+        document.getElementById(parentDivId).appendChild(div);
 
     }
 
