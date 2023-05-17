@@ -14,6 +14,7 @@ export class Controller extends Notifier
     #quantiteRessource;
     #technoRequired;
     #technologiesPlayer;
+    #laboID;
 
     constructor()
     {
@@ -44,124 +45,94 @@ export class Controller extends Notifier
     get technologiesPlayer() { return this.#technologiesPlayer; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
 
+    get laboID() { return this.#laboID; }
+    set laboID(laboID) { this.#laboID = laboID; }
+
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
     }
+
+    // async loadDefaultInfrastructures() {
+    //     const [defenseData, installationData, ressourceData] = await Promise.all([
+    //         this.fetchData("?default_defense"),
+    //         this.fetchData("?default_installation"),
+    //         this.fetchData("?default_ressource")
+    //     ]);
+      
+    //     let negativeID = -1;
+      
+    //     const defaultInfrastructures = [
+    //         ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
+    //             new Defense(negativeID--, "0", type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense)
+    //         ),
+    //         ...installationData.map(({ type, installation_cout_metal, installation_cout_energie, installation_temps_construction }) =>
+    //             new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
+    //         ),
+    //         ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
+    //             new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
+    //         )
+    //     ];
+      
+    //     this.#defaultInfrastructures = defaultInfrastructures;
+    // }  
+
+    async loadDefaultTechnologies()
+    {
+        const data = await this.fetchData("?default_technologies");
+
+        let negativeID = -1;
+
+        const technos = data.map(item => {
+            return new Technologie(
+                negativeID--, 
+                "0",
+                item.type_technologie,
+                item.cout_metal,
+                item.cout_deuterium,
+                item.temps_recherche
+            );
+        });
+        
+        this.#defaultTechnologies = technos;
+    }
+
+    async loadLaboratoireID()
+    {
+        const data = await this.fetchData(`?id_Labo&id_Planet=${this.#session.id_Planet}`);
+
+        if (data.id_Labo !== false)
+        {
+            this.#laboID = data[0].id_Labo;
+        }
+        else
+        {
+            this.#laboID = -1;
+        }
+
+    }
+
+    async loadTechnologies() 
+    {
+        
+        if (this.#laboID > 0)
+        {
+            const data = await this.fetchData(`?technologies&id_Labo=${this.#laboID}`);
+            // console.log(data);
+
+            const technos = data.map(item => {
+                return new Technologie(
+                    item.id,
+                    item.niveau,
+                    item.type_technologie
+                );
+            });
+            
+            this.#technologiesPlayer = technos;
+        }
+    }
     
-    // async upgradeTechnologie(id, type) 
-    // {
-
-    //     if(!this.checkEnoughRessource(id, type))
-    //     {
-    //         alert("Pas assez de ressources");
-    //         return;
-    //     }
-
-    //     this.decreaseRessource(id, type);
-
-    //     if (id < 0) {
-    //         try {
-    //             const dataToReturn = await this.createInfrastructureToAPI(id, type);
-    //             console.log("Success to create infra:", dataToReturn);
-                
-    //             if(dataToReturn > 0){
-    //                 const infra = this.#infrastructures.find(infrastructure => infrastructure.id === id).id = dataToReturn;
-    //                 id = dataToReturn;
-    //             }
-
-
-    //         } catch (error) {
-    //             alert("Error while creating infra - please refresh the page:" + error);
-    //         }
-    //     }
-
-    //     const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
-
-    //     infrastructure.level++;
-
-    //     // Find "Usine de nanites level"
-    //     const usineNanitesLevel = this.#infrastructures.find(infrastructure => infrastructure.type_installation === "Usine de nanites").level;
-
-    //     if(infrastructure instanceof Installation) 
-    //     {
-    //         if(infrastructure.type_installation === "Chantier spatial")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //         else if(infrastructure.type_installation === "Laboratoire")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //         else if(infrastructure.type_installation === "Usine de nanites")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Ressource)
-    //     {
-    //         if(infrastructure.type_ressource === "Mine de metal")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //             infrastructure.production_metal = Math.round(infrastructure.production_metal * 1.5 * 100) / 100;
-    //         }
-    //         else if(infrastructure.type_ressource === "Synthetiseur de deuterium")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //             infrastructure.production_deuterium = Math.round(infrastructure.production_deuterium * 1.3 * 100) / 100;
-    //         }
-    //         else if(infrastructure.type_ressource === "Centrale solaire")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //             infrastructure.production_energie = Math.round(infrastructure.production_energie * 1.4 * 100) / 100;
-    //         }
-    //         else if(infrastructure.type_ressource === "Centrale a fusion")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //             infrastructure.production_energie = Math.round(infrastructure.production_energie * 2);
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Defense)
-    //     {
-    //         if(infrastructure.type_defense === "Artillerie laser")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //         else if(infrastructure.type_defense === "Canon a ions")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
-    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //         else if(infrastructure.type_defense === "Bouclier")
-    //         {
-    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.5);
-    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.5);
-    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.5);
-    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
-    //         }
-    //     }
-
-    //     this.upgradeInfrastructureToAPI(infrastructure.id);
-
-    //     this.notify();
-    // }
+    
 
     // checkEnoughRessource(id, type) 
     // {
@@ -386,29 +357,7 @@ export class Controller extends Notifier
 
     // }
     
-    // async loadDefaultInfrastructures() {
-    //     const [defenseData, installationData, ressourceData] = await Promise.all([
-    //         this.fetchData("?default_defense"),
-    //         this.fetchData("?default_installation"),
-    //         this.fetchData("?default_ressource")
-    //     ]);
-      
-    //     let negativeID = -1;
-      
-    //     const defaultInfrastructures = [
-    //         ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
-    //             new Defense(negativeID--, "0", type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense)
-    //         ),
-    //         ...installationData.map(({ type, installation_cout_metal, installation_cout_energie, installation_temps_construction }) =>
-    //             new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
-    //         ),
-    //         ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
-    //             new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
-    //         )
-    //     ];
-      
-    //     this.#defaultInfrastructures = defaultInfrastructures;
-    // }     
+       
     
     // mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
     //     const mergedInfrastructures = [];
@@ -528,40 +477,118 @@ export class Controller extends Notifier
     //     this.#infraTechnoRequired = infraTechnos;
     // }
 
-    async loadLaboratoireID()
-    {
-        const data = await this.fetchData(`?id_Labo&id_Planet=${this.#session.id_Planet}`);
+    // async upgradeTechnologie(id, type) 
+    // {
 
-        if (data.length > 0)
-        {
-            this.#laboratoireID = data[0].id_Labo;
-        }
-        else
-        {
-            this.#laboratoireID = -1;
-        }
+    //     if(!this.checkEnoughRessource(id, type))
+    //     {
+    //         alert("Pas assez de ressources");
+    //         return;
+    //     }
 
-    }
+    //     this.decreaseRessource(id, type);
 
-    async loadTechnologies() 
-    {
-        const laboratoireID = this.#infrastructures.find(infra => infra.type_installation === "Laboratoire").id_installation;
-        
-        if (laboratoireID > 0)
-        {
-            const data = await this.fetchData(`?technologies&id_Labo=${laboratoireID}`);
-            // console.log(data);
+    //     if (id < 0) {
+    //         try {
+    //             const dataToReturn = await this.createInfrastructureToAPI(id, type);
+    //             console.log("Success to create infra:", dataToReturn);
+                
+    //             if(dataToReturn > 0){
+    //                 const infra = this.#infrastructures.find(infrastructure => infrastructure.id === id).id = dataToReturn;
+    //                 id = dataToReturn;
+    //             }
 
-            const technos = data.map(item => {
-                return new Technologie(
-                    item.id,
-                    item.niveau,
-                    item.type_technologie
-                );
-            });
-            
-            this.#technologiesPlayer = technos;
-        }
-    }
+
+    //         } catch (error) {
+    //             alert("Error while creating infra - please refresh the page:" + error);
+    //         }
+    //     }
+
+    //     const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+
+    //     infrastructure.level++;
+
+    //     // Find "Usine de nanites level"
+    //     const usineNanitesLevel = this.#infrastructures.find(infrastructure => infrastructure.type_installation === "Usine de nanites").level;
+
+    //     if(infrastructure instanceof Installation) 
+    //     {
+    //         if(infrastructure.type_installation === "Chantier spatial")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //         else if(infrastructure.type_installation === "Laboratoire")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //         else if(infrastructure.type_installation === "Usine de nanites")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //     }
+    //     else if (infrastructure instanceof Ressource)
+    //     {
+    //         if(infrastructure.type_ressource === "Mine de metal")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //             infrastructure.production_metal = Math.round(infrastructure.production_metal * 1.5 * 100) / 100;
+    //         }
+    //         else if(infrastructure.type_ressource === "Synthetiseur de deuterium")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //             infrastructure.production_deuterium = Math.round(infrastructure.production_deuterium * 1.3 * 100) / 100;
+    //         }
+    //         else if(infrastructure.type_ressource === "Centrale solaire")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //             infrastructure.production_energie = Math.round(infrastructure.production_energie * 1.4 * 100) / 100;
+    //         }
+    //         else if(infrastructure.type_ressource === "Centrale a fusion")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //             infrastructure.production_energie = Math.round(infrastructure.production_energie * 2);
+    //         }
+    //     }
+    //     else if (infrastructure instanceof Defense)
+    //     {
+    //         if(infrastructure.type_defense === "Artillerie laser")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //         else if(infrastructure.type_defense === "Canon a ions")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.6);
+    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.6);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //         else if(infrastructure.type_defense === "Bouclier")
+    //         {
+    //             infrastructure.cout_metal = Math.round(infrastructure.cout_metal * 1.5);
+    //             infrastructure.cout_deuterium = Math.round(infrastructure.cout_deuterium * 1.5);
+    //             infrastructure.cout_energie = Math.round(infrastructure.cout_energie * 1.5);
+    //             infrastructure.temps_construction = Math.round(infrastructure.temps_construction * (1 - (usineNanitesLevel * 0.01)) * 2);
+    //         }
+    //     }
+
+    //     this.upgradeInfrastructureToAPI(infrastructure.id);
+
+    //     this.notify();
+    // }
         
 }
