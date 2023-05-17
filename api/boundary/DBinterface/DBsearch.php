@@ -3,7 +3,7 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_infrastructures");
+define('DB_LOGIN', "api_search");
 define('DB_PWD', "bGfTaly[]GK@XXTl");
 
 class DBsearch extends DBinterface {
@@ -14,12 +14,12 @@ class DBsearch extends DBinterface {
 
     public function getLaboratoireID($id_Planet)
     {
-        return $this->fetchOneRow('
+        return $this->fetchValue('
             SELECT ins.id
             FROM installation AS ins
             JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
             JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
-            WHERE ti.type = "Laboratoire" AND inf.id_Planet = ?;', [$id_Planet]
+            WHERE ti.type = "Laboratoire" AND inf.id_Planete = ?;', [$id_Planet]
         );
     }
 
