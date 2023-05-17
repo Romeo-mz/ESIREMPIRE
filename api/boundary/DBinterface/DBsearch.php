@@ -12,6 +12,17 @@ class DBsearch extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function getLaboratoireID($id_Planet)
+    {
+        return $this->fetchOneRow('
+            SELECT ins.id
+            FROM installation AS ins
+            JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
+            JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
+            WHERE ti.type = "Laboratoire" AND inf.id_Planet = ?;', [$id_Planet]
+        );
+    }
+
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
     {
         return $this->fetchAllRows('

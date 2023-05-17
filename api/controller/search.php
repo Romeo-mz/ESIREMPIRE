@@ -11,5 +11,9 @@ class Search
         $this->dbInterface = new DBsearch();
     }
     
+    public function getLaboratoireID($id_Planet)
+    {
+        return $this->dbInterface->getLaboratoireID($id_Planet);
+    }
     
 }

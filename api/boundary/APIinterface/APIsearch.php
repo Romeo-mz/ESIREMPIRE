@@ -33,10 +33,10 @@ class APIsearch
 
     private function handleGet()
     {
-        if (isset($_GET['id_Planet'])) 
+        if (isset($_GET['id_Labo']) && isset($_GET['id_Planet'])) 
         {
-            $infrastructures = $this->controller->getInfrastructures($_GET['id_Planet']);
-            $this->sendResponse(200, 'OK', json_encode($infrastructures));
+            $laboID = $this->controller->getLaboratoireID($_GET['id_Planet']);
+            $this->sendResponse(200, 'OK', json_encode($laboID));
         }
         else 
         {
