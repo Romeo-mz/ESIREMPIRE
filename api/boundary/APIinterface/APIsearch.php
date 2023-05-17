@@ -38,6 +38,11 @@ class APIsearch
             $laboID = $this->controller->getLaboratoireID($_GET['id_Planet']);
             $this->sendResponse(200, 'OK', json_encode(array('id_Labo' => $laboID)));
         }
+        else if (isset($_GET['default_technologies'])) 
+        {
+            $defaultTechno = $this->controller->getDefaultTechnologie();
+            $this->sendResponse(200, 'OK', json_encode($defaultTechno));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');

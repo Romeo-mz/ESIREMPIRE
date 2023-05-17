@@ -23,6 +23,20 @@ class DBsearch extends DBinterface {
         );
     }
 
+    public function getDefaultTechnologie()
+    {
+        return $this->fetchAllRows('
+            SELECT
+                tt.type,
+                tdf.cout_metal,
+                tdf.cout_deuterium,
+                tdf.temps_recherche
+            FROM
+                technologiedefaut tdf
+            LEFT JOIN typetechnologie tt ON tdf.id_Type_Technologie = tt.id;
+        ');
+    }
+
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
     {
         return $this->fetchAllRows('

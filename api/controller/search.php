@@ -15,5 +15,10 @@ class Search
     {
         return $this->dbInterface->getLaboratoireID($id_Planet);
     }
+
+    public function getDefaultTechnologie()
+    {
+        return $this->dbInterface->getDefaultTechnologie();
+    }
     
 }
