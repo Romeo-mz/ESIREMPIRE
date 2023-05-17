@@ -36,7 +36,7 @@ class APIsearch
         if (isset($_GET['id_Labo']) && isset($_GET['id_Planet'])) 
         {
             $laboID = $this->controller->getLaboratoireID($_GET['id_Planet']);
-            $this->sendResponse(200, 'OK', json_encode($laboID));
+            $this->sendResponse(200, 'OK', json_encode(array('id_Labo' => $laboID)));
         }
         else 
         {
