@@ -53,30 +53,6 @@ export class Controller extends Notifier
         return response.json();
     }
 
-    // async loadDefaultInfrastructures() {
-    //     const [defenseData, installationData, ressourceData] = await Promise.all([
-    //         this.fetchData("?default_defense"),
-    //         this.fetchData("?default_installation"),
-    //         this.fetchData("?default_ressource")
-    //     ]);
-      
-    //     let negativeID = -1;
-      
-    //     const defaultInfrastructures = [
-    //         ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
-    //             new Defense(negativeID--, "0", type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense)
-    //         ),
-    //         ...installationData.map(({ type, installation_cout_metal, installation_cout_energie, installation_temps_construction }) =>
-    //             new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
-    //         ),
-    //         ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
-    //             new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
-    //         )
-    //     ];
-      
-    //     this.#defaultInfrastructures = defaultInfrastructures;
-    // }  
-
     async loadDefaultTechnologies()
     {
         const data = await this.fetchData("?default_technologies");
@@ -87,7 +63,7 @@ export class Controller extends Notifier
             return new Technologie(
                 negativeID--, 
                 "0",
-                item.type_technologie,
+                item.type,
                 item.cout_metal,
                 item.cout_deuterium,
                 item.temps_recherche
@@ -103,7 +79,7 @@ export class Controller extends Notifier
 
         if (data.id_Labo !== false)
         {
-            this.#laboID = data[0].id_Labo;
+            this.#laboID = data.id_Labo;
         }
         else
         {
@@ -112,6 +88,7 @@ export class Controller extends Notifier
 
     }
 
+    // To Do
     async loadTechnologies() 
     {
         
