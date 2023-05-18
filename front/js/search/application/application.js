@@ -3,7 +3,7 @@ import { View } from "../views/view.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
-    // const myView = new View(myController);
+    const myView = new View(myController);
 
     myController.loadDefaultTechnologies()
         .then(() => {
@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     myController.loadQuantitiesRessource()
                         .then(() => {
                             console.log("Success to load ressource quantities")
+                            myController.notify();
                         })
                         .catch(error => {
                             alert("Error while loading ressource quantities - please refresh the page")

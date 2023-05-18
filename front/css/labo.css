@@ -144,6 +144,21 @@ html {
     margin: 0 auto;
 }
 
+.div-ressources {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 50%;
+    max-width: 50%;
+    max-height: 100%;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 25px;
+}
+
 .div-ressource {
     display: flex;
     justify-content: center;

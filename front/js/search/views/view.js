@@ -39,38 +39,38 @@ export class View extends Observer
 
     // }
 
-    // updateRessources() {
-    //     const ressources = this.#controller.quantiteRessource;
+    updateRessources() {
+        const ressources = this.#controller.quantiteRessource;
 
-    //     this.removePreviousRessources();
+        this.removePreviousRessources();
 
-    //     ressources.forEach(ressource => {
-    //         this.createOrUpdateRessourceElement(ressource);
-    //     });
-    // }
+        ressources.forEach(ressource => {
+            this.createOrUpdateRessourceElement(ressource);
+        });
+    }
 
-    // removePreviousRessources() {
-    //     while (document.getElementById("div-ressources").firstChild) {
-    //         document.getElementById("div-ressources").removeChild(document.getElementById("div-ressources").firstChild);
-    //     }
-    // }
+    removePreviousRessources() {
+        while (document.getElementById("div-ressources").firstChild) {
+            document.getElementById("div-ressources").removeChild(document.getElementById("div-ressources").firstChild);
+        }
+    }
 
-    // createOrUpdateRessourceElement(ressource) 
-    // {
-    //     const prefix = ressource.type.toLowerCase();
+    createOrUpdateRessourceElement(ressource) 
+    {
+        const prefix = ressource.type.toLowerCase();
 
-    //     let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
-    //     let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
-    //     let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
+        let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
+        let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
+        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
 
-    //     img.src = `img/${prefix}.png`;
-    //     img.alt = prefix;
+        img.src = `img/${prefix}.png`;
+        img.alt = prefix;
 
-    //     div.appendChild(img);
-    //     div.appendChild(p);
+        div.appendChild(img);
+        div.appendChild(p);
 
-    //     document.getElementById("div-ressources").appendChild(div);
-    // }
+        document.getElementById("div-ressources").appendChild(div);
+    }
       
 
     // updateInfrastructures() 
@@ -408,20 +408,20 @@ export class View extends Observer
 
     // }
 
-    // createOrUpdateElement(tagName, id, className, innerHTML = "") 
-    // {
-    //     let element = document.getElementById(id);
+    createOrUpdateElement(tagName, id, className, innerHTML = "") 
+    {
+        let element = document.getElementById(id);
 
-    //     if (!element) 
-    //     {
-    //         element = document.createElement(tagName);
-    //         element.id = id;
-    //         element.className = className;
-    //     }
+        if (!element) 
+        {
+            element = document.createElement(tagName);
+            element.id = id;
+            element.className = className;
+        }
 
-    //     element.innerHTML = innerHTML;
-    //     return element;
-    // }
+        element.innerHTML = innerHTML;
+        return element;
+    }
 
     // getImageSrcForType(type) 
     // {
@@ -455,7 +455,7 @@ export class View extends Observer
     notify() 
     {
         // this.updateInfrastructures();
-        // this.updateRessources();
+        this.updateRessources();
     }
 
 }
