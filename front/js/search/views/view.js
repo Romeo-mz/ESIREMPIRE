@@ -423,34 +423,34 @@ export class View extends Observer
         return element;
     }
 
-    // getImageSrcForType(type) 
-    // {
-    //     switch (type) 
-    //     {
-    //         case "Chantier spatial":
-    //             return "img/chantier-spatial.webp";
-    //         case "Laboratoire":
-    //             return "img/laboratoire.webp";
-    //         case "Usine de nanites":
-    //             return "img/usine-nanites.webp";
-    //         case "Mine de metal":
-    //             return "img/mine-metal.webp";
-    //         case "Synthetiseur de deuterium":
-    //             return "img/synthetiseur-deuterium.webp";
-    //         case "Centrale solaire":
-    //             return "img/centrale-solaire.webp";
-    //         case "Centrale a fusion":
-    //             return "img/centrale-fusion.webp";
-    //         case "Artillerie laser":
-    //             return "img/artillerie.webp";
-    //         case "Canon a ions":
-    //             return "img/canon.webp";
-    //         case "Bouclier":
-    //             return "img/bouclier.webp";
-    //         default:
-    //             return "";
-    //     }
-    // }
+    getImageSrcForType(type) 
+    {
+        switch (type) 
+        {
+            case "Chantier spatial":
+                return "img/chantier-spatial.webp";
+            case "Laboratoire":
+                return "img/laboratoire.webp";
+            case "Usine de nanites":
+                return "img/usine-nanites.webp";
+            case "Mine de metal":
+                return "img/mine-metal.webp";
+            case "Synthetiseur de deuterium":
+                return "img/synthetiseur-deuterium.webp";
+            case "Centrale solaire":
+                return "img/centrale-solaire.webp";
+            case "Centrale a fusion":
+                return "img/centrale-fusion.webp";
+            case "Artillerie laser":
+                return "img/artillerie.webp";
+            case "Canon a ions":
+                return "img/canon.webp";
+            case "Bouclier":
+                return "img/bouclier.webp";
+            default:
+                return "";
+        }
+    }
 
     notify() 
     {

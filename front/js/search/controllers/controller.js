@@ -13,7 +13,6 @@ export class Controller extends Notifier
     #session;
     #quantiteRessource;
     #technoRequired;
-    #technologiesPlayer;
     #laboID;
 
     constructor()
@@ -23,7 +22,6 @@ export class Controller extends Notifier
         this.#defaultTechnologies = [];
         this.#quantiteRessource = [];
         this.#technoRequired = [];
-        this.#technologiesPlayer = [];
 
         this.#laboID;
 
@@ -41,9 +39,6 @@ export class Controller extends Notifier
 
     get technoRequired() { return this.#technoRequired; }
     set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
-
-    get technologiesPlayer() { return this.#technologiesPlayer; }
-    set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
 
     get laboID() { return this.#laboID; }
     set laboID(laboID) { this.#laboID = laboID; }
@@ -108,11 +103,14 @@ export class Controller extends Notifier
                 return new Technologie(
                     item.id,
                     item.niveau,
-                    item.type_technologie
+                    item.type_technologie,
+                    item.cout_metal,
+                    item.cout_deuterium,
+                    item.temps_recherche * (2 ** (item.niveau - 1))
                 );
             });
-            
-            this.#technologiesPlayer = technos;
+
+            this.#technologies = this.#defaultTechnologies.concat(technos);
         }
     }
     
@@ -330,32 +328,6 @@ export class Controller extends Notifier
     //         console.error('Erreur:', error);
     //         throw error;
     //     }
-    // }
-    
-       
-    
-    // mergeInfrastructures(defaultInfrastructures, existingInfrastructures) {
-    //     const mergedInfrastructures = [];
-    
-    //     defaultInfrastructures.forEach(defaultInfra => {
-    //         let existingInfra = null;
-    
-    //         if (defaultInfra instanceof Defense) {
-    //             existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_defense === defaultInfra.type_defense);
-    //         } else if (defaultInfra instanceof Installation) {
-    //             existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_installation === defaultInfra.type_installation);
-    //         } else if (defaultInfra instanceof Ressource) {
-    //             existingInfra = existingInfrastructures.find(existingInfra => existingInfra.type_ressource === defaultInfra.type_ressource);
-    //         }
-    
-    //         if (existingInfra) {
-    //             mergedInfrastructures.push(existingInfra);
-    //         } else {
-    //             mergedInfrastructures.push(defaultInfra);
-    //         }
-    //     });
-    
-    //     return mergedInfrastructures;
     // }
     
     // async loadInfrastructureFromAPI() {
