@@ -17,7 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             myController.loadTechnologies()
                                 .then(() => {
                                     console.log("Success to load technologies")
-                                    myController.notify();
+                                    myController.loadTechnoRequired()
+                                        .then(() => {
+                                            console.log("Success to load required technologies")
+                                            myController.notify();
+                                        })
+                                        .catch(error => {
+                                            alert("Error while loading required technologies - please refresh the page")
+                                        });
                                 })
                                 .catch(error => {
                                     alert("Error while loading technologies - please refresh the page")
