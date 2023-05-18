@@ -1,4 +1,5 @@
 import { Observer } from "../pattern/observer.js";
+import { Technologie } from "../models/technologie.js";
 
 export class View extends Observer 
 {
@@ -9,26 +10,28 @@ export class View extends Observer
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
+
+        this.createRessources();
+        this.createTechnologies();
     }   
 
+    createRessources() {
+        const ressources = this.#controller.quantiteRessource;
+        
+        ressources.forEach(ressource => {
+            this.createRessourceElement(ressource);
+        });
+    }
+    
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
 
-        this.removePreviousRessources();
-
         ressources.forEach(ressource => {
-            this.createOrUpdateRessourceElement(ressource);
+            this.updateRessourceElement(ressource);
         });
     }
-
-    removePreviousRessources() {
-        while (document.getElementById("div-ressources").firstChild) {
-            document.getElementById("div-ressources").removeChild(document.getElementById("div-ressources").firstChild);
-        }
-    }
-
-    createOrUpdateRessourceElement(ressource) 
-    {
+    
+    createRessourceElement(ressource) {
         const prefix = ressource.type.toLowerCase();
 
         let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
@@ -43,28 +46,53 @@ export class View extends Observer
 
         document.getElementById("div-ressources").appendChild(div);
     }
-
-    removePreviousTechnologies()
-    {
-        while (document.getElementById("div-list-technologies").firstChild) {
-            document.getElementById("div-list-technologies").removeChild(document.getElementById("div-list-technologies").firstChild);
-        }
+    
+    updateRessourceElement(ressource) {
+        const prefix = ressource.type.toLowerCase();
+        let p = document.getElementById(`p-${prefix}`);
+        p.innerHTML = ressource.quantite;
     }
 
-    updateTechnologies() 
-    {
+    createTechnologies() {
         const technologies = this.#controller.technologies;
-        console.log(technologies);
-
-        this.removePreviousTechnologies();
 
         technologies.forEach(techno => {
-            this.createOrUpdateTechnologieElement(techno, "div-list-technologies");            
+            this.createTechnologieElements(techno);
         });
     }
 
-    createTechnologieElements(technologie, div, div_information, div_image, img) 
+    updateTechnologies() {
+        const technologies = this.#controller.technologies;
+
+        technologies.forEach(techno => {
+            this.updateTechnologieElement(techno);
+        });
+    }
+
+    updateTechnologieElement(technologie) {
+        const idPrefix = `div-technologie`;
+        const levelDiv = document.getElementById(`${idPrefix}-level-technologie-${technologie.id}`);
+        console.log(`${idPrefix}-level-technologie-${technologie.id}`);
+
+        // TRY TO FIX HERE
+        levelDiv.innerHTML = "Niveau: " + technologie.level;
+        const metalDiv = document.getElementById(`${idPrefix}-metal`);
+        if (metalDiv) metalDiv.innerHTML = "Métal: " + technologie.cout_metal;
+        const deuteriumDiv = document.getElementById(`${idPrefix}-deuterium`);
+        deuteriumDiv.innerHTML = "Deuterium: " + technologie.cout_deuterium;
+        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-${technologie.id}`);
+        buttonUpgrade.innerHTML = technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s";
+    }
+
+    createTechnologieElements(technologie) 
     {
+        let parentDivId = "div-list-technologies";
+
+        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
+        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
+        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
+        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
+
         let div_information_type = null;
         let div_information_level = null;
         let div_information_metal = null;
@@ -140,21 +168,10 @@ export class View extends Observer
         });
 
         div.appendChild(div_upgrade);
-
-    }
-
-    
-    createOrUpdateTechnologieElement(technologie, parentDivId) 
-    {
-        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
-        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
-        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
-        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
-
-        this.createTechnologieElements(technologie, div, div_information, div_image, img);
-
         document.getElementById(parentDivId).appendChild(div);
+
     }
+
 
     createOrUpdateElement(tagName, id, className, innerHTML = "") 
     {
