@@ -20,5 +20,10 @@ class Search
     {
         return $this->dbInterface->getDefaultTechnologie();
     }
+
+    public function getQuantityRessourcePlayer($id_Player, $id_Universe)
+    {
+        return $this->dbInterface->getQuantityRessourcePlayer($id_Player, $id_Universe);
+    }
     
 }

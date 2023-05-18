@@ -53,6 +53,9 @@ class DBsearch extends DBinterface {
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
 
+    
+    // TO DO //
+
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
