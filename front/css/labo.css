@@ -46,7 +46,7 @@ html {
     border: 1px solid #68446a9e;
 }
 
-.div-recherches {
+.div-technologies {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +61,7 @@ html {
     font-size: 25px;
 }
 
-.div-list-recherches {
+.div-list-technologies {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,7 @@ html {
     font-size: 25px;
 }
 
-.div-recherches {
+.div-technologie {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,7 +92,7 @@ html {
     font-size: 25px;
 }
 
-.div-recherches-information {
+.div-technologie-information {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -100,6 +100,12 @@ html {
     max-height: 100%;
     margin: 0 auto;
 
+}
+
+.img-technologie {
+    width: 180px;
+    height: 180;
+    margin: 0 auto;
 }
 
 .upgrade-button {
@@ -121,21 +127,6 @@ html {
 .upgrade-button:hover{
     background-image: linear-gradient(45deg, #b15e00 10%, #8d0505 100%);
     color:#bbbaba;
-}
-
-.div-recherches {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    width: 50%;
-    max-width: 50%;
-    max-height: 100%;
-    margin: 0 auto;
-    background: #FFFFFF;
-    border-radius: 10px;
-    overflow: hidden;
-    font-size: 25px;
 }
 
 .img-ressource {

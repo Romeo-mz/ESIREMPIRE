@@ -110,8 +110,27 @@ export class Controller extends Notifier
                 );
             });
 
-            this.#technologies = this.#defaultTechnologies.concat(technos);
+            this.#technologies = this.mergeTechnologies(this.#defaultTechnologies, technos);
         }
+    }
+
+    mergeTechnologies(defaultTechnologies, existingTechnologies) {
+        const mergedTechnologies = [];
+    
+        defaultTechnologies.forEach(defaultTechno => {
+            let existingTechno = null;
+
+            existingTechno = existingTechnologies.find(existingTechno => existingTechno.type === defaultTechno.type);
+
+    
+            if (existingTechno) {
+                mergedTechnologies.push(existingTechno);
+            } else {
+                mergedTechnologies.push(defaultTechno);
+            }
+        });
+    
+        return mergedTechnologies;
     }
     
     
