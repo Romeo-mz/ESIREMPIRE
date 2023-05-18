@@ -11,6 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
             myController.loadLaboratoireID()
                 .then(() => {
                     console.log("Success to load labo id")
+                    myController.loadQuantitiesRessource()
+                        .then(() => {
+                            console.log("Success to load ressource quantities")
+                        })
+                        .catch(error => {
+                            alert("Error while loading ressource quantities - please refresh the page")
+                        });
                 })
                 .catch(error => {
                     alert("Error while loading labo id - please refresh the page")

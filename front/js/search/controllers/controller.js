@@ -88,6 +88,15 @@ export class Controller extends Notifier
 
     }
 
+    async loadQuantitiesRessource() {
+        const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
+
+        this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
+            new QuantiteRessource(id_Ressource, type, quantite)
+        );
+
+    }
+
     // To Do
     async loadTechnologies() 
     {
@@ -323,15 +332,6 @@ export class Controller extends Notifier
     //         console.error('Erreur:', error);
     //         throw error;
     //     }
-    // }
-    
-    // async loadQuantitiesRessource() {
-    //     const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
-
-    //     this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
-    //         new QuantiteRessource(id_Ressource, type, quantite)
-    //     );
-
     // }
     
        
