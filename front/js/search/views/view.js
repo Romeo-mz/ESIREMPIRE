@@ -210,6 +210,8 @@ export class View extends Observer
                 return "img/techno-laser.png";
             case "IONS":
                 return "img/techno-ions.png";
+            case "IA":
+                return "img/techno-ia.png";
             case "BOUCLIER":
                 return "img/techno-bouclier.png";
             case "ARMEMENT":
