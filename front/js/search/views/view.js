@@ -1,5 +1,4 @@
 import { Observer } from "../pattern/observer.js";
-import { Technologie } from "../models/technologie.js";
 
 export class View extends Observer 
 {
@@ -95,7 +94,6 @@ export class View extends Observer
                 this.#controller.upgradeTechnologie(technologie.id, technologie.type);
             }, technologie.temps_recherche * 1000);
         });
-
         
 
         div_image.appendChild(img);
