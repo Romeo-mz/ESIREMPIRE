@@ -48,6 +48,11 @@ class APIsearch
             $quantity_ressource_player = $this->controller->getQuantityRessourcePlayer($_GET['id_Player'], $_GET['id_Universe']);
             $this->sendResponse(200, 'OK', json_encode($quantity_ressource_player));
         }
+        else if(isset($_GET['technologies']) && isset($_GET['id_Labo']))
+        {
+            $technologies = $this->controller->getTechnologies($_GET['id_Labo']);
+            $this->sendResponse(200, 'OK', json_encode($technologies));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');

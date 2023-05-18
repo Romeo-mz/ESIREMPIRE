@@ -53,6 +53,21 @@ class DBsearch extends DBinterface {
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
 
+    public function getTechnologies($id_Labo)
+    {
+        return $this->fetchAllRows('
+            SELECT
+                technologie.id,
+                technologie.niveau,
+                typetechnologie.type AS type_technologie
+            FROM
+                technologie
+            JOIN
+                typetechnologie ON technologie.id_Type = typetechnologie.id
+            WHERE
+            technologie.id_Laboratoire = ?;', [$id_Labo]);
+    }
+
     
     // TO DO //
 
@@ -80,20 +95,7 @@ class DBsearch extends DBinterface {
                 tn.id_Technologie_Necessaire = tt2.id;');
     }
 
-    public function getTechnologies($id_Labo)
-    {
-        return $this->fetchAllRows('
-            SELECT
-                technologie.id,
-                technologie.niveau,
-                typetechnologie.type AS type_technologie
-            FROM
-                technologie
-            JOIN
-                typetechnologie ON technologie.id_Type = typetechnologie.id
-            WHERE
-                technologie.id_Laboratoire = ?;', [$id_Labo]);
-    }
+    
 
 }
 

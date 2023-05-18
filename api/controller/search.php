@@ -25,5 +25,10 @@ class Search
     {
         return $this->dbInterface->getQuantityRessourcePlayer($id_Player, $id_Universe);
     }
+
+    public function getTechnologies($id_Labo)
+    {
+        return $this->dbInterface->getTechnologies($id_Labo);
+    }
     
 }
