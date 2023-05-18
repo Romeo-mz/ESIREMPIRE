@@ -61,12 +61,21 @@ class APIsearch
 
     private function handlePost()
     {
-        // decode json post data
         $data = json_decode(file_get_contents('php://input'), true);
-        
-        if (isset($data['id_Planet']) && isset($data['id_Infrastructure'])) 
+    
+        if (isset($data['id_Labo']) && isset($data['id_Technologie'])) 
         {
-            $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
+            $this->controller->upgradeTechnologie($data['id_Technologie']);
+            $this->sendResponse(200, 'OK');
+        }
+        else if (isset($data['id_Labo']) && isset($data['type'])) 
+        {
+            $id_New_Technologie = $this->controller->createTechnologie($data['id_Labo'], $data['type']);
+            $this->sendResponse(200, 'OK', json_encode(array('id_New_Technologie' => $id_New_Technologie)));
+        }
+        else if (isset($data['id_Ressource']) && isset($data['quantite']))
+        {
+            $this->controller->updateQuantityRessource($data['id_Ressource'], $data['quantite']);
             $this->sendResponse(200, 'OK');
         }
         else 

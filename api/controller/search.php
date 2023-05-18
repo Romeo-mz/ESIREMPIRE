@@ -30,5 +30,20 @@ class Search
     {
         return $this->dbInterface->getTechnologies($id_Labo);
     }
+
+    public function upgradeTechnologie($id_Technologie)
+    {
+        $this->dbInterface->upgradeTechnologie($id_Technologie);
+    }
+
+    public function createTechnologie($id_Labo, $type)
+    {
+        return $this->dbInterface->createTechnologie($id_Labo, $type);
+    }
+
+    public function updateQuantityRessource($id_Ressource, $quantite)
+    {
+        $this->dbInterface->updateQuantityRessource($id_Ressource, $quantite);
+    }
     
 }

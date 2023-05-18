@@ -73,13 +73,52 @@ class DBsearch extends DBinterface {
                 technologie.id_Laboratoire = ?;', [$id_Labo]);
     }
 
+    public function upgradeTechnologie($id_Technologie) 
+    {
+        return $this->executeQuery('UPDATE technologie SET niveau = niveau + 1 WHERE id = ?;', [$id_Technologie]);
+    }
     
-    // TO DO //
+    public function createTechnologie($id_Labo, $type)
+    {
+        switch ($type) {
+            case 'ENERGIE':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 1);', [$id_Labo]);
+                break;
+            case 'LASER':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 2);', [$id_Labo]);
+                break;
+            case 'IONS':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 3);', [$id_Labo]);
+                break;
+            case 'IA':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 4);', [$id_Labo]);
+                break;
+            case 'ARMEMENT':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 5);', [$id_Labo]);
+                break;
+            case 'BOUCLIER':
+                $this->executeQuery('
+                INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 6);', [$id_Labo]);
+                break;
+        }
+
+        $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = ?;', [$id_Labo, $type]);
+
+        return $id_Technologie;
+    }
 
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
     }
+
+    
+    // TO DO //
 
     public function getTechnoRequired()
     {
