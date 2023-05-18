@@ -117,9 +117,6 @@ class DBsearch extends DBinterface {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
     }
 
-    
-    // TO DO //
-
     public function getTechnoRequired()
     {
         return $this->fetchAllRows('

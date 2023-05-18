@@ -53,6 +53,11 @@ class APIsearch
             $technologies = $this->controller->getTechnologies($_GET['id_Labo']);
             $this->sendResponse(200, 'OK', json_encode($technologies));
         }
+        else if(isset($_GET['techno_required']))
+        {
+            $techno_required = $this->controller->getTechnoRequired();
+            $this->sendResponse(200, 'OK', json_encode($techno_required));
+        }
         else 
         {
             $this->sendResponse(400, 'Bad Request');
