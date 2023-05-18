@@ -135,194 +135,69 @@ export class Controller extends Notifier
     
     
 
-    // checkEnoughRessource(id, type) 
-    // {
-    //     const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+    checkEnoughRessource(id, type) 
+    {
+        const technologie = this.#technologies.find(technologie => technologie.id === id);
 
-    //     const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
-    //     const quantiteEnergie = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite);
-    //     const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
+        const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
+        const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
 
-    //     if (infrastructure instanceof Installation) {
-    //         if (infrastructure.type_installation === "Chantier spatial") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_installation === "Laboratoire") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_installation === "Usine de nanites") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Ressource) {
-    //         if (infrastructure.type_ressource === "Mine de metal") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_ressource === "Synthetiseur de deuterium") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_ressource === "Centrale solaire") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteDeuterium < infrastructure.cout_deuterium) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_ressource === "Centrale a fusion") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Defense) {
-    //         if (infrastructure.type_defense === "Artillerie laser") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_defense === "Canon a ions") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //         else if (infrastructure.type_defense === "Bouclier") {
-    //             if (quantiteMetal < infrastructure.cout_metal || quantiteEnergie < infrastructure.cout_energie) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
+        
+            if (quantiteDeuterium < technologie.cout_deuterium) 
+            {
+                if (technologie.type === "ARMEMENT") 
+                {
+                    if (quantiteMetal < technologie.cout_metal) 
+                    {
+                        return false;
+                    }
+                }
+                return false;
+            }
 
-    //     return true;
 
-    // }
+        return true;
 
-    // decreaseRessource(id, type) 
-    // {
-    //     const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+    }
 
-    //     const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
-    //     const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
+    decreaseRessource(id, type) 
+    {
+        const technologie = this.#technologies.find(technologie => technologie.id === id);
 
-    //     const idQuantiteEnergie = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").id;
-    //     const quantiteEnergie = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite;
+        const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
+        const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
 
-    //     const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
-    //     const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
+        const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
+        const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
 
-    //     if (infrastructure instanceof Installation) {
-    //         if (infrastructure.type_installation === "Chantier spatial") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+        if (technologie.type === "ARMEMENT") 
+        {
+            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= technologie.cout_metal;
+            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
 
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //         }
-    //         else if (infrastructure.type_installation === "Laboratoire") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", technologie.cout_metal);
+            this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", technologie.cout_deuterium);
+        }
+        else {
+            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
 
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //         }
-    //         else if (infrastructure.type_installation === "Usine de nanites") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+            this.decreaseRessourceToAPI(idQuantiteDeuterium, "METAL", technologie.cout_deuterium);
+        }
 
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Ressource) {
-    //         if (infrastructure.type_ressource === "Mine de metal") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+    }
 
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //         }
-    //         else if (infrastructure.type_ressource === "Synthetiseur de deuterium") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
+    async decreaseRessourceToAPI(id, type, quantite) 
+    {
+        const ressourceData = {
+            id_Ressource: parseInt(id),
+            quantite: parseInt(quantite)
+        };
 
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //         }
-    //         else if (infrastructure.type_ressource === "Centrale solaire") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
-
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", infrastructure.cout_deuterium);
-    //         }
-    //         else if (infrastructure.type_ressource === "Centrale a fusion") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
-
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", infrastructure.cout_deuterium);
-    //         }
-    //     }
-    //     else if (infrastructure instanceof Defense) {
-    //         if (infrastructure.type_defense === "Artillerie laser") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
-
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", infrastructure.cout_deuterium);
-    //         }
-    //         else if (infrastructure.type_defense === "Canon a ions") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
-
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", infrastructure.cout_deuterium);
-    //         }
-    //         else if (infrastructure.type_defense === "Bouclier") {
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= infrastructure.cout_metal;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite -= infrastructure.cout_energie;
-    //             this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= infrastructure.cout_deuterium;
-
-    //             this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", infrastructure.cout_metal);
-    //             this.decreaseRessourceToAPI(idQuantiteEnergie, "ENERGIE", infrastructure.cout_energie);
-    //             this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", infrastructure.cout_deuterium);
-    //         }
-    //     }
-
-    // }
-
-    // async decreaseRessourceToAPI(id, type, quantite) 
-    // {
-    //     const ressourceData = {
-    //         id_Ressource: parseInt(id),
-    //         quantite: parseInt(quantite)
-    //     };
-
-    //     fetch(API_BASE_URL, {
-    //         method: 'POST',
-    //         body: JSON.stringify(ressourceData)
-    //     });
-    // }
-
-    // async upgradeInfrastructureToAPI(id_Infrastructure)
-    // {
-    //     const infrastructureData = {
-    //         id_Planet: this.#session.id_Planet,
-    //         id_Infrastructure: id_Infrastructure
-    //     };
-    
-    //     await fetch(API_BASE_URL, {
-    //         method: 'POST',
-    //         body: JSON.stringify(infrastructureData)
-    //     });
-    // }
+        fetch(API_BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(ressourceData)
+        });
+    }
     
     async createTechnologieToAPI(type) {
         const technologieData = {
@@ -347,6 +222,59 @@ export class Controller extends Notifier
             console.error('Erreur:', error);
             throw error;
         }
+    }
+
+    
+
+    async upgradeTechnologieToAPI(id_Technologie)
+    {
+        const technologieData = {
+            id_Labo: this.#laboID,
+            id_Technologie: id_Technologie
+        };
+    
+        await fetch(API_BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(technologieData)
+        });
+    }
+
+    async upgradeTechnologie(id, type) 
+    {
+
+        if(!this.checkEnoughRessource(id, type))
+        {
+            alert("Pas assez de ressources");
+            return;
+        }
+
+        this.decreaseRessource(id, type);
+
+        if (id < 0) {
+            try {
+                const dataToReturn = await this.createTechnologieToAPI(type);
+                console.log("Success to create techno:", dataToReturn);
+                
+                if(dataToReturn > 0){
+                    const techno = this.#technologies.find(technologie => technologie.id === id).id = dataToReturn;
+                    id = dataToReturn;
+                }
+
+
+            } catch (error) {
+                alert("Error while creating techno - please refresh the page:" + error);
+            }
+        }
+
+        const technologie = this.#technologies.find(technologie => technologie.id === id);
+
+        technologie.level++;
+
+        technologie.temps_recherche = Math.round(technologie.temps_recherche * 2);
+            
+        this.upgradeTechnologieToAPI(technologie.id);
+
+        this.notify();
     }
 
     // async loadTechnoRequired() {
@@ -396,43 +324,5 @@ export class Controller extends Notifier
         
     //     this.#infraTechnoRequired = infraTechnos;
     // }
-
-    async upgradeTechnologie(id, type) 
-    {
-
-        // if(!this.checkEnoughRessource(id, type))
-        // {
-        //     alert("Pas assez de ressources");
-        //     return;
-        // }
-
-        // this.decreaseRessource(id, type);
-
-        if (id < 0) {
-            try {
-                const dataToReturn = await this.createTechnologieToAPI(type);
-                console.log("Success to create techno:", dataToReturn);
-                
-                if(dataToReturn > 0){
-                    const techno = this.#technologies.find(technologie => technologie.id === id).id = dataToReturn;
-                    id = dataToReturn;
-                }
-
-
-            } catch (error) {
-                alert("Error while creating techno - please refresh the page:" + error);
-            }
-        }
-
-        const technologie = this.#technologies.find(technologie => technologie.id === id);
-
-        technologie.level++;
-
-        technologie.temps_recherche = Math.round(technologie.temps_recherche ** 2);
-            
-        this.upgradeTechnologieToAPI(technologie.id);
-
-        this.notify();
-    }
         
 }
