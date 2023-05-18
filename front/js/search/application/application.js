@@ -14,7 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     myController.loadQuantitiesRessource()
                         .then(() => {
                             console.log("Success to load ressource quantities")
-                            myController.notify();
+                            myController.loadTechnologies()
+                                .then(() => {
+                                    console.log("Success to load technologies")
+                                    myController.notify();
+                                })
+                                .catch(error => {
+                                    alert("Error while loading technologies - please refresh the page")
+                                });
                         })
                         .catch(error => {
                             alert("Error while loading ressource quantities - please refresh the page")

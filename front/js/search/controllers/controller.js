@@ -102,9 +102,7 @@ export class Controller extends Notifier
         
         if (this.#laboID !== -1)
         {
-            console.log(this.#laboID);
             const data = await this.fetchData(`?technologies&id_Labo=${this.#laboID}`);
-            console.log(data);
 
             const technos = data.map(item => {
                 return new Technologie(
