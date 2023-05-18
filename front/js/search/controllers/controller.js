@@ -277,52 +277,18 @@ export class Controller extends Notifier
         this.notify();
     }
 
-    // async loadTechnoRequired() {
-    //     const data = await this.fetchData(`?techno_required`);
+    async loadTechnoRequired() {
+        const data = await this.fetchData(`?techno_required`);
 
-    //     const technos = data.map(item => {
-    //         return new TechnoRequired(
-    //             item.technologie,
-    //             item.technologie_necessaire,
-    //             item.technologie_necessaire_niveau
-    //         );
-    //     });
+        const technos = data.map(item => {
+            return new TechnoRequired(
+                item.technologie,
+                item.technologie_necessaire,
+                item.technologie_necessaire_niveau
+            );
+        });
         
-    //     this.#technoRequired = technos;
-    // }
-
-    // async loadInfraTechnoRequired()
-    // {
-    //     const data = await this.fetchData(`?infra_techno_required`);
-
-    //     const infraTechnos = data.map(item => {
-    //         if(item.Type_Installation !== null)
-    //         {
-    //             return new InfraTechnoRequired(
-    //                 item.Type_Installation,
-    //                 item.Type_Technologie,
-    //                 item.niveau
-    //             );
-    //         }
-    //         else if(item.Type_Ressource !== null)
-    //         {
-    //             return new InfraTechnoRequired(
-    //                 item.Type_Ressource,
-    //                 item.Type_Technologie,
-    //                 item.niveau
-    //             );
-    //         }
-    //         else if(item.Type_Defense !== null)
-    //         {
-    //             return new InfraTechnoRequired(
-    //                 item.Type_Defense,
-    //                 item.Type_Technologie,
-    //                 item.niveau
-    //             );
-    //         }
-    //     });
-        
-    //     this.#infraTechnoRequired = infraTechnos;
-    // }
+        this.#technoRequired = technos;
+    }
         
 }
