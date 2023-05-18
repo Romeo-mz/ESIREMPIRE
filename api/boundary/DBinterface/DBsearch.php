@@ -59,13 +59,18 @@ class DBsearch extends DBinterface {
             SELECT
                 technologie.id,
                 technologie.niveau,
-                typetechnologie.type AS type_technologie
+                tt.type AS type_technologie,
+                td.cout_metal,
+                td.cout_deuterium,
+                td.temps_recherche
             FROM
                 technologie
             JOIN
-                typetechnologie ON technologie.id_Type = typetechnologie.id
+                typetechnologie tt ON technologie.id_Type = tt.id
+            LEFT JOIN 
+                technologiedefaut td ON tt.id = td.id_Type_Technologie
             WHERE
-            technologie.id_Laboratoire = ?;', [$id_Labo]);
+                technologie.id_Laboratoire = ?;', [$id_Labo]);
     }
 
     
