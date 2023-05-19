@@ -133,14 +133,21 @@ export class View extends Observer
             technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s"
         );
 
-        button_upgrade.addEventListener("click", () =>
-        {
+        button_upgrade.addEventListener("click", () => {
             button_upgrade.disabled = true;
-            button_upgrade.innerHTML = "En cours...<br>" + technologie.temps_recherche + "s";
-            setTimeout(() => {
-                this.#controller.upgradeTechnologie(technologie.id, technologie.type);
-            }, technologie.temps_recherche * 1000);
+            let remainingTime = technologie.temps_recherche;
+            button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+        
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeTechnologie(technologie.id, technologie.type);
+                }
+            }, 1000);
         });
+        
         
 
         div_image.appendChild(img);
@@ -157,6 +164,7 @@ export class View extends Observer
         const technoRequired = this.#controller.technoRequired;
         const technoPlayer = this.#controller.technologies;
 
+        // Check if the player has the required technologies
         (technoRequired).forEach(technorequired => {
             if(technorequired.techno === technologie.type) 
             {
