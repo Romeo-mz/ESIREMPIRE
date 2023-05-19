@@ -68,39 +68,16 @@ export class View extends Observer
     updateShip(id) {
         const ships = this.#controller.ships;
         const ship = ships.find(ship => ship.id === id);
-        this.updateTechnologieElement(ship);
-    }
-
-    checkAndUpdateTechnologieRequirements(technologie) {
-        const technoRequired = this.#controller.technoRequired;
-        const technoPlayer = this.#controller.technologies;
-    
-        technoRequired.forEach(technorequired => {
-
-            if (technorequired.technoRequired === technologie.type) {
-    
-                if (technologie.level < technorequired.technoRequiredLevel) {
-                    return;
-                }
-
-                const techno2 = technoPlayer.find(techno => techno.type === technorequired.techno);
-
-                const stripElementId = `div-strip-techno-required-list-technologie-${techno2.id}`;
-                const stripElement = document.getElementById(stripElementId);
-                if (stripElement) stripElement.remove();
-
-                const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${techno2.id}`);
-                buttonUpgrade.disabled = false;
-                buttonUpgrade.innerHTML = techno2.level === '0' ? `Construire <br>${techno2.temps_recherche}s` : `Améliorer <br>${techno2.temps_recherche}s`;
-            }
-        });
+        this.updateShipElement(ship);
     }
     
-    updateTechnologieElement(ship) {    
-        const quantiteDiv = document.getElementById(this.getTechnologieElementId('quantite', ship.id));
+    updateShipElement(ship) {    
+        const quantiteDiv = document.getElementById(this.getShipElementId('quantite', ship.id));
         quantiteDiv.innerHTML = `Quantité: ${ship.quantite}`;
 
-        // this.checkAndUpdateTechnologieRequirements(technologie);
+        const buttonUpgrade = document.getElementById(`upgrade-ship-button-ship-${ship.id}`);
+        buttonUpgrade.innerHTML = `Construire <br>${ship.temps_construction}s`;
+        buttonUpgrade.disabled = false;
     }
 
     createShipElements(ship) 
@@ -239,7 +216,7 @@ export class View extends Observer
         }
     }
 
-    notify() 
+    notify(id) 
     {
         this.updateShip(id);
         this.updateRessources();

@@ -210,7 +210,9 @@ export class Controller extends Notifier
             const dataToReturn = await this.addShipToAPI(type.toUpperCase());
             console.log("Success to add ship");
             
-            ship.quantite += 1;
+            ship.quantite = parseInt(ship.quantite) + 1;
+
+            this.notify(id);
 
         } catch (error) {
             alert("Error while adding ship - please refresh the page:" + error);
