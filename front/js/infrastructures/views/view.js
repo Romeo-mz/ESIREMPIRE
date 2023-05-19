@@ -113,10 +113,16 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() => {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
+                }
+            }, 1000);
         });
 
         div_image.appendChild(img);
@@ -204,11 +210,16 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() =>
-            {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
+                }
+            }, 1000);
         });
 
         div_image.appendChild(img);
@@ -299,11 +310,16 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() =>
-            {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
+                }
+            }, 1000);
         });
 
         div_image.appendChild(img);
