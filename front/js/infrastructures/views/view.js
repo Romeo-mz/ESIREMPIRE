@@ -124,11 +124,31 @@ export class View extends Observer
             }, 1000);
         });
 
+        
+
         div_image.appendChild(img);
         div_information.appendChild(div_information_type);
         div_information.appendChild(div_information_level);
         div_information.appendChild(div_information_metal);
         div_information.appendChild(div_information_energie);
+
+        if(infrastructure.type_installation === "Laboratoire" && infrastructure.level !== "0")
+        {
+            let button_search = this.createOrUpdateElement(
+                "button",
+                `search-installation-button-${prefix}-${infrastructure.id}`,
+                "upgrade-button",
+                "Rechercher"
+            );
+
+            button_search.addEventListener("click", () =>
+            {
+                window.location.href = "./search.html";
+            });
+
+            div_upgrade.appendChild(button_search);
+        }
+
         div_upgrade.appendChild(button_upgrade);
 
         div.appendChild(div_image);
