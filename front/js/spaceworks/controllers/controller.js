@@ -135,150 +135,86 @@ export class Controller extends Notifier
         }
     }
 
-    // checkEnoughRessource(id, type) 
-    // {
-    //     const technologie = this.#technologies.find(technologie => technologie.id === id);
+    checkEnoughRessource(id) 
+    {
+        const ship = this.#ships.find(ship => ship.id === id);
 
-    //     const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
-    //     const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
-
+        const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
+        const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
         
-    //         if (quantiteDeuterium < technologie.cout_deuterium) 
-    //         {
-    //             if (technologie.type === "ARMEMENT") 
-    //             {
-    //                 if (quantiteMetal < technologie.cout_metal) 
-    //                 {
-    //                     return false;
-    //                 }
-    //             }
-    //             return false;
-    //         }
+        if (quantiteDeuterium < ship.cout_deuterium || quantiteMetal < ship.cout_metal) 
+        {
+            return false;
+        }
 
+        return true;
+    }
 
-    //     return true;
+    decreaseRessource(id) 
+    {
+        const ship = this.#ships.find(ship => ship.id === id);
 
-    // }
+        const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
+        const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
 
-    // decreaseRessource(id, type) 
-    // {
-    //     const technologie = this.#technologies.find(technologie => technologie.id === id);
+        const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
+        const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
 
-    //     const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
-    //     const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
+        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= technologie.cout_metal;
+        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
 
-    //     const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
-    //     const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
+        this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", ship.cout_metal);
+        this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", ship.cout_deuterium);
 
-    //     if (technologie.type === "ARMEMENT") 
-    //     {
-    //         this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= technologie.cout_metal;
-    //         this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
+    }
 
-    //         this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", technologie.cout_metal);
-    //         this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", technologie.cout_deuterium);
-    //     }
-    //     else {
-    //         this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
+    async decreaseRessourceToAPI(id, type, quantite) 
+    {
+        const ressourceData = {
+            id_Ressource: parseInt(id),
+            quantite: parseInt(quantite)
+        };
 
-    //         this.decreaseRessourceToAPI(idQuantiteDeuterium, "METAL", technologie.cout_deuterium);
-    //     }
-
-    // }
-
-    // async decreaseRessourceToAPI(id, type, quantite) 
-    // {
-    //     const ressourceData = {
-    //         id_Ressource: parseInt(id),
-    //         quantite: parseInt(quantite)
-    //     };
-
-    //     fetch(API_BASE_URL, {
-    //         method: 'POST',
-    //         body: JSON.stringify(ressourceData)
-    //     });
-    // }
+        fetch(API_BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(ressourceData)
+        });
+    }
     
-    // async createTechnologieToAPI(type) {
-    //     const technologieData = {
-    //         id_Labo: this.#laboID,
-    //         type: type
-    //     };
+    async addShipToAPI(type) {
+        const shipData = {
+            id_Spacework: this.#spaceworkID,
+            type: type
+        };
     
-    //     try {
-    //         const response = await fetch(API_BASE_URL, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(technologieData),
-    //         });
-    
-    //         const jsonData = await response.json();
-    //         const dataToReturn = jsonData.id_New_Technologie;
-    
-    //         return dataToReturn;
-    //     } catch (error) {
-    //         console.error('Erreur:', error);
-    //         throw error;
-    //     }
-    // }    
-
-    // async upgradeTechnologieToAPI(id_Technologie)
-    // {
-    //     const technologieData = {
-    //         id_Labo: this.#laboID,
-    //         id_Technologie: id_Technologie
-    //     };
-    
-    //     await fetch(API_BASE_URL, {
-    //         method: 'POST',
-    //         body: JSON.stringify(technologieData)
-    //     });
-    // }
-
-    // async upgradeTechnologie(id, type) 
-    // {
-    //     const oldId = id;
-
-    //     if(!this.checkEnoughRessource(id, type))
-    //     {
-    //         alert("Pas assez de ressources");
-    //         return;
-    //     }
-
-    //     this.decreaseRessource(id, type);
-
-    //     if (id < 0) {
-    //         try {
-    //             const dataToReturn = await this.createTechnologieToAPI(type.toUpperCase());
-    //             console.log("Success to create techno:", dataToReturn);
-                
-    //             if(dataToReturn > 0){
-    //                 const techno = this.#technologies.find(technologie => technologie.id === id).id = dataToReturn;
-    //                 id = dataToReturn;
-    //             }
+        fetch(API_BASE_URL, {
+            method: 'POST',
+            body: JSON.stringify(shipData),
+        });
+    }    
 
 
-    //         } catch (error) {
-    //             alert("Error while creating techno - please refresh the page:" + error);
-    //         }
-    //     }
+    async addShip(id, type) 
+    {
+        const ship = this.#ships.find(ship => ship.id === id);
 
-    //     const technologie = this.#technologies.find(technologie => technologie.id === id);
+        if(!this.checkEnoughRessource(id, type))
+        {
+            alert("Pas assez de ressources");
+            return;
+        }
 
-    //     technologie.level++;
+        this.decreaseRessource(id, type);
 
-    //     technologie.temps_recherche = Math.round(technologie.temps_recherche * 2);
+        try {
+            const dataToReturn = await this.addShipToAPI(type.toUpperCase());
+            console.log("Success to create techno:", dataToReturn);
             
-    //     this.upgradeTechnologieToAPI(technologie.id)
-    //         .then(() => {
-    //             this.notify(oldId, technologie.id);
-    //         })
-    //         .catch(error => {
-    //             alert("Error while upgrading techno - please refresh the page:" + error);
-    //         }
-    //     );
-    // }
+            ship.quantite += 1;
+
+        } catch (error) {
+            alert("Error while adding ship - please refresh the page:" + error);
+        }
+    }
         
 }

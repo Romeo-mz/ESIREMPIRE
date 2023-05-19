@@ -149,7 +149,7 @@ export class View extends Observer
                 button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
                 if (remainingTime === 0) {
                     clearInterval(intervalId);
-                    this.#controller.upgradeShip(ship.id, ship.type);
+                    this.#controller.addShip(ship.id, ship.type);
                 }
             }, 1000);
         });
