@@ -148,6 +148,22 @@ export class View extends Observer
 
             div_upgrade.appendChild(button_search);
         }
+        else if(infrastructure.type_installation === "Chantier spatial" && infrastructure.level !== "0")
+        {
+            let button_search = this.createOrUpdateElement(
+                "button",
+                `spaceworks-installation-button-${prefix}-${infrastructure.id}`,
+                "upgrade-button",
+                "Créer Vaisseaux"
+            );
+
+            button_search.addEventListener("click", () =>
+            {
+                window.location.href = "./spaceworks.html";
+            });
+
+            div_upgrade.appendChild(button_search);
+        }
 
         div_upgrade.appendChild(button_upgrade);
 
