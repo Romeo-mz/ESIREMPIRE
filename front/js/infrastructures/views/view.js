@@ -51,7 +51,6 @@ export class View extends Observer
     updateInfrastructures() 
     {
         const infrastructures = this.#controller.infrastructures;
-        console.log(infrastructures);
 
         this.removePreviousInfrastructures();
 
@@ -339,8 +338,6 @@ export class View extends Observer
         const infratechnorequired = this.#controller.infraTechnoRequired;
         const technoPlayer = this.#controller.technologiesPlayer;
         const technoRequired = this.#controller.technoRequired;
-
-        console.log(technoPlayer);
 
         (infratechnorequired).forEach(infratechno => {
             if(infratechno.infra_type === infrastructure.type_defense) 
