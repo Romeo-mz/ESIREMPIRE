@@ -4,12 +4,17 @@ import { View } from "../views/view.js";
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
 
-    myController.loadDefaultTechnologies()
+    myController.loadLaboratoireID()
         .then(() => {
-            console.log("Success to load default technologies")
-            myController.loadLaboratoireID()
+            console.log("Success to load labo id")
+            if (myController.laboID == -1) {
+                alert("You have to build a laboratory")
+                window.location.href = "./infrastructures.html";
+                return;
+            }
+            myController.loadDefaultTechnologies()
                 .then(() => {
-                    console.log("Success to load labo id")
+                    console.log("Success to load default technologies")
                     myController.loadQuantitiesRessource()
                         .then(() => {
                             console.log("Success to load ressource quantities")
@@ -19,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
                                     myController.loadTechnoRequired()
                                         .then(() => {
                                             console.log("Success to load required technologies")
-                                            // myController.notify();
                                             const myView = new View(myController);
                                         })
                                         .catch(error => {
@@ -35,11 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         });
                 })
                 .catch(error => {
-                    alert("Error while loading labo id - please refresh the page")
+                    alert("Error while loading default technologies - please refresh the page")
                 });
         })
         .catch(error => {
-            alert("Error while loading default technologies - please refresh the page")
+            alert("Error while loading labo id - please refresh the page")
         });
     
 
