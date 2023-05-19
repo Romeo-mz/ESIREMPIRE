@@ -15,11 +15,7 @@ if (!isset($_POST['id_SolarSystem'])) {
 }
 
 function fetch_data($id_param, $value) {
-<<<<<<< HEAD
-    $data = file_get_contents("../api/boundary/APIinterface/APIgalaxy.php?$id_param=$value");
-=======
     $data = file_get_contents("http://esirempire/api/boundary/APIinterface/APIgalaxy.php?$id_param=$value");
->>>>>>> 4d386be84ebc16ced7cd65576fe95ee6e9a4bf67
     return json_decode($data, true);
 }
 
