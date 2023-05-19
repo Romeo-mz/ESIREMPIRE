@@ -15,7 +15,11 @@ if(isset($_GET['success'])) {
             </div>";
 }
 
+<<<<<<< HEAD
 $universes = file_get_contents("http://esirloc/api/boundary/APIinterface/APIadmin.php?universes");
+=======
+$universes = file_get_contents("http://esirempire/esirempire/api/boundary/APIinterface/APIadmin.php?universes");
+>>>>>>> 4d386be84ebc16ced7cd65576fe95ee6e9a4bf67
 $universes = json_decode($universes, true);
 
 ?>

@@ -2,6 +2,9 @@
 
 require_once('../../boundary/DBinterface/DBadmin.php');
 
+define('GALAXIES_PER_UNIVER', 5);
+define('SOLAR_SYSTEMS_PER_GALAXY', 10);
+
 class Administration
 {
     private $dbInterface;
@@ -42,7 +45,7 @@ class Administration
     public function createGalaxies() 
     {
         $universeId = $this->getLastUniverseId();
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= GALAXIES_PER_UNIVER; $i++) {
             $name = "G" . $i;
             $result = $this->dbInterface->createGalaxy($name, $universeId);
         }
@@ -53,7 +56,7 @@ class Administration
     public function createSolarSystems() 
     {
         foreach ($this->getLast5GalaxiesId() as $GalaxyId) {
-            for ($i = 1; $i <= 10; $i++) {
+            for ($i = 1; $i <= SOLAR_SYSTEMS_PER_GALAXY; $i++) {
                 $name = "SS" . $i;
                 $result = $this->dbInterface->createSolarSystem($name, $GalaxyId['id']);
             }
@@ -70,8 +73,8 @@ class Administration
             $nbPlanets = rand(4, 10);
             $positions = range(1, 10);
             shuffle($positions);
-            $tailleValues = array(130, 120, 110, 100, 90);
-            $tailleKeys = array(5, 4, 3, 2, 1);
+            $tailleValues = array(90, 100, 110, 120, 130, 130, 120, 110, 100, 90);
+            $tailleKeys = array(10, 9, 8, 7, 6, 5, 4, 3, 2, 1);
             $tailleMap = array_combine($tailleKeys, $tailleValues);
 
             for ($i = 0; $i < $nbPlanets; $i++) {

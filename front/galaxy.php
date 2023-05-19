@@ -15,7 +15,11 @@ if (!isset($_POST['id_SolarSystem'])) {
 }
 
 function fetch_data($id_param, $value) {
+<<<<<<< HEAD
     $data = file_get_contents("../api/boundary/APIinterface/APIgalaxy.php?$id_param=$value");
+=======
+    $data = file_get_contents("http://esirempire/api/boundary/APIinterface/APIgalaxy.php?$id_param=$value");
+>>>>>>> 4d386be84ebc16ced7cd65576fe95ee6e9a4bf67
     return json_decode($data, true);
 }
 
@@ -94,7 +98,11 @@ $planets = fetch_data('id_SolarSystem', $_POST['id_SolarSystem']);
 
         async function updateSolarSystems() {
             let galaxyId = document.getElementById('id_Galaxy').value;
+<<<<<<< HEAD
             let response = await fetch(`../api/boundary/APIinterface/APIgalaxy.php?id_Galaxy=${galaxyId}`);
+=======
+            let response = await fetch(`http://esirempire/api/boundary/APIinterface/APIgalaxy.php?id_Galaxy=${galaxyId}`);
+>>>>>>> 4d386be84ebc16ced7cd65576fe95ee6e9a4bf67
             let solarSystems = await response.json();
             let solarSystemSelect = document.getElementById('id_SolarSystem');
 
@@ -115,7 +123,11 @@ $planets = fetch_data('id_SolarSystem', $_POST['id_SolarSystem']);
 
         async function updatePlanets() {
             let solarSystemId = document.getElementById('id_SolarSystem').value;
+<<<<<<< HEAD
             let response = await fetch(`../api/boundary/APIinterface/APIgalaxy.php?id_SolarSystem=${solarSystemId}`);
+=======
+            let response = await fetch(`http://esirempire/api/boundary/APIinterface/APIgalaxy.php?id_SolarSystem=${solarSystemId}`);
+>>>>>>> 4d386be84ebc16ced7cd65576fe95ee6e9a4bf67
             let planets = await response.json();
             let planetTable = document.querySelector('.planet-tab');
 
