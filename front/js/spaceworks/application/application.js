@@ -12,18 +12,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = "./infrastructures.html";
                 return;
             }
-            myController.loadDefaultShips()
+            myController.loadShips()
                 .then(() => {
                     console.log("Success to load default ships")
                     myController.loadQuantitiesRessource()
                         .then(() => {
                             console.log("Success to load ressource quantities") 
-                            myController.loadShips()
+                            myController.loadNbShips()
                                 .then(() => {
-                                    console.log("Success to load ships")
+                                    console.log("Success to load nb ships")
+                                    myController.loadTechnologiesPlayer()
+                                        .then(() => {
+                                            console.log("Success to load technologies player")
+                                        })
+                                        .catch(error => {
+                                            alert("Error while loading technologies player - please refresh the page")
+                                        });
                                 })
                                 .catch(error => {
-                                    alert("Error while loading ships - please refresh the page")
+                                    alert("Error while loading nb ships - please refresh the page")
                                 });
                         })
                         .catch(error => {

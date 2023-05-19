@@ -56,25 +56,50 @@ class DBspacework extends DBinterface {
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
 
-    public function getTechnologies($id_Labo)
+    public function getNbShips($id_Spacework)
     {
+        // Get the number of ships for each type of ship
         return $this->fetchAllRows('
             SELECT
-                technologie.id,
-                technologie.niveau,
-                tt.type AS type_technologie,
-                td.cout_metal,
-                td.cout_deuterium,
-                td.temps_recherche
+                tv.type,
+                COUNT(v.id) AS nb
             FROM
-                technologie
-            JOIN
-                typetechnologie tt ON technologie.id_Type = tt.id
-            LEFT JOIN 
-                technologiedefaut td ON tt.id = td.id_Type_Technologie
+                vaisseau v
+            LEFT JOIN typevaisseaux tv ON v.id_Type = tv.id
             WHERE
-                technologie.id_Laboratoire = ?;', [$id_Labo]);
+                v.id_Chantier_Spatial = ?
+            GROUP BY
+                tv.type;', [$id_Spacework]);
     }
+
+    private function getLaboratoireID($id_Planet)
+    {
+        return $this->fetchValue('
+            SELECT ins.id
+            FROM installation AS ins
+            JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
+            JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
+            WHERE ti.type = "Laboratoire" AND inf.id_Planete = ?;', [$id_Planet]
+        );
+    }
+
+    public function getTechnologies($id_Planet)
+    {
+        $idLabo = $this->getLaboratoireID($id_Planet);
+
+        return $this->fetchAllRows('
+            SELECT
+                t.id,
+                tt.type,
+                t.niveau
+            FROM
+                technologie t
+            LEFT JOIN typetechnologie tt ON t.id_Type = tt.id
+            WHERE
+                t.id_Laboratoire = ?;', [$idLabo]);
+    }
+
+    // 
 
     public function upgradeTechnologie($id_Technologie) 
     {

@@ -1,7 +1,7 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { QuantiteRessource } from "../models/quantiteressource.js";
-import { TechnoRequired } from "../models/technorequired.js";
+import { ShipTechnoRequired } from "../models/shiptechnorequired.js";
 import { Technologie } from "../models/technologie.js";
 import { Ship } from "../models/ship.js";
 
@@ -10,14 +10,13 @@ const API_QUERY_PARAMS = {
     defaultShips: "?default_ships",
     spaceworkID: (planetID) => `?id_Spacework&id_Planet=${planetID}`,
     resourceQuantities: (playerID, universeID) => `?quantity_ressource_player&id_Player=${playerID}&id_Universe=${universeID}`,
-    ships: (spaceworkID) => `?ships&id_Spacework=${spaceworkID}`,
-    // technoRequired: "?techno_required"
+    nbships: (spaceworkID) => `?nbships&id_Spacework=${spaceworkID}`,
+    technologiesPlayer: (id_Planet) => `?technologiesPlayer&id_Planet=${id_Planet}`
 };
 
 export class Controller extends Notifier
 {
     #ships;
-    #defaultShips;
     #session;
     #quantiteRessource;
     #technoRequired;
@@ -28,18 +27,17 @@ export class Controller extends Notifier
     {
         super();
         this.#ships = [];
-        this.#defaultShips = [];
         this.#technologiesPlayer = [];
         this.#quantiteRessource = [];
-        this.#technoRequired = [];
         
         this.#spaceworkID = -1;
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+
+        this.technoRequired = new ShipTechnoRequired("CROISEUR", "IONS", "4");
     }
 
     get ships() { return this.#ships; }
-    get defaultShips() { return this.#defaultShips; }
     get session() { return this.#session; }
     get quantiteRessource() { return this.#quantiteRessource; }
     get technologiesPlayer() { return this.#technologiesPlayer; }
@@ -48,7 +46,6 @@ export class Controller extends Notifier
 
     set ships(ships) { this.#ships = ships; }
     set spaceworkID(spaceworkID) { this.#spaceworkID = spaceworkID; }
-    set defaultShips(defaultShips) { this.#defaultShips = defaultShips; }
     set session(session) { this.#session = session; }
     set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
@@ -60,7 +57,7 @@ export class Controller extends Notifier
         return response.json();
     }
 
-    async loadDefaultShips()
+    async loadShips()
     {
         const data = await this.fetchData(API_QUERY_PARAMS.defaultShips);
 
@@ -70,7 +67,7 @@ export class Controller extends Notifier
             return new Ship(
                 negativeID--,
                 item.type,
-                0,
+                "0",
                 item.cout_metal,
                 item.cout_deuterium,
                 item.temps_construction,
@@ -80,7 +77,7 @@ export class Controller extends Notifier
             );
         });
         
-        this.#defaultShips = ships;
+        this.#ships = ships;
     }
 
     async loadSpaceworkID()
@@ -106,49 +103,36 @@ export class Controller extends Notifier
 
     }
 
-    async loadShips() 
+    async loadNbShips() 
     {
-        
         if (this.#spaceworkID !== -1)
         {
-            const data = await this.fetchData(API_QUERY_PARAMS.ships(this.#spaceworkID));
+            const data = await this.fetchData(API_QUERY_PARAMS.nbships(this.#spaceworkID));
 
-            const ships = data.map(item => {
-                return new Ship(
-                    item.id,
-                    item.type,
-                    item.quantite,
-                    item.cout_metal,
-                    item.cout_deuterium,
-                    item.temps_construction,
-                    item.point_attaque,
-                    item.point_defense,
-                    item.capacite_fret
-                );
+            data.forEach(item => {
+                const ship = this.#ships.find(ship => ship.type === item.type);
+                ship.quantite = item.nb;
             });
-
-            this.#ships = this.mergeTechnologies(this.#defaultShips, ships);
         }
     }
 
-    // mergeTechnologies(defaultTechnologies, existingTechnologies) {
-    //     const mergedTechnologies = [];
-    
-    //     defaultTechnologies.forEach(defaultTechno => {
-    //         let existingTechno = null;
+    async loadTechnologiesPlayer() 
+    {        
+        if (this.#spaceworkID !== -1)
+        {
+            const data = await this.fetchData(API_QUERY_PARAMS.technologiesPlayer(this.#session.id_Planet));
 
-    //         existingTechno = existingTechnologies.find(existingTechno => existingTechno.type === defaultTechno.type);
-
-    
-    //         if (existingTechno) {
-    //             mergedTechnologies.push(existingTechno);
-    //         } else {
-    //             mergedTechnologies.push(defaultTechno);
-    //         }
-    //     });
-    
-    //     return mergedTechnologies;
-    // }
+            const technos = data.map(item => {
+                return new Technologie(
+                    item.id,
+                    item.niveau,
+                    item.type
+                );
+            });
+            
+            this.#technologiesPlayer = technos;
+        }
+    }
 
     // checkEnoughRessource(id, type) 
     // {
@@ -294,20 +278,6 @@ export class Controller extends Notifier
     //             alert("Error while upgrading techno - please refresh the page:" + error);
     //         }
     //     );
-    // }
-
-    // async loadTechnoRequired() {
-    //     const data = await this.fetchData(API_QUERY_PARAMS.technoRequired);
-
-    //     const technos = data.map(item => {
-    //         return new TechnoRequired(
-    //             item.technologie,
-    //             item.technologie_necessaire,
-    //             item.technologie_necessaire_niveau
-    //         );
-    //     });
-        
-    //     this.#technoRequired = technos;
     // }
         
 }

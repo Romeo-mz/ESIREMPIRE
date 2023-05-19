@@ -48,16 +48,17 @@ class APIspacework
             $quantity_ressource_player = $this->controller->getQuantityRessourcePlayer($_GET['id_Player'], $_GET['id_Universe']);
             $this->sendResponse(200, 'OK', json_encode($quantity_ressource_player));
         }
-        else if(isset($_GET['ships']) && isset($_GET['id_Spacework']))
+        else if(isset($_GET['nbships']) && isset($_GET['id_Spacework']))
         {
-            $technologies = $this->controller->getTechnologies($_GET['id_Spacework']);
+            $ships = $this->controller->getNbShips($_GET['id_Spacework']);
+            $this->sendResponse(200, 'OK', json_encode($ships));
+        }
+        
+        else if(isset($_GET['technologiesPlayer']) && isset($_GET['id_Planet']))
+        {
+            $technologies = $this->controller->getTechnologies($_GET['id_Planet']);
             $this->sendResponse(200, 'OK', json_encode($technologies));
         }
-        // else if(isset($_GET['techno_required']))
-        // {
-        //     $techno_required = $this->controller->getTechnoRequired();
-        //     $this->sendResponse(200, 'OK', json_encode($techno_required));
-        // }
         else 
         {
             $this->sendResponse(400, 'Bad Request');

@@ -26,9 +26,14 @@ class Spacework
         return $this->dbInterface->getQuantityRessourcePlayer($id_Player, $id_Universe);
     }
 
-    public function getTechnologies($id_Labo)
+    public function getNbShips($id_Spacework)
     {
-        return $this->dbInterface->getTechnologies($id_Labo);
+        return $this->dbInterface->getNbShips($id_Spacework);
+    }
+
+    public function getTechnologies($id_Planet)
+    {
+        return $this->dbInterface->getTechnologies($id_Planet);
     }
 
     public function upgradeTechnologie($id_Technologie)
