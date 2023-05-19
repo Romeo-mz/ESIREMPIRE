@@ -1,5 +1,4 @@
 import { Observer } from "../pattern/observer.js";
-import { Technologie } from "../models/technologie.js";
 
 export class View extends Observer 
 {
