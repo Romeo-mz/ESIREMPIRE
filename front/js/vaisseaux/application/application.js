@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     myController.loadVaisseaux()
         .then(() => {
             console.log("Success to load all vaisseaux")
-            myController.loadDefaultFlotte()
+            myController.loadFlotte()
                 .then(() => {
                     console.log("Success to load flotte")
                     myController.notify();
