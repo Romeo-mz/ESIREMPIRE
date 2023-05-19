@@ -5,12 +5,12 @@ import { TechnoRequired } from "../models/technorequired.js";
 import { Technologie } from "../models/technologie.js";
 import { Ship } from "../models/ship.js";
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIspaceworks.php";
+const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIspacework.php";
 const API_QUERY_PARAMS = {
     defaultShips: "?default_ships",
     spaceworkID: (planetID) => `?id_Spacework&id_Planet=${planetID}`,
-    // resourceQuantities: (playerID, universeID) => `?quantity_ressource_player&id_Player=${playerID}&id_Universe=${universeID}`,
-    // technologies: (laboID) => `?technologies&id_Labo=${laboID}`,
+    resourceQuantities: (playerID, universeID) => `?quantity_ressource_player&id_Player=${playerID}&id_Universe=${universeID}`,
+    ships: (spaceworkID) => `?ships&id_Spacework=${spaceworkID}`,
     // technoRequired: "?techno_required"
 };
 
@@ -22,7 +22,7 @@ export class Controller extends Notifier
     #quantiteRessource;
     #technoRequired;
     #technologiesPlayer;
-    #chantierID;
+    #spaceworkID;
 
     constructor()
     {
@@ -33,7 +33,7 @@ export class Controller extends Notifier
         this.#quantiteRessource = [];
         this.#technoRequired = [];
         
-        this.#chantierID = -1;
+        this.#spaceworkID = -1;
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
     }
@@ -44,11 +44,11 @@ export class Controller extends Notifier
     get quantiteRessource() { return this.#quantiteRessource; }
     get technologiesPlayer() { return this.#technologiesPlayer; }
     get technoRequired() { return this.#technoRequired; }
-    get chantierID() { return this.#chantierID; }
+    get spaceworkID() { return this.#spaceworkID; }
 
     set ships(ships) { this.#ships = ships; }
-    set chantierID(chantierID) { this.#chantierID = chantierID; }
-    set defaultShips(defaultShip) { this.#defaultShips = defaultShips; }
+    set spaceworkID(spaceworkID) { this.#spaceworkID = spaceworkID; }
+    set defaultShips(defaultShips) { this.#defaultShips = defaultShips; }
     set session(session) { this.#session = session; }
     set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
@@ -68,9 +68,9 @@ export class Controller extends Notifier
 
         const ships = data.map(item => {
             return new Ship(
-                negativeID--, 
-                "0",
+                negativeID--,
                 item.type,
+                0,
                 item.cout_metal,
                 item.cout_deuterium,
                 item.temps_construction,
@@ -89,47 +89,47 @@ export class Controller extends Notifier
 
         if (data.id_Spacework !== false)
         {
-            this.#chantierID = data.id_Spacework;
+            this.#spaceworkID = data.id_Spacework;
         }
         else
         {
-            this.#chantierID = -1;
+            this.#spaceworkID = -1;
         }
+    }
 
-        console.log(this.#chantierID);
+    async loadQuantitiesRessource() {
+        const ressourceData = await this.fetchData(API_QUERY_PARAMS.resourceQuantities(this.#session.id_Player, this.#session.id_Univers));
+
+        this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
+            new QuantiteRessource(id_Ressource, type, quantite)
+        );
 
     }
 
-    // async loadQuantitiesRessource() {
-    //     const ressourceData = await this.fetchData(API_QUERY_PARAMS.resourceQuantities(this.#session.id_Player, this.#session.id_Univers));
-
-    //     this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
-    //         new QuantiteRessource(id_Ressource, type, quantite)
-    //     );
-
-    // }
-
-    // async loadTechnologies() 
-    // {
+    async loadShips() 
+    {
         
-    //     if (this.#laboID !== -1)
-    //     {
-    //         const data = await this.fetchData(API_QUERY_PARAMS.technologies(this.#laboID));
+        if (this.#spaceworkID !== -1)
+        {
+            const data = await this.fetchData(API_QUERY_PARAMS.ships(this.#spaceworkID));
 
-    //         const technos = data.map(item => {
-    //             return new Technologie(
-    //                 item.id,
-    //                 item.niveau,
-    //                 item.type_technologie,
-    //                 item.cout_metal,
-    //                 item.cout_deuterium,
-    //                 item.temps_recherche * (2 ** (item.niveau - 1))
-    //             );
-    //         });
+            const ships = data.map(item => {
+                return new Ship(
+                    item.id,
+                    item.type,
+                    item.quantite,
+                    item.cout_metal,
+                    item.cout_deuterium,
+                    item.temps_construction,
+                    item.point_attaque,
+                    item.point_defense,
+                    item.capacite_fret
+                );
+            });
 
-    //         this.#technologies = this.mergeTechnologies(this.#defaultTechnologies, technos);
-    //     }
-    // }
+            this.#ships = this.mergeTechnologies(this.#defaultShips, ships);
+        }
+    }
 
     // mergeTechnologies(defaultTechnologies, existingTechnologies) {
     //     const mergedTechnologies = [];

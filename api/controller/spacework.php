@@ -11,14 +11,14 @@ class Spacework
         $this->dbInterface = new DBspacework();
     }
     
-    public function getLaboratoireID($id_Planet)
+    public function getSpaceworkID($id_Planet)
     {
-        return $this->dbInterface->getLaboratoireID($id_Planet);
+        return $this->dbInterface->getSpaceworkID($id_Planet);
     }
 
-    public function getDefaultTechnologie()
+    public function getDefaultShips()
     {
-        return $this->dbInterface->getDefaultTechnologie();
+        return $this->dbInterface->getDefaultShips();
     }
 
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)

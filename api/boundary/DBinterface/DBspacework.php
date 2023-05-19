@@ -12,28 +12,31 @@ class DBspacework extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
-    public function getLaboratoireID($id_Planet)
+    public function getSpaceworkID($id_Planet)
     {
         return $this->fetchValue('
             SELECT ins.id
             FROM installation AS ins
             JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
             JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
-            WHERE ti.type = "Laboratoire" AND inf.id_Planete = ?;', [$id_Planet]
+            WHERE ti.type = "Chantier spatial" AND inf.id_Planete = ?;', [$id_Planet]
         );
     }
 
-    public function getDefaultTechnologie()
+    public function getDefaultShips()
     {
         return $this->fetchAllRows('
             SELECT
-                tt.type,
-                tdf.cout_metal,
-                tdf.cout_deuterium,
-                tdf.temps_recherche
+                tv.type,
+                vdf.cout_metal,
+                vdf.cout_deuterium,
+                vdf.temps_construction,
+                vdf.point_attaque,
+                vdf.point_defense,
+                vdf.capacite_fret
             FROM
-                technologiedefaut tdf
-            LEFT JOIN typetechnologie tt ON tdf.id_Type_Technologie = tt.id;
+                vaisseaudefaut vdf
+            LEFT JOIN typevaisseaux tv ON vdf.id_Type = tv.id;
         ');
     }
 

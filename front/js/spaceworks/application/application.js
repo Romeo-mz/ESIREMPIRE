@@ -12,6 +12,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href = "./infrastructures.html";
                 return;
             }
+            myController.loadDefaultShips()
+                .then(() => {
+                    console.log("Success to load default ships")
+                    myController.loadQuantitiesRessource()
+                        .then(() => {
+                            console.log("Success to load ressource quantities") 
+                            myController.loadShips()
+                                .then(() => {
+                                    console.log("Success to load ships")
+                                })
+                                .catch(error => {
+                                    alert("Error while loading ships - please refresh the page")
+                                });
+                        })
+                        .catch(error => {
+                            alert("Error while loading ressource quantities - please refresh the page")
+                        });
+                })
+                .catch(error => {
+                    alert("Error while loading default ships - please refresh the page")
+                });
         })
         .catch(error => {
             alert("Error while loading spaceworks id - please refresh the page")
