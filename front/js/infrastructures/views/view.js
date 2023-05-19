@@ -51,7 +51,7 @@ export class View extends Observer
     updateInfrastructures() 
     {
         const infrastructures = this.#controller.infrastructures;
-        console.log(infrastructures);
+        // console.log(infrastructures);
 
         this.removePreviousInfrastructures();
 

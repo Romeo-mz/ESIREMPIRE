@@ -6,41 +6,38 @@
     <link rel="stylesheet" href="css/spaceships.css">
 </head>
 
-    <body>
-        <main>
-            <div class="spaceships">
-                <h1>Spaceships</h1>
-                <div class="spaceship-flotte">
-                    <h2>Flotte</h2>
-                    <div class="spaceship">
-                        <div class="spaceship-img">
-                            <img src="img/spaceship_01.png" alt="spaceship">
-                        </div>
-                        <div class="spaceship-infos">
-                            <h2></h2>
-                            <p>Attack: </p>
-                        </div>
+<body>
+    <main>
+        <div class="spaceships">
+            <h1>Spaceships</h1>
+            <div class="spaceship-flotte">
+                <h2 id="flotte-title">Flotte</h2>
+                <div class="spaceship">
+                    <div class="spaceship-img">
+                        <img src="img/spaceship_01.png" alt="spaceship">
                     </div>
-
-
-                <div class="spaceship-disponible">
-                    <h2>Disponible</h2>
-                    <div class="spaceship">
-                        <div class="spaceship-img">
-                            <img src="img/spaceship.png" alt="spaceship">
-                        </div>
-                        <div class="spaceship-infos">
-                            <h2>Spaceship</h2>
-                            <p>HP: 100</p>
-                            <p>Shield: 100</p>
-                            <p>Attack: 100</p>
-                            <p>Speed: 100</p>
-                        </div>
+                    <div class="spaceship-infos">
+                        <h3 class="spaceship-name">Name: </h3>
+                        <p class="spaceship-attack">Attack: </p>
+                    </div>
                 </div>
             </div>
-        </main>
 
-    </body>
+            <div class="spaceship-disponible">
+                <h2>Disponible</h2>
+                <div class="spaceship">
+                    <div class="spaceship-img">
+                        <img src="img/spaceship.png" alt="spaceship">
+                    </div>
+                    <div class="spaceship-infos">
+                        <h3 class="spaceship-name">Name: </h3>
+                        <p class="spaceship-attack">Attack: </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="js/spaceships/application/application.js" type="module"></script>
+</body>
 </html>
