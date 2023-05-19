@@ -222,9 +222,7 @@ export class Controller extends Notifier
             console.error('Erreur:', error);
             throw error;
         }
-    }
-
-    
+    }    
 
     async upgradeTechnologieToAPI(id_Technologie)
     {
