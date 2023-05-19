@@ -51,7 +51,6 @@ export class View extends Observer
     updateInfrastructures() 
     {
         const infrastructures = this.#controller.infrastructures;
-        console.log(infrastructures);
 
         this.removePreviousInfrastructures();
 
@@ -113,17 +112,59 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() => {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_installation);
+                }
+            }, 1000);
         });
+
+        
 
         div_image.appendChild(img);
         div_information.appendChild(div_information_type);
         div_information.appendChild(div_information_level);
         div_information.appendChild(div_information_metal);
         div_information.appendChild(div_information_energie);
+
+        if(infrastructure.type_installation === "Laboratoire" && infrastructure.level !== "0")
+        {
+            let button_search = this.createOrUpdateElement(
+                "button",
+                `search-installation-button-${prefix}-${infrastructure.id}`,
+                "upgrade-button",
+                "Rechercher"
+            );
+
+            button_search.addEventListener("click", () =>
+            {
+                window.location.href = "./search.html";
+            });
+
+            div_upgrade.appendChild(button_search);
+        }
+        else if(infrastructure.type_installation === "Chantier spatial" && infrastructure.level !== "0")
+        {
+            let button_search = this.createOrUpdateElement(
+                "button",
+                `spaceworks-installation-button-${prefix}-${infrastructure.id}`,
+                "upgrade-button",
+                "Créer Vaisseaux"
+            );
+
+            button_search.addEventListener("click", () =>
+            {
+                window.location.href = "./spaceworks.html";
+            });
+
+            div_upgrade.appendChild(button_search);
+        }
+
         div_upgrade.appendChild(button_upgrade);
 
         div.appendChild(div_image);
@@ -204,11 +245,16 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() =>
-            {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_ressource);
+                }
+            }, 1000);
         });
 
         div_image.appendChild(img);
@@ -299,11 +345,16 @@ export class View extends Observer
         button_upgrade.addEventListener("click", () =>
         {
             button_upgrade.disabled = true;
+            let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
-            setTimeout(() =>
-            {
-                this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
-            }, infrastructure.temps_construction * 1000);
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeInfrastructure(infrastructure.id, infrastructure.type_defense);
+                }
+            }, 1000);
         });
 
         div_image.appendChild(img);
@@ -323,8 +374,6 @@ export class View extends Observer
         const infratechnorequired = this.#controller.infraTechnoRequired;
         const technoPlayer = this.#controller.technologiesPlayer;
         const technoRequired = this.#controller.technoRequired;
-
-        console.log(technoPlayer);
 
         (infratechnorequired).forEach(infratechno => {
             if(infratechno.infra_type === infrastructure.type_defense) 

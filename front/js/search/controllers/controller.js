@@ -5,6 +5,13 @@ import { TechnoRequired } from "../models/technorequired.js";
 import { Technologie } from "../models/technologie.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIsearch.php";
+const API_QUERY_PARAMS = {
+    defaultTechnologies: "?default_technologies",
+    laboID: (planetID) => `?id_Labo&id_Planet=${planetID}`,
+    resourceQuantities: (playerID, universeID) => `?quantity_ressource_player&id_Player=${playerID}&id_Universe=${universeID}`,
+    technologies: (laboID) => `?technologies&id_Labo=${laboID}`,
+    technoRequired: "?techno_required"
+};
 
 export class Controller extends Notifier
 {
@@ -50,7 +57,7 @@ export class Controller extends Notifier
 
     async loadDefaultTechnologies()
     {
-        const data = await this.fetchData("?default_technologies");
+        const data = await this.fetchData(API_QUERY_PARAMS.defaultTechnologies);
 
         let negativeID = -1;
 
@@ -70,7 +77,7 @@ export class Controller extends Notifier
 
     async loadLaboratoireID()
     {
-        const data = await this.fetchData(`?id_Labo&id_Planet=${this.#session.id_Planet}`);
+        const data = await this.fetchData(API_QUERY_PARAMS.laboID(this.#session.id_Planet));
 
         if (data.id_Labo !== false)
         {
@@ -84,7 +91,7 @@ export class Controller extends Notifier
     }
 
     async loadQuantitiesRessource() {
-        const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
+        const ressourceData = await this.fetchData(API_QUERY_PARAMS.resourceQuantities(this.#session.id_Player, this.#session.id_Univers));
 
         this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
             new QuantiteRessource(id_Ressource, type, quantite)
@@ -97,7 +104,7 @@ export class Controller extends Notifier
         
         if (this.#laboID !== -1)
         {
-            const data = await this.fetchData(`?technologies&id_Labo=${this.#laboID}`);
+            const data = await this.fetchData(API_QUERY_PARAMS.technologies(this.#laboID));
 
             const technos = data.map(item => {
                 return new Technologie(
@@ -132,8 +139,6 @@ export class Controller extends Notifier
     
         return mergedTechnologies;
     }
-    
-    
 
     checkEnoughRessource(id, type) 
     {
@@ -222,9 +227,7 @@ export class Controller extends Notifier
             console.error('Erreur:', error);
             throw error;
         }
-    }
-
-    
+    }    
 
     async upgradeTechnologieToAPI(id_Technologie)
     {
@@ -241,6 +244,7 @@ export class Controller extends Notifier
 
     async upgradeTechnologie(id, type) 
     {
+        const oldId = id;
 
         if(!this.checkEnoughRessource(id, type))
         {
@@ -252,7 +256,7 @@ export class Controller extends Notifier
 
         if (id < 0) {
             try {
-                const dataToReturn = await this.createTechnologieToAPI(type);
+                const dataToReturn = await this.createTechnologieToAPI(type.toUpperCase());
                 console.log("Success to create techno:", dataToReturn);
                 
                 if(dataToReturn > 0){
@@ -272,13 +276,18 @@ export class Controller extends Notifier
 
         technologie.temps_recherche = Math.round(technologie.temps_recherche * 2);
             
-        this.upgradeTechnologieToAPI(technologie.id);
-
-        this.notify();
+        this.upgradeTechnologieToAPI(technologie.id)
+            .then(() => {
+                this.notify(oldId, technologie.id);
+            })
+            .catch(error => {
+                alert("Error while upgrading techno - please refresh the page:" + error);
+            }
+        );
     }
 
     async loadTechnoRequired() {
-        const data = await this.fetchData(`?techno_required`);
+        const data = await this.fetchData(API_QUERY_PARAMS.technoRequired);
 
         const technos = data.map(item => {
             return new TechnoRequired(

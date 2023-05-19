@@ -41,12 +41,12 @@ html {
     font-size: 25px;
 }
 
-.search-hr {
+.spaceworks-hr {
     width: 100%;
     border: 2px solid #502a529e;
 }
 
-.div-technologies {
+.div-ships {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -61,7 +61,7 @@ html {
     font-size: 25px;
 }
 
-.div-list-technologies {
+.div-list-ships {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -76,7 +76,7 @@ html {
     font-size: 25px;
 }
 
-.div-technologie {
+.div-ship {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,7 +92,7 @@ html {
     font-size: 25px;
 }
 
-.div-technologie-information {
+.div-ship-information {
     display: flex;
     flex-direction: column;
     width: 50%;
@@ -102,7 +102,7 @@ html {
 
 }
 
-.img-technologie {
+.img-ship {
     width: 180px;
     height: 180;
     margin: 0 auto;
