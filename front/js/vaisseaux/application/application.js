@@ -20,5 +20,4 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => {
             alert("Error while loading default vaisseaux - please refresh the page")
         });
-    
-}
+    });
