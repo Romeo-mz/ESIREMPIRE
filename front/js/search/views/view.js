@@ -70,6 +70,31 @@ export class View extends Observer
         const techno = technologies.find(techno => techno.id === newId);
         this.updateTechnologieElement(techno, oldId);
     }
+
+    checkAndUpdateTechnologieRequirements(technologie) {
+        const technoRequired = this.#controller.technoRequired;
+        const technoPlayer = this.#controller.technologies;
+    
+        technoRequired.forEach(technorequired => {
+
+            if (technorequired.technoRequired === technologie.type) {
+    
+                if (technologie.level < technorequired.technoRequiredLevel) {
+                    return;
+                }
+
+                const techno2 = technoPlayer.find(techno => techno.type === technorequired.techno);
+
+                const stripElementId = `div-strip-techno-required-list-technologie-${techno2.id}`;
+                const stripElement = document.getElementById(stripElementId);
+                if (stripElement) stripElement.remove();
+
+                const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${techno2.id}`);
+                buttonUpgrade.disabled = false;
+                buttonUpgrade.innerHTML = techno2.level === '0' ? `Construire <br>${techno2.temps_recherche}s` : `Améliorer <br>${techno2.temps_recherche}s`;
+            }
+        });
+    }
     
     updateTechnologieElement(technologie, oldId) {
         const elementsToUpdate = [
@@ -101,6 +126,8 @@ export class View extends Observer
         const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${technologie.id}`);
         buttonUpgrade.innerHTML = technologie.level === '0' ? `Construire <br>${technologie.temps_recherche}s` : `Améliorer <br>${technologie.temps_recherche}s`;
         buttonUpgrade.disabled = false;
+
+        this.checkAndUpdateTechnologieRequirements(technologie);
     }
 
     createTechnologieElements(technologie) 
