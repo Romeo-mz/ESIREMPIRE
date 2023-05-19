@@ -19,7 +19,7 @@ export class Controller extends Notifier
     #ships;
     #session;
     #quantiteRessource;
-    #technoRequired;
+    #shipTechnoRequired;
     #technologiesPlayer;
     #spaceworkID;
 
@@ -34,14 +34,15 @@ export class Controller extends Notifier
 
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
 
-        this.technoRequired = new ShipTechnoRequired("CROISEUR", "IONS", "4");
+        this.#shipTechnoRequired = [];
+        this.#shipTechnoRequired.push(new ShipTechnoRequired("CROISEUR", "IONS", "4"));
     }
 
     get ships() { return this.#ships; }
     get session() { return this.#session; }
     get quantiteRessource() { return this.#quantiteRessource; }
     get technologiesPlayer() { return this.#technologiesPlayer; }
-    get technoRequired() { return this.#technoRequired; }
+    get shipTechnoRequired() { return this.#shipTechnoRequired; }
     get spaceworkID() { return this.#spaceworkID; }
 
     set ships(ships) { this.#ships = ships; }
@@ -49,7 +50,7 @@ export class Controller extends Notifier
     set session(session) { this.#session = session; }
     set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
-    set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
+    set shipTechnoRequired(shipTechnoRequired) { this.#shipTechnoRequired = shipTechnoRequired; }
 
 
     async fetchData(endpoint) {
