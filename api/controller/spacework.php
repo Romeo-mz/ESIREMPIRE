@@ -36,14 +36,9 @@ class Spacework
         return $this->dbInterface->getTechnologies($id_Planet);
     }
 
-    public function upgradeTechnologie($id_Technologie)
+    public function addShip($id_Spacework, $type)
     {
-        $this->dbInterface->upgradeTechnologie($id_Technologie);
-    }
-
-    public function createTechnologie($id_Labo, $type)
-    {
-        return $this->dbInterface->createTechnologie($id_Labo, $type);
+        $this->dbInterface->addShip($id_Spacework, $type);
     }
 
     public function updateQuantityRessource($id_Ressource, $quantite)

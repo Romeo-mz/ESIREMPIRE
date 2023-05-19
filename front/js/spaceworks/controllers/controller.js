@@ -160,8 +160,8 @@ export class Controller extends Notifier
         const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
         const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
 
-        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= technologie.cout_metal;
-        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
+        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= ship.cout_metal;
+        this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= ship.cout_deuterium;
 
         this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", ship.cout_metal);
         this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", ship.cout_deuterium);
@@ -208,7 +208,7 @@ export class Controller extends Notifier
 
         try {
             const dataToReturn = await this.addShipToAPI(type.toUpperCase());
-            console.log("Success to create techno:", dataToReturn);
+            console.log("Success to add ship");
             
             ship.quantite += 1;
 

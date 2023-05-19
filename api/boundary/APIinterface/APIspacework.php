@@ -69,15 +69,10 @@ class APIspacework
     {
         $data = json_decode(file_get_contents('php://input'), true);
     
-        if (isset($data['id_Labo']) && isset($data['id_Technologie'])) 
+        if (isset($data['id_Spacework']) && isset($data['type'])) 
         {
-            $this->controller->upgradeTechnologie($data['id_Technologie']);
+            $this->controller->addShip($data['id_Spacework'], $data['type']);
             $this->sendResponse(200, 'OK');
-        }
-        else if (isset($data['id_Labo']) && isset($data['type'])) 
-        {
-            $id_New_Technologie = $this->controller->createTechnologie($data['id_Labo'], $data['type']);
-            $this->sendResponse(200, 'OK', json_encode(array('id_New_Technologie' => $id_New_Technologie)));
         }
         else if (isset($data['id_Ressource']) && isset($data['quantite']))
         {
