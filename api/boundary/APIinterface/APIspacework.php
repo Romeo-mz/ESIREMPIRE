@@ -33,31 +33,31 @@ class APIspacework
 
     private function handleGet()
     {
-        if (isset($_GET['id_Labo']) && isset($_GET['id_Planet'])) 
+        if (isset($_GET['id_Spacework']) && isset($_GET['id_Planet'])) 
         {
-            $laboID = $this->controller->getLaboratoireID($_GET['id_Planet']);
-            $this->sendResponse(200, 'OK', json_encode(array('id_Labo' => $laboID)));
+            $spaceworkID = $this->controller->getSpaceworkID($_GET['id_Planet']);
+            $this->sendResponse(200, 'OK', json_encode(array('id_Spacework' => $spaceworkID)));
         }
-        else if (isset($_GET['default_technologies'])) 
+        else if (isset($_GET['default_ships'])) 
         {
-            $defaultTechno = $this->controller->getDefaultTechnologie();
-            $this->sendResponse(200, 'OK', json_encode($defaultTechno));
+            $defaultShips = $this->controller->getDefaultShips();
+            $this->sendResponse(200, 'OK', json_encode($defaultShips));
         }
         else if(isset($_GET['quantity_ressource_player']) && isset($_GET['id_Player']) && isset($_GET['id_Universe']))
         {
             $quantity_ressource_player = $this->controller->getQuantityRessourcePlayer($_GET['id_Player'], $_GET['id_Universe']);
             $this->sendResponse(200, 'OK', json_encode($quantity_ressource_player));
         }
-        else if(isset($_GET['technologies']) && isset($_GET['id_Labo']))
+        else if(isset($_GET['ships']) && isset($_GET['id_Spacework']))
         {
-            $technologies = $this->controller->getTechnologies($_GET['id_Labo']);
+            $technologies = $this->controller->getTechnologies($_GET['id_Spacework']);
             $this->sendResponse(200, 'OK', json_encode($technologies));
         }
-        else if(isset($_GET['techno_required']))
-        {
-            $techno_required = $this->controller->getTechnoRequired();
-            $this->sendResponse(200, 'OK', json_encode($techno_required));
-        }
+        // else if(isset($_GET['techno_required']))
+        // {
+        //     $techno_required = $this->controller->getTechnoRequired();
+        //     $this->sendResponse(200, 'OK', json_encode($techno_required));
+        // }
         else 
         {
             $this->sendResponse(400, 'Bad Request');
