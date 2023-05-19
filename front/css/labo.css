@@ -41,9 +41,9 @@ html {
     font-size: 25px;
 }
 
-.mid-hr {
-    width: 95%;
-    border: 1px solid #68446a9e;
+.search-hr {
+    width: 100%;
+    border: 2px solid #502a529e;
 }
 
 .div-technologies {
