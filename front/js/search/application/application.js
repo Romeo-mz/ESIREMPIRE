@@ -3,7 +3,6 @@ import { View } from "../views/view.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
-    const myView = new View(myController);
 
     myController.loadDefaultTechnologies()
         .then(() => {
@@ -20,7 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                     myController.loadTechnoRequired()
                                         .then(() => {
                                             console.log("Success to load required technologies")
-                                            myController.notify();
+                                            // myController.notify();
+                                            const myView = new View(myController);
                                         })
                                         .catch(error => {
                                             alert("Error while loading required technologies - please refresh the page")

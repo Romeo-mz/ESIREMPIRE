@@ -9,26 +9,28 @@ export class View extends Observer
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
+
+        this.createRessources();
+        this.createTechnologies();
     }   
 
+    createRessources() {
+        const ressources = this.#controller.quantiteRessource;
+        
+        ressources.forEach(ressource => {
+            this.createRessourceElement(ressource);
+        });
+    }
+    
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
 
-        this.removePreviousRessources();
-
         ressources.forEach(ressource => {
-            this.createOrUpdateRessourceElement(ressource);
+            this.updateRessourceElement(ressource);
         });
     }
-
-    removePreviousRessources() {
-        while (document.getElementById("div-ressources").firstChild) {
-            document.getElementById("div-ressources").removeChild(document.getElementById("div-ressources").firstChild);
-        }
-    }
-
-    createOrUpdateRessourceElement(ressource) 
-    {
+    
+    createRessourceElement(ressource) {
         const prefix = ressource.type.toLowerCase();
 
         let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
@@ -43,28 +45,100 @@ export class View extends Observer
 
         document.getElementById("div-ressources").appendChild(div);
     }
-
-    removePreviousTechnologies()
-    {
-        while (document.getElementById("div-list-technologies").firstChild) {
-            document.getElementById("div-list-technologies").removeChild(document.getElementById("div-list-technologies").firstChild);
-        }
+    
+    updateRessourceElement(ressource) {
+        const prefix = ressource.type.toLowerCase();
+        let p = document.getElementById(`p-${prefix}`);
+        p.innerHTML = ressource.quantite;
     }
 
-    updateTechnologies() 
-    {
+    createTechnologies() {
         const technologies = this.#controller.technologies;
-        console.log(technologies);
-
-        this.removePreviousTechnologies();
 
         technologies.forEach(techno => {
-            this.createOrUpdateTechnologieElement(techno, "div-list-technologies");            
+            this.createTechnologieElements(techno);
         });
     }
 
-    createTechnologieElements(technologie, div, div_information, div_image, img) 
+    getTechnologieElementId(elementType, technologieId) {
+        const idPrefix = 'div-technologie';
+        return `${idPrefix}-${elementType}-technologie-${technologieId}`;
+    }
+    
+    updateTechnologie(oldId, newId) {
+        const technologies = this.#controller.technologies;
+        const techno = technologies.find(techno => techno.id === newId);
+        this.updateTechnologieElement(techno, oldId);
+    }
+
+    checkAndUpdateTechnologieRequirements(technologie) {
+        const technoRequired = this.#controller.technoRequired;
+        const technoPlayer = this.#controller.technologies;
+    
+        technoRequired.forEach(technorequired => {
+
+            if (technorequired.technoRequired === technologie.type) {
+    
+                if (technologie.level < technorequired.technoRequiredLevel) {
+                    return;
+                }
+
+                const techno2 = technoPlayer.find(techno => techno.type === technorequired.techno);
+
+                const stripElementId = `div-strip-techno-required-list-technologie-${techno2.id}`;
+                const stripElement = document.getElementById(stripElementId);
+                if (stripElement) stripElement.remove();
+
+                const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${techno2.id}`);
+                buttonUpgrade.disabled = false;
+                buttonUpgrade.innerHTML = techno2.level === '0' ? `Construire <br>${techno2.temps_recherche}s` : `Améliorer <br>${techno2.temps_recherche}s`;
+            }
+        });
+    }
+    
+    updateTechnologieElement(technologie, oldId) {
+        const elementsToUpdate = [
+            '', 'level', 'metal', 'deuterium', 'information',
+            'image', 'img', 'upgrade', 'type'
+        ];
+    
+        if (oldId !== technologie.id) {
+            for (const elementType of elementsToUpdate) {
+                const oldElementId = this.getTechnologieElementId(elementType, oldId);
+                const newElementId = this.getTechnologieElementId(elementType, technologie.id);
+    
+                const element = document.getElementById(oldElementId);
+                if (element) element.id = newElementId;
+            }
+            const buttonTechnologieUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${oldId}`);
+            buttonTechnologieUpgrade.id = `upgrade-technologie-button-technologie-${technologie.id}`;
+        }
+    
+        const levelDiv = document.getElementById(this.getTechnologieElementId('level', technologie.id));
+        levelDiv.innerHTML = `Niveau: ${technologie.level}`;
+    
+        const metalDiv = document.getElementById(this.getTechnologieElementId('metal', technologie.id));
+        if (metalDiv) metalDiv.innerHTML = `Métal: ${technologie.cout_metal}`;
+    
+        const deuteriumDiv = document.getElementById(this.getTechnologieElementId('deuterium', technologie.id));
+        deuteriumDiv.innerHTML = `Deuterium: ${technologie.cout_deuterium}`;
+    
+        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${technologie.id}`);
+        buttonUpgrade.innerHTML = technologie.level === '0' ? `Construire <br>${technologie.temps_recherche}s` : `Améliorer <br>${technologie.temps_recherche}s`;
+        buttonUpgrade.disabled = false;
+
+        this.checkAndUpdateTechnologieRequirements(technologie);
+    }
+
+    createTechnologieElements(technologie) 
     {
+        let parentDivId = "div-list-technologies";
+
+        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
+        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
+        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
+        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
+
         let div_information_type = null;
         let div_information_level = null;
         let div_information_metal = null;
@@ -86,14 +160,21 @@ export class View extends Observer
             technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s"
         );
 
-        button_upgrade.addEventListener("click", () =>
-        {
+        button_upgrade.addEventListener("click", () => {
             button_upgrade.disabled = true;
-            button_upgrade.innerHTML = "En cours...<br>" + technologie.temps_recherche + "s";
-            setTimeout(() => {
-                this.#controller.upgradeTechnologie(technologie.id, technologie.type);
-            }, technologie.temps_recherche * 1000);
+            let remainingTime = technologie.temps_recherche;
+            button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+        
+            const intervalId = setInterval(() => {
+                remainingTime--;
+                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
+                if (remainingTime === 0) {
+                    clearInterval(intervalId);
+                    this.#controller.upgradeTechnologie(technologie.id, technologie.type);
+                }
+            }, 1000);
         });
+        
         
 
         div_image.appendChild(img);
@@ -110,6 +191,7 @@ export class View extends Observer
         const technoRequired = this.#controller.technoRequired;
         const technoPlayer = this.#controller.technologies;
 
+        // Check if the player has the required technologies
         (technoRequired).forEach(technorequired => {
             if(technorequired.techno === technologie.type) 
             {
@@ -140,21 +222,10 @@ export class View extends Observer
         });
 
         div.appendChild(div_upgrade);
-
-    }
-
-    
-    createOrUpdateTechnologieElement(technologie, parentDivId) 
-    {
-        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
-        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
-        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
-        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
-
-        this.createTechnologieElements(technologie, div, div_information, div_image, img);
-
         document.getElementById(parentDivId).appendChild(div);
+
     }
+
 
     createOrUpdateElement(tagName, id, className, innerHTML = "") 
     {
@@ -192,9 +263,9 @@ export class View extends Observer
         }
     }
 
-    notify() 
+    notify(oldId, newId) 
     {
-        this.updateTechnologies();
+        this.updateTechnologie(oldId, newId);
         this.updateRessources();
     }
 

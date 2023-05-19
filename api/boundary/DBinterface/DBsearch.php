@@ -84,30 +84,36 @@ class DBsearch extends DBinterface {
             case 'ENERGIE':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 1);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 1;', [$id_Labo]);
                 break;
             case 'LASER':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 2);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 2;', [$id_Labo]);
                 break;
             case 'IONS':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 3);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 3;', [$id_Labo]);
                 break;
             case 'IA':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 4);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 4;', [$id_Labo]);
                 break;
             case 'ARMEMENT':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 5);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 5;', [$id_Labo]);
                 break;
             case 'BOUCLIER':
                 $this->executeQuery('
                 INSERT INTO technologie (id_Laboratoire, id_Type) VALUES (?, 6);', [$id_Labo]);
+                $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = 6;', [$id_Labo]);
                 break;
         }
 
-        $id_Technologie = $this->fetchValue('SELECT id FROM technologie WHERE id_Laboratoire = ? AND id_Type = ?;', [$id_Labo, $type]);
+        
 
         return $id_Technologie;
     }
