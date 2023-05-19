@@ -12,8 +12,8 @@ export class Notifier
         this.#observers.push(observer);
     }
 
-    notify() 
+    notify(oldId, newId) 
     {
-        this.#observers.forEach(observer => observer.notify());
+        this.#observers.forEach(observer => observer.notify(oldId, newId));
     }
 }

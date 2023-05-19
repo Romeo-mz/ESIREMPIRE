@@ -241,6 +241,7 @@ export class Controller extends Notifier
 
     async upgradeTechnologie(id, type) 
     {
+        const oldId = id;
 
         if(!this.checkEnoughRessource(id, type))
         {
@@ -252,7 +253,7 @@ export class Controller extends Notifier
 
         if (id < 0) {
             try {
-                const dataToReturn = await this.createTechnologieToAPI(type);
+                const dataToReturn = await this.createTechnologieToAPI(type.toUpperCase());
                 console.log("Success to create techno:", dataToReturn);
                 
                 if(dataToReturn > 0){
@@ -272,9 +273,14 @@ export class Controller extends Notifier
 
         technologie.temps_recherche = Math.round(technologie.temps_recherche * 2);
             
-        this.upgradeTechnologieToAPI(technologie.id);
-
-        this.notify();
+        this.upgradeTechnologieToAPI(technologie.id)
+            .then(() => {
+                this.notify(oldId, technologie.id);
+            })
+            .catch(error => {
+                alert("Error while upgrading techno - please refresh the page:" + error);
+            }
+        );
     }
 
     async loadTechnoRequired() {

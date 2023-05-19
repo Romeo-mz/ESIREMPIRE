@@ -61,27 +61,47 @@ export class View extends Observer
         });
     }
 
-    updateTechnologies() {
-        const technologies = this.#controller.technologies;
-
-        technologies.forEach(techno => {
-            this.updateTechnologieElement(techno);
-        });
+    getTechnologieElementId(elementType, technologieId) {
+        const idPrefix = 'div-technologie';
+        return `${idPrefix}-${elementType}-technologie-${technologieId}`;
     }
-
-    updateTechnologieElement(technologie) {
-        const idPrefix = `div-technologie`;
-        const levelDiv = document.getElementById(`${idPrefix}-level-technologie-${technologie.id}`);
-        console.log(`${idPrefix}-level-technologie-${technologie.id}`);
-
-        // TRY TO FIX HERE
-        levelDiv.innerHTML = "Niveau: " + technologie.level;
-        const metalDiv = document.getElementById(`${idPrefix}-metal`);
-        if (metalDiv) metalDiv.innerHTML = "Métal: " + technologie.cout_metal;
-        const deuteriumDiv = document.getElementById(`${idPrefix}-deuterium`);
-        deuteriumDiv.innerHTML = "Deuterium: " + technologie.cout_deuterium;
-        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-${technologie.id}`);
-        buttonUpgrade.innerHTML = technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s";
+    
+    updateTechnologie(oldId, newId) {
+        const technologies = this.#controller.technologies;
+        const techno = technologies.find(techno => techno.id === newId);
+        this.updateTechnologieElement(techno, oldId);
+    }
+    
+    updateTechnologieElement(technologie, oldId) {
+        const elementsToUpdate = [
+            '', 'level', 'metal', 'deuterium', 'information',
+            'image', 'img', 'upgrade', 'type'
+        ];
+    
+        if (oldId !== technologie.id) {
+            for (const elementType of elementsToUpdate) {
+                const oldElementId = this.getTechnologieElementId(elementType, oldId);
+                const newElementId = this.getTechnologieElementId(elementType, technologie.id);
+    
+                const element = document.getElementById(oldElementId);
+                if (element) element.id = newElementId;
+            }
+            const buttonTechnologieUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${oldId}`);
+            buttonTechnologieUpgrade.id = `upgrade-technologie-button-technologie-${technologie.id}`;
+        }
+    
+        const levelDiv = document.getElementById(this.getTechnologieElementId('level', technologie.id));
+        levelDiv.innerHTML = `Niveau: ${technologie.level}`;
+    
+        const metalDiv = document.getElementById(this.getTechnologieElementId('metal', technologie.id));
+        if (metalDiv) metalDiv.innerHTML = `Métal: ${technologie.cout_metal}`;
+    
+        const deuteriumDiv = document.getElementById(this.getTechnologieElementId('deuterium', technologie.id));
+        deuteriumDiv.innerHTML = `Deuterium: ${technologie.cout_deuterium}`;
+    
+        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${technologie.id}`);
+        buttonUpgrade.innerHTML = technologie.level === '0' ? `Construire <br>${technologie.temps_recherche}s` : `Améliorer <br>${technologie.temps_recherche}s`;
+        buttonUpgrade.disabled = false;
     }
 
     createTechnologieElements(technologie) 
@@ -209,9 +229,9 @@ export class View extends Observer
         }
     }
 
-    notify() 
+    notify(oldId, newId) 
     {
-        this.updateTechnologies();
+        this.updateTechnologie(oldId, newId);
         this.updateRessources();
     }
 
