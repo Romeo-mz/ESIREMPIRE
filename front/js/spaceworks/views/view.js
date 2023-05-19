@@ -11,7 +11,7 @@ export class View extends Observer
         this.#controller.addObserver(this);
 
         this.createRessources();
-        this.createTechnologies();
+        this.createShips();
     }   
 
     createRessources() {
@@ -52,23 +52,23 @@ export class View extends Observer
         p.innerHTML = ressource.quantite;
     }
 
-    createTechnologies() {
-        const technologies = this.#controller.technologies;
+    createShips() {
+        const ships = this.#controller.ships;
 
-        technologies.forEach(techno => {
-            this.createTechnologieElements(techno);
+        ships.forEach(ship => {
+            this.createShipElements(ship);
         });
     }
 
-    getTechnologieElementId(elementType, technologieId) {
-        const idPrefix = 'div-technologie';
-        return `${idPrefix}-${elementType}-technologie-${technologieId}`;
+    getShipElementId(elementType, shipId) {
+        const idPrefix = 'div-ship';
+        return `${idPrefix}-${elementType}-ship-${shipId}`;
     }
     
-    updateTechnologie(oldId, newId) {
-        const technologies = this.#controller.technologies;
-        const techno = technologies.find(techno => techno.id === newId);
-        this.updateTechnologieElement(techno, oldId);
+    updateShip(id) {
+        const ships = this.#controller.ships;
+        const ship = ships.find(ship => ship.id === id);
+        this.updateTechnologieElement(ship);
     }
 
     checkAndUpdateTechnologieRequirements(technologie) {
@@ -96,73 +96,52 @@ export class View extends Observer
         });
     }
     
-    updateTechnologieElement(technologie, oldId) {
-        const elementsToUpdate = [
-            '', 'level', 'metal', 'deuterium', 'information',
-            'image', 'img', 'upgrade', 'type'
-        ];
-    
-        if (oldId !== technologie.id) {
-            for (const elementType of elementsToUpdate) {
-                const oldElementId = this.getTechnologieElementId(elementType, oldId);
-                const newElementId = this.getTechnologieElementId(elementType, technologie.id);
-    
-                const element = document.getElementById(oldElementId);
-                if (element) element.id = newElementId;
-            }
-            const buttonTechnologieUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${oldId}`);
-            buttonTechnologieUpgrade.id = `upgrade-technologie-button-technologie-${technologie.id}`;
-        }
-    
-        const levelDiv = document.getElementById(this.getTechnologieElementId('level', technologie.id));
-        levelDiv.innerHTML = `Niveau: ${technologie.level}`;
-    
-        const metalDiv = document.getElementById(this.getTechnologieElementId('metal', technologie.id));
-        if (metalDiv) metalDiv.innerHTML = `Métal: ${technologie.cout_metal}`;
-    
-        const deuteriumDiv = document.getElementById(this.getTechnologieElementId('deuterium', technologie.id));
-        deuteriumDiv.innerHTML = `Deuterium: ${technologie.cout_deuterium}`;
-    
-        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${technologie.id}`);
-        buttonUpgrade.innerHTML = technologie.level === '0' ? `Construire <br>${technologie.temps_recherche}s` : `Améliorer <br>${technologie.temps_recherche}s`;
-        buttonUpgrade.disabled = false;
+    updateTechnologieElement(ship) {    
+        const quantiteDiv = document.getElementById(this.getTechnologieElementId('quantite', ship.id));
+        quantiteDiv.innerHTML = `Quantité: ${ship.quantite}`;
 
-        this.checkAndUpdateTechnologieRequirements(technologie);
+        // this.checkAndUpdateTechnologieRequirements(technologie);
     }
 
-    createTechnologieElements(technologie) 
+    createShipElements(ship) 
     {
-        let parentDivId = "div-list-technologies";
+        let parentDivId = "div-list-ships";
 
-        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
-        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
-        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
-        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
+        let div = this.createOrUpdateElement("div", `div-ship-${ship.id}`, "div-ship");
+        let div_information = this.createOrUpdateElement("div", `div-ship-information-${ship.id}`, "div-ship-information");
+        let div_image = this.createOrUpdateElement("div", `div-ship-image-${ship.id}`, "div-ship-image");
+        let img = this.createOrUpdateElement("img", `img-ship-${ship.id}`, "img-ship");
 
         let div_information_type = null;
-        let div_information_level = null;
+        let div_information_quantite = null;
         let div_information_metal = null;
         let div_information_deuterium = null;
+        let div_point_attaque = null;
+        let div_point_defense = null;
+        let div_capacite_fret = null;
 
-        img.src = this.getImageSrcForType(technologie.type);
+        img.src = this.getImageSrcForType(ship.type);
 
-        div_information_type = this.createOrUpdateElement("div", `div-technologie-type-technologie-${technologie.id}`, "div-technologie-type", "<b>" + technologie.type + "</b>");
-        div_information_level = this.createOrUpdateElement("div", `div-technologie-level-technologie-${technologie.id}`, "div-technologie-level", "Niveau: " + technologie.level);
-        if(technologie.cout_metal !== null)
-            div_information_metal = this.createOrUpdateElement("div", `div-technologie-metal-technologie-${technologie.id}`, "div-technologie-metal", "Métal: " + technologie.cout_metal);
-        div_information_deuterium = this.createOrUpdateElement("div", `div-technologie-deuterium-technologie-${technologie.id}`, "div-technologie-deuterium", "Deuterium: " + technologie.cout_deuterium);
+        div_information_type = this.createOrUpdateElement("div", `div-ship-type-ship-${ship.id}`, "div-ship-type", "<b>" + ship.type + "</b>");
+        div_information_quantite = this.createOrUpdateElement("div", `div-ship-quantite-ship-${ship.id}`, "div-ship-quantite", "Quantité: " + ship.quantite);
+        div_information_metal = this.createOrUpdateElement("div", `div-ship-metal-ship-${ship.id}`, "div-ship-metal", "Métal: " + ship.cout_metal);
+        div_information_deuterium = this.createOrUpdateElement("div", `div-ship-deuterium-ship-${ship.id}`, "div-ship-deuterium", "Deuterium: " + ship.cout_deuterium);
+        div_point_attaque = this.createOrUpdateElement("div", `div-ship-point-attaque-ship-${ship.id}`, "div-ship-point-attaque", "Point d'attaque: " + ship.point_attaque);
+        div_point_defense = this.createOrUpdateElement("div", `div-ship-point-defense-ship-${ship.id}`, "div-ship-point-defense", "Point de défense: " + ship.point_defense);
+        if(ship.capacite_fret != null)
+            div_capacite_fret = this.createOrUpdateElement("div", `div-ship-capacite-fret-ship-${ship.id}`, "div-ship-capacite-fret", "Capacité de fret: " + ship.capacite_fret);
 
-        let div_upgrade = this.createOrUpdateElement("div", `div-technologie-upgrade-technologie-${technologie.id}`, "div-technologie-upgrade");
+        let div_upgrade = this.createOrUpdateElement("div", `div-ship-upgrade-ship-${ship.id}`, "div-ship-upgrade");
         let button_upgrade = this.createOrUpdateElement(
             "button",
-            `upgrade-technologie-button-technologie-${technologie.id}`,
+            `upgrade-ship-button-ship-${ship.id}`,
             "upgrade-button",
-            technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s"
+            "Construire <br>" + ship.temps_construction + "s"
         );
 
         button_upgrade.addEventListener("click", () => {
             button_upgrade.disabled = true;
-            let remainingTime = technologie.temps_recherche;
+            let remainingTime = ship.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
         
             const intervalId = setInterval(() => {
@@ -170,41 +149,42 @@ export class View extends Observer
                 button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
                 if (remainingTime === 0) {
                     clearInterval(intervalId);
-                    this.#controller.upgradeTechnologie(technologie.id, technologie.type);
+                    this.#controller.upgradeShip(ship.id, ship.type);
                 }
             }, 1000);
         });
         
-        
-
         div_image.appendChild(img);
         div_information.appendChild(div_information_type);
-        div_information.appendChild(div_information_level);
-        if(technologie.cout_metal !== null)
-            div_information.appendChild(div_information_metal);
+        div_information.appendChild(div_information_quantite);
+        div_information.appendChild(div_information_metal);
         div_information.appendChild(div_information_deuterium);
+        div_information.appendChild(div_point_attaque);
+        div_information.appendChild(div_point_defense);
+        if(ship.capacite_fret != null)
+            div_information.appendChild(div_capacite_fret);
         div_upgrade.appendChild(button_upgrade);
 
         div.appendChild(div_image);
         div.appendChild(div_information);
 
-        const technoRequired = this.#controller.technoRequired;
-        const technoPlayer = this.#controller.technologies;
+        const shipTechnoRequired = this.#controller.shipTechnoRequired;
+        const technoPlayer = this.#controller.technologiesPlayer;        
 
-        // Check if the player has the required technologies
-        (technoRequired).forEach(technorequired => {
-            if(technorequired.techno === technologie.type) 
+        (shipTechnoRequired).forEach(shiptechno => {
+            if(shiptechno.type === ship.type) 
             {
-                let techno = technoPlayer.find(techno => techno.type === technorequired.technoRequired);
 
-                if(techno === undefined || techno.level < technorequired.technoRequiredLevel)
+                let techno = technoPlayer.find(techno => techno.type === shiptechno.technoRequired);
+                
+                if(techno === undefined || techno.level < shiptechno.technoRequiredLevel)
                 {
-                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-technologie-${technologie.id}`, "strip-techno-required-list");
-                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-technologie-${technologie.id}`, "strip-techno-required-list-item");
-                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-technologie-${technologie.id}`, "strip-techno-required-list-item-title");
-                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-technologie-${technologie.id}`, "strip-techno-required-list-item-content");
-                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-technologie-${technologie.id}`, "strip-techno-required-list-item-title", technorequired.technoRequired);
-                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-technologie-${technologie.id}`, "strip-techno-required-list-item-content", "Niveau: " + technorequired.technoRequiredLevel);
+                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-spacework-${ship.id}`, "strip-techno-required-list");
+                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-spacework-${ship.id}`, "strip-techno-required-list-item");
+                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-spacework-${ship.id}`, "strip-techno-required-list-item-title");
+                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-spacework-${ship.id}`, "strip-techno-required-list-item-content");
+                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-spacework-${ship.id}`, "strip-techno-required-list-item-title", shiptechno.technoRequired);
+                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-spacework-${ship.id}`, "strip-techno-required-list-item-content", "Niveau: " + shiptechno.technoRequiredLevel);
 
                     div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
                     div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
@@ -246,26 +226,22 @@ export class View extends Observer
     {
         switch (type) 
         {
-            case "ENERGIE":
-                return "img/techno-energie.png";
-            case "LASER":
-                return "img/techno-laser.png";
-            case "IONS":
-                return "img/techno-ions.png";
-            case "IA":
-                return "img/techno-ia.png";
-            case "BOUCLIER":
-                return "img/techno-bouclier.png";
-            case "ARMEMENT":
-                return "img/techno-armement.png";
+            case "CHASSEUR":
+                return "img/chasseur.png";
+            case "CROISEUR":
+                return "img/croiseur.png";
+            case "TRANSPORTEUR":
+                return "img/transporteur.png";
+            case "COLONISATEUR":
+                return "img/colonisateur.png";
             default:
                 return "";
         }
     }
 
-    notify(oldId, newId) 
+    notify() 
     {
-        this.updateTechnologie(oldId, newId);
+        this.updateShip(id);
         this.updateRessources();
     }
 

@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     myController.loadTechnologiesPlayer()
                                         .then(() => {
                                             console.log("Success to load technologies player")
+                                            const myView = new View(myController);
                                         })
                                         .catch(error => {
                                             alert("Error while loading technologies player - please refresh the page")
