@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_galaxy");
-define('DB_PWD', "@]UXDXmAc796NQdf");
+// define('DB_LOGIN', "api_galaxy");
+// define('DB_PWD', "@]UXDXmAc796NQdf");
 
 class DBgalaxy extends DBinterface {
 

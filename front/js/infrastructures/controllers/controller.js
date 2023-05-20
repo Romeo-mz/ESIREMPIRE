@@ -8,7 +8,7 @@ import { TechnoRequired } from "../models/technorequired.js";
 import { InfraTechnoRequired } from "../models/infratechnorequired.js";
 import { Technologie } from "../models/technologie.js";
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIinfrastructures.php";
 
 export class Controller extends Notifier
 {

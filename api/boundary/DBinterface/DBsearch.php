@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_search");
-define('DB_PWD', "bGfTaly[]GK@XXTl");
+// define('DB_LOGIN', "api_search");
+// define('DB_PWD', "bGfTaly[]GK@XXTl");
 
 class DBsearch extends DBinterface {
 
