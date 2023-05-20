@@ -64,11 +64,11 @@ class APIlogin
         {
             http_response_code(200);
             echo "Login successful";
-            $id = $this->controller->getIdJoueur($username)['id'];
-            $ressources = $this->controller->getRessourcesJoueur($id);
+            $id = $this->controller->getIdJoueur($username);
+            $ressources = $this->controller->getRessourcesJoueur($id, $univers);
 
             $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
-            echo($_SESSION['username']);
+            // echo($_SESSION['username']);
         }
         else if($result == 1)
         {

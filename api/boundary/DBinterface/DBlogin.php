@@ -2,8 +2,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-// define('DB_LOGIN', "api_admin");
-// define('DB_PWD', "lDMH6chWNK3um6fF");
+ define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 class DBlogin extends DBinterface {
 
@@ -36,4 +36,8 @@ class DBlogin extends DBinterface {
         return $this->fetchValue($query);
     }
 
+    public function getRessourcesJoueur($id_joueur, $id_univers){
+        $query = "SELECT id_Ressource FROM joueurunivers WHERE id_Joueur = ? AND id_Univers = ?";
+        return $this->fetchAllRows($query, [$id_joueur, $id_univers]);
+    }
 }

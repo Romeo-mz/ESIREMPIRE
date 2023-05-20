@@ -8,6 +8,5 @@ class DBvaisseau extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
-    public function getVaisseau    
           
 }

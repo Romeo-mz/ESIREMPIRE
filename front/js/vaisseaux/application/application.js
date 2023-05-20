@@ -1,8 +1,8 @@
-import { VaisseauxController } from "../controllers/controller.js";
+import { Controller, VaisseauxController } from "../controllers/controller.js";
 import { View } from "../views/view.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const myController = new VaisseauxController();
+    const myController = new Controller();
     const myView = new View(myController);
 
     myController.loadVaisseaux()
