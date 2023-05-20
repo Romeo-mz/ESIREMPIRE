@@ -22,7 +22,7 @@ class Authentifier
             //echo "Error while preparing request";
             return 2; // code 2 : Wrong username
         }
-        print_r($result);
+        
         if($result[0]['mdp'] == $password && $username == $result[0]['pseudo']){
             $_SESSION['id'] = $result[0]['id'];
             $_SESSION['username'] = $result[0]['pseudo'];

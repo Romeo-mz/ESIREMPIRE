@@ -68,7 +68,7 @@ class APIlogin
             $ressources = $this->controller->getRessourcesJoueur($id, $univers);
 
             $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
-            // echo($_SESSION['username']);
+            header('Location: ../../../front/galaxy.php');
         }
         else if($result == 1)
         {
