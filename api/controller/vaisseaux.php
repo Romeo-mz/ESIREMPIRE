@@ -9,8 +9,8 @@ class Vaisseau{
         $this->dbInterface = new DBvaisseau();
     }
 
-    public function getVaisseauID($id_Planet){
-        return $this->dbInterface->getVaisseauID($id_Planet);
+    public function getAllVaisseauID($id_joueur, $id_univers){
+        return $this->dbInterface->getAllVaisseauID($id_joueur, $id_univers);
     }
 
     public function getFlotte($id_Vaisseau){
@@ -36,4 +36,5 @@ class Vaisseau{
     public function getNbVaisseauxFlotte($id_joueur){
         return $this->dbInterface->getNbVaisseauxFlotte($id_joueur);
     }
+
 }

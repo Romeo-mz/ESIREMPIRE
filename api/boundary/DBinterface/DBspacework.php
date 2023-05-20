@@ -123,6 +123,12 @@ class DBspacework extends DBinterface {
         }
     }
 
+    public function addToDefense($id_joueur){
+        $id_vaisseaux = $this->executeQuery('
+            SELECT * FROM vaisseau ORDER BY vaisseau.id DESC LIMIT 1;');
+        $this->executeQuery('
+            INSERT INTO flottedefense (id_joueur, id_vaisseaux_combattants) VALUES (?, ?);', [$id_joueur, $id_vaisseaux]);
+    }
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
