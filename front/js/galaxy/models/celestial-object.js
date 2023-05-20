@@ -45,21 +45,19 @@ export class CelestialBody
         });
     }
 
-    // initTexture(callback) {
-    //     if (this.textureUrl) {
-    //         this.texture = new Image();
-    //         this.texture.src = this.textureUrl;
-            
-    //     }
-    // }
-
-    async initTexture(callback)
+    async initTexture()
     {
         return new Promise((resolve, reject) =>
         {
             this.texture = new Image();
-            this.texture.src = `./img/${this.name.toLowerCase()}.png`;
-            this.texture.onload = callback;
+            this.texture.src = `img/${this.name.toLowerCase()}.png`;
+            this.texture.onload = async () =>
+            {
+                for (const satellite of this.satellites)
+                    await satellite.initTexture();
+
+                resolve();
+            }
         });
     }
 

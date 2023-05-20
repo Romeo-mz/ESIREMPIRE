@@ -87,10 +87,14 @@ export class View extends Observer
     
         this.context.beginPath();
     
-        this.#controller.solarSystem.sun.initTexture(() => {
-            this.resize();
-            this.animate(0);
+        this.#controller.solarSystem.sun.initTexture() 
+        this.#controller.solarSystem.sun.satellites.forEach((satellite) => {
+          satellite.initTexture();
         });
+
+        this.resize();
+        this.animate(0);
+
       }   
 
 
@@ -118,13 +122,15 @@ export class View extends Observer
           this.context.beginPath();
           this.context.arc(-celestialBody.radius * 2,0,celestialBody.radius * 2,0,2 * Math.PI);
         }
+
     
         this.context.beginPath();
         this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
-        const pattern = this.context.createPattern(
-          celestialBody.texture,
-          "no-repeat"
-        );
+
+        // console.log(celestialBody.texture);
+        
+        const pattern = this.context.createPattern(celestialBody.texture, "no-repeat");
+
            const coef = (celestialBody.radius * 2) / celestialBody.texture.width;
         this.context.save();
         this.context.rotate(celestialBody.rotationAngle);
@@ -133,6 +139,7 @@ export class View extends Observer
         this.context.fillStyle = pattern;
         this.context.fill();
         this.context.restore();
+        
     
         this.context.save();
         this.context.textAlign = "center";
