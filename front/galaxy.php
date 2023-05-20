@@ -115,6 +115,7 @@ $planets = fetch_data('id_SolarSystem', $_POST['id_SolarSystem']);
 
         async function updatePlanets() {
             let solarSystemId = document.getElementById('id_SolarSystem').value;
+            let galaxyId = document.getElementById('id_Galaxy').value;
             let response = await fetch(`http://esirempire/api/boundary/APIinterface/APIgalaxy.php?id_SolarSystem=${solarSystemId}`);
             let planets = await response.json();
             let planetTable = document.querySelector('.planet-tab');

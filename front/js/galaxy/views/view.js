@@ -3,270 +3,210 @@ import { Observer } from "../pattern/observer.js";
 export class View extends Observer 
 {
     #controller;
+    canvas;
+    context;
 
-    constructor(controller) 
-    {
+    constructor(controller) {
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
-
-        this.createRessources();
-        this.createTechnologies();
-    }   
-
-    createRessources() {
-        const ressources = this.#controller.quantiteRessource;
-        
-        ressources.forEach(ressource => {
-            this.createRessourceElement(ressource);
-        });
-    }
     
-    updateRessources() {
-        const ressources = this.#controller.quantiteRessource;
-
-        ressources.forEach(ressource => {
-            this.updateRessourceElement(ressource);
-        });
-    }
-    
-    createRessourceElement(ressource) {
-        const prefix = ressource.type.toLowerCase();
-
-        let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
-        let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
-        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
-
-        img.src = `img/${prefix}.png`;
-        img.alt = prefix;
-
-        div.appendChild(img);
-        div.appendChild(p);
-
-        document.getElementById("div-ressources").appendChild(div);
-    }
-    
-    updateRessourceElement(ressource) {
-        const prefix = ressource.type.toLowerCase();
-        let p = document.getElementById(`p-${prefix}`);
-        p.innerHTML = ressource.quantite;
-    }
-
-    createTechnologies() {
-        const technologies = this.#controller.technologies;
-
-        technologies.forEach(techno => {
-            this.createTechnologieElements(techno);
-        });
-    }
-
-    getTechnologieElementId(elementType, technologieId) {
-        const idPrefix = 'div-technologie';
-        return `${idPrefix}-${elementType}-technologie-${technologieId}`;
-    }
-    
-    updateTechnologie(oldId, newId) {
-        const technologies = this.#controller.technologies;
-        const techno = technologies.find(techno => techno.id === newId);
-        this.updateTechnologieElement(techno, oldId);
-    }
-
-    checkAndUpdateTechnologieRequirements(technologie) {
-        const technoRequired = this.#controller.technoRequired;
-        const technoPlayer = this.#controller.technologies;
-    
-        technoRequired.forEach(technorequired => {
-
-            if (technorequired.technoRequired === technologie.type) {
-    
-                if (technologie.level < technorequired.technoRequiredLevel) {
-                    return;
-                }
-
-                const techno2 = technoPlayer.find(techno => techno.type === technorequired.techno);
-
-                const stripElementId = `div-strip-techno-required-list-technologie-${techno2.id}`;
-                const stripElement = document.getElementById(stripElementId);
-                if (stripElement) stripElement.remove();
-
-                const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${techno2.id}`);
-                buttonUpgrade.disabled = false;
-                buttonUpgrade.innerHTML = techno2.level === '0' ? `Construire <br>${techno2.temps_recherche}s` : `Améliorer <br>${techno2.temps_recherche}s`;
-            }
-        });
-    }
-    
-    updateTechnologieElement(technologie, oldId) {
-        const elementsToUpdate = [
-            '', 'level', 'metal', 'deuterium', 'information',
-            'image', 'img', 'upgrade', 'type'
-        ];
-    
-        if (oldId !== technologie.id) {
-            for (const elementType of elementsToUpdate) {
-                const oldElementId = this.getTechnologieElementId(elementType, oldId);
-                const newElementId = this.getTechnologieElementId(elementType, technologie.id);
-    
-                const element = document.getElementById(oldElementId);
-                if (element) element.id = newElementId;
-            }
-            const buttonTechnologieUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${oldId}`);
-            buttonTechnologieUpgrade.id = `upgrade-technologie-button-technologie-${technologie.id}`;
+        this.canvas = document.getElementById("canvas");
+        if (!this.canvas) {
+          throw new Error("Could not find canvas element");
+        }
+        this.context = this.canvas.getContext("2d");
+        if (!this.context) {
+          throw new Error("Could not get 2D context for canvas");
         }
     
-        const levelDiv = document.getElementById(this.getTechnologieElementId('level', technologie.id));
-        levelDiv.innerHTML = `Niveau: ${technologie.level}`;
+        this.canvas.addEventListener("click", (event) => {
+          const mousePosition = {
+            x: event.clientX,
+            y: event.clientY,
+          };
+          const sunPosition = {
+            x: this.canvas.width / 2,
+            y: this.canvas.height / 2,
+          };
+          const distance = Math.sqrt(
+            Math.pow(mousePosition.x - sunPosition.x, 2) +
+              Math.pow(mousePosition.y - sunPosition.y, 2)
+          );
+          if (distance < this.#controller.solarSystem.sun.radius) {
+            console.log("Developped by Hugo with love <3");
+          } else {
+            const planet = this.#controller.solarSystem.sun.satellites.find((satellite) => {
+              return distance < satellite.distance + satellite.radius;
+            });
+            if (planet) {
+              // Go to the planet page
+            }
+          }
+        });
     
-        const metalDiv = document.getElementById(this.getTechnologieElementId('metal', technologie.id));
-        if (metalDiv) metalDiv.innerHTML = `Métal: ${technologie.cout_metal}`;
+        this.canvas.addEventListener("mousemove", (event) => {
+          const mousePosition = {
+            x: event.clientX,
+            y: event.clientY,
+          };
+          const sunPosition = {
+            x: this.canvas.width / 2,
+            y: this.canvas.height / 2,
+          };
+          const distance = Math.sqrt(
+            Math.pow(mousePosition.x - sunPosition.x, 2) +
+              Math.pow(mousePosition.y - sunPosition.y, 2)
+          );
+          if (distance < this.#controller.solarSystem.sun.radius) {
+            document.getElementById("planetName").innerHTML = "Sun";
+            document.getElementById("playerName").innerHTML = "";
+          } else {
+            const planet = this.#controller.solarSystem.sun.satellites.find(
+              (satellite) => {
+                return distance < satellite.distance + satellite.radius;
+              }
+            );
+            if (planet) {
+              document.getElementById("planetName").innerHTML =
+                "Planet Name: " + planet.name;
+              document.getElementById("playerName").innerHTML =
+                "Player Name: " +
+                (planet.playerName == "" ? "No player" : planet.playerName);
+            }
+          }
+        });
     
-        const deuteriumDiv = document.getElementById(this.getTechnologieElementId('deuterium', technologie.id));
-        deuteriumDiv.innerHTML = `Deuterium: ${technologie.cout_deuterium}`;
+        window.addEventListener("resize", () => {
+          this.resize();
+          this.animate(0);
+        });
     
-        const buttonUpgrade = document.getElementById(`upgrade-technologie-button-technologie-${technologie.id}`);
-        buttonUpgrade.innerHTML = technologie.level === '0' ? `Construire <br>${technologie.temps_recherche}s` : `Améliorer <br>${technologie.temps_recherche}s`;
-        buttonUpgrade.disabled = false;
+        this.canvas.width = this.canvas.clientWidth;
+        this.canvas.height = this.canvas.clientHeight;
+    
+        this.context.beginPath();
+    
+        this.#controller.solarSystem.sun.initTexture(() => {
+            this.resize();
+            this.animate(0);
+        });
+      }   
 
-        this.checkAndUpdateTechnologieRequirements(technologie);
+
+    resize() {
+        const width = this.canvas.clientWidth;
+        const height = this.canvas.clientHeight;
+        if (this.canvas.width !== width || this.canvas.height !== height) {
+          this.canvas.width = width;
+          this.canvas.height = height;
+          this.drawSolarSystem();
+        }
     }
 
-    createTechnologieElements(technologie) 
-    {
-        let parentDivId = "div-list-technologies";
-
-        let div = this.createOrUpdateElement("div", `div-technologie-${technologie.id}`, "div-technologie");
-        let div_information = this.createOrUpdateElement("div", `div-technologie-information-${technologie.id}`, "div-technologie-information");
-        let div_image = this.createOrUpdateElement("div", `div-technologie-image-${technologie.id}`, "div-technologie-image");
-        let img = this.createOrUpdateElement("img", `img-technologie-${technologie.id}`, "img-technologie");
-
-        let div_information_type = null;
-        let div_information_level = null;
-        let div_information_metal = null;
-        let div_information_deuterium = null;
-
-        img.src = this.getImageSrcForType(technologie.type);
-
-        div_information_type = this.createOrUpdateElement("div", `div-technologie-type-technologie-${technologie.id}`, "div-technologie-type", "<b>" + technologie.type + "</b>");
-        div_information_level = this.createOrUpdateElement("div", `div-technologie-level-technologie-${technologie.id}`, "div-technologie-level", "Niveau: " + technologie.level);
-        if(technologie.cout_metal !== null)
-            div_information_metal = this.createOrUpdateElement("div", `div-technologie-metal-technologie-${technologie.id}`, "div-technologie-metal", "Métal: " + technologie.cout_metal);
-        div_information_deuterium = this.createOrUpdateElement("div", `div-technologie-deuterium-technologie-${technologie.id}`, "div-technologie-deuterium", "Deuterium: " + technologie.cout_deuterium);
-
-        let div_upgrade = this.createOrUpdateElement("div", `div-technologie-upgrade-technologie-${technologie.id}`, "div-technologie-upgrade");
-        let button_upgrade = this.createOrUpdateElement(
-            "button",
-            `upgrade-technologie-button-technologie-${technologie.id}`,
-            "upgrade-button",
-            technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s"
+    drawCelestialBody(celestialBody) {
+        this.context.save();
+        this.context.rotate(celestialBody.orbitalAngle);
+        this.context.translate(celestialBody.distance, 0);
+    
+        if (celestialBody.hasShadow) {
+          this.context.beginPath();
+          this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
+          this.context.fillStyle = "#000000";
+          this.context.fill();
+          this.context.save();
+          this.context.beginPath();
+          this.context.arc(-celestialBody.radius * 2,0,celestialBody.radius * 2,0,2 * Math.PI);
+        }
+    
+        this.context.beginPath();
+        this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
+        const pattern = this.context.createPattern(
+          celestialBody.texture,
+          "no-repeat"
         );
-
-        button_upgrade.addEventListener("click", () => {
-            button_upgrade.disabled = true;
-            let remainingTime = technologie.temps_recherche;
-            button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
-        
-            const intervalId = setInterval(() => {
-                remainingTime--;
-                button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";
-                if (remainingTime === 0) {
-                    clearInterval(intervalId);
-                    this.#controller.upgradeTechnologie(technologie.id, technologie.type);
-                }
-            }, 1000);
-        });
-        
-        
-
-        div_image.appendChild(img);
-        div_information.appendChild(div_information_type);
-        div_information.appendChild(div_information_level);
-        if(technologie.cout_metal !== null)
-            div_information.appendChild(div_information_metal);
-        div_information.appendChild(div_information_deuterium);
-        div_upgrade.appendChild(button_upgrade);
-
-        div.appendChild(div_image);
-        div.appendChild(div_information);
-
-        const technoRequired = this.#controller.technoRequired;
-        const technoPlayer = this.#controller.technologies;
-
-        // Check if the player has the required technologies
-        (technoRequired).forEach(technorequired => {
-            if(technorequired.techno === technologie.type) 
-            {
-                let techno = technoPlayer.find(techno => techno.type === technorequired.technoRequired);
-
-                if(techno === undefined || techno.level < technorequired.technoRequiredLevel)
-                {
-                    let div_strip_techno_required_list = this.createOrUpdateElement("div", `div-strip-techno-required-list-technologie-${technologie.id}`, "strip-techno-required-list");
-                    let div_strip_techno_required_list_item = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-technologie-${technologie.id}`, "strip-techno-required-list-item");
-                    let div_strip_techno_required_list_item_title = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-title-technologie-${technologie.id}`, "strip-techno-required-list-item-title");
-                    let div_strip_techno_required_list_item_content = this.createOrUpdateElement("div", `div-strip-techno-required-list-item-content-technologie-${technologie.id}`, "strip-techno-required-list-item-content");
-                    let h4_strip_techno_required_list_item_title = this.createOrUpdateElement("h4", `h4-strip-techno-required-list-item-title-technologie-${technologie.id}`, "strip-techno-required-list-item-title", technorequired.technoRequired);
-                    let p_strip_techno_required_list_item_content = this.createOrUpdateElement("p", `p-strip-techno-required-list-item-content-technologie-${technologie.id}`, "strip-techno-required-list-item-content", "Niveau: " + technorequired.technoRequiredLevel);
-
-                    div_strip_techno_required_list_item_title.appendChild(h4_strip_techno_required_list_item_title);
-                    div_strip_techno_required_list_item_content.appendChild(p_strip_techno_required_list_item_content);
-                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_title);
-                    div_strip_techno_required_list_item.appendChild(div_strip_techno_required_list_item_content);
-                    div_strip_techno_required_list.appendChild(div_strip_techno_required_list_item);
-
-                    button_upgrade.disabled = true;
-                    button_upgrade.innerHTML = "Technologie requise";
-
-                    div.appendChild(div_strip_techno_required_list);
-                    
-                }
-            }
-        });
-
-        div.appendChild(div_upgrade);
-        document.getElementById(parentDivId).appendChild(div);
-
-    }
-
-
-    createOrUpdateElement(tagName, id, className, innerHTML = "") 
-    {
-        let element = document.getElementById(id);
-
-        if (!element) 
-        {
-            element = document.createElement(tagName);
-            element.id = id;
-            element.className = className;
+           const coef = (celestialBody.radius * 2) / celestialBody.texture.width;
+        this.context.save();
+        this.context.rotate(celestialBody.rotationAngle);
+        this.context.translate(-celestialBody.radius, -celestialBody.radius);
+        this.context.scale(coef, coef);
+        this.context.fillStyle = pattern;
+        this.context.fill();
+        this.context.restore();
+    
+        this.context.save();
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.font = "30px Arial";
+        if (celestialBody.name !== "Sun") {
+          this.context.fillStyle = "#FFFFFF";
+          const textOffset = celestialBody.radius + 20;
+          this.context.translate(0, -textOffset);
+        } else {
+          this.context.fillStyle = "#000000";
         }
-
-        element.innerHTML = innerHTML;
-        return element;
-    }
-
-    getImageSrcForType(type) 
-    {
-        switch (type) 
-        {
-            case "ENERGIE":
-                return "img/techno-energie.png";
-            case "LASER":
-                return "img/techno-laser.png";
-            case "IONS":
-                return "img/techno-ions.png";
-            case "IA":
-                return "img/techno-ia.png";
-            case "BOUCLIER":
-                return "img/techno-bouclier.png";
-            case "ARMEMENT":
-                return "img/techno-armement.png";
-            default:
-                return "";
+        if (celestialBody.name !== "Sun") {
+          this.context.rotate(-celestialBody.rotationAngle);
         }
+        this.context.fillText(celestialBody.name, 0, 0);
+        this.context.restore();
+    
+        if (celestialBody.hasShadow) {
+          this.context.restore();
+        }
+    
+        celestialBody.satellites.forEach((satellite) => {
+            this.drawOrbit(satellite);
+            this.drawCelestialBody(satellite);
+        });
+    
+        this.context.restore();
     }
 
-    notify(oldId, newId) 
+    drawSolarSystem()
     {
-        this.updateTechnologie(oldId, newId);
-        this.updateRessources();
+        //Saves the context
+        this.context.save();
+        //Moves the coordinate system to the center of the canvas
+        this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
+        //Draws the solar system starting with the sun
+        this.drawCelestialBody(this.#controller.solarSystem.sun);
+        //Restores the context to its states at the previous call of save
+        this.context.restore();
+    }
+
+    drawOrbit(celestialBody)
+    {
+        // Starts the drawing
+        this.context.beginPath();
+        // Prepare the drawing of a complete circle
+        this.context.arc(0, 0, celestialBody.distance, 0, 2 * Math.PI);
+        // Sets the outline color of the circle
+        this.context.strokeStyle = "#333333";
+        // Draws the outline of the circle
+        this.context.stroke();
+    }
+
+    animate(lastUpdateTime)
+    {
+        // Gets the number of milliseconds elapsed from the beginning of the program
+        const now = performance.now();
+        // Computes the elpased time from the last update.
+        // If lastUpdateTime is equel to 0, it is the first frame, so update is not required.
+        const elapsedTime = lastUpdateTime === 0 ? 0 : now - lastUpdateTime;
+        // Clears the canvas
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // Draws the solar system
+        this.drawSolarSystem();
+        // Updates celestial bodies position
+        this.#controller.solarSystem.sun.update(elapsedTime);
+        // Requests a new frame as soon as possible
+        requestAnimationFrame(() => { this.animate(now) });
+    }
+
+    notify() 
+    {
+        // this.updateTechnologie();
     }
 
 }

@@ -1,303 +1,83 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
-import { QuantiteRessource } from "../models/quantiteressource.js";
-import { TechnoRequired } from "../models/technorequired.js";
-import { Technologie } from "../models/technologie.js";
+import { CelestialBody } from "../models/celestial-object.js";
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIsearch.php";
+const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
-    defaultTechnologies: "?default_technologies",
-    laboID: (planetID) => `?id_Labo&id_Planet=${planetID}`,
-    resourceQuantities: (playerID, universeID) => `?quantity_ressource_player&id_Player=${playerID}&id_Universe=${universeID}`,
-    technologies: (laboID) => `?technologies&id_Labo=${laboID}`,
-    technoRequired: "?techno_required"
+    loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_System=${systemId}`,
+    test: "?id_SolarSystem=1"
+    // technoRequired: "?techno_required"
 };
 
 export class Controller extends Notifier
 {
-    #technologies;
-    #defaultTechnologies;
     #session;
-    #quantiteRessource;
-    #technoRequired;
-    #laboID;
+    #solarSystem;
 
     constructor()
     {
         super();
-        this.#technologies = [];
-        this.#defaultTechnologies = [];
-        this.#quantiteRessource = [];
-        this.#technoRequired = [];
-
-        this.#laboID;
-
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+        
+        this.#solarSystem = {
+            sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
+            planets: []
+        };
     }
-
-    get technologies() { return this.#technologies; }
-    set technologies(technologies) { this.#technologies = technologies; }
 
     get session() { return this.#session; }
     set session(session) { this.#session = session; }
 
-    get quantiteRessource() { return this.#quantiteRessource; }
-    set quantiteRessource(quantiteRessource) { this.#quantiteRessource = quantiteRessource; }
-
-    get technoRequired() { return this.#technoRequired; }
-    set technoRequired(technoRequired) { this.#technoRequired = technoRequired; }
-
-    get laboID() { return this.#laboID; }
-    set laboID(laboID) { this.#laboID = laboID; }
+    get solarSystem() { return this.#solarSystem; }
+    set solarSystem(solarSystem) { this.#solarSystem = solarSystem; }
 
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
     }
 
-    async loadDefaultTechnologies()
+    async loadPlanets(galaxyId, systemId) 
     {
-        const data = await this.fetchData(API_QUERY_PARAMS.defaultTechnologies);
-
-        let negativeID = -1;
-
-        const technos = data.map(item => {
-            return new Technologie(
-                negativeID--, 
-                "0",
-                item.type,
-                item.cout_metal,
-                item.cout_deuterium,
-                item.temps_recherche
+        const data = await this.fetchData(API_QUERY_PARAMS.test);
+    
+        const celestialBodyConfig = {
+            "1": { radius: 15, distance: 70, color: "#4f4160", rotationSpeed: 0.5, orbitalSpeed: 0.5 },
+            "2": { radius: 20, distance: 130, color: "#d3a147", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
+            "3": { radius: 30, distance: 180, color: "#355ca3", rotationSpeed: 0.35, orbitalSpeed: 0.35 },
+            "4": { radius: 18, distance: 240, color: "#a33a35", rotationSpeed: 0.05, orbitalSpeed: 0.05 },
+            "5": { radius: 20, distance: 290, color: "#a33a35", rotationSpeed: 0.45, orbitalSpeed: 0.45 },
+            "6": { radius: 22, distance: 350, color: "#a33a35", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
+            "7": { radius: 15, distance: 400, color: "#a33a35", rotationSpeed: 0.15, orbitalSpeed: 0.15 },
+            "8": { radius: 12, distance: 440, color: "#a33a35", rotationSpeed: 0.4, orbitalSpeed: 0.4 },
+            "9": { radius: 20, distance: 490, color: "#a33a35", rotationSpeed: 0.08, orbitalSpeed: 0.08 },
+            "10": { radius: 25, distance: 550, color: "#a33a35", rotationSpeed: 0.1, orbitalSpeed: 0.1 },
+        };
+    
+        const createCelestialBody = (item, config) => {
+            return new CelestialBody(
+                item.id,
+                item.nom,
+                item.pseudo,
+                config.radius,
+                config.distance,
+                config.color,
+                config.rotationSpeed,
+                config.orbitalSpeed,
+                true
             );
-        });
-        
-        this.#defaultTechnologies = technos;
-    }
-
-    async loadLaboratoireID()
-    {
-        const data = await this.fetchData(API_QUERY_PARAMS.laboID(this.#session.id_Planet));
-
-        if (data.id_Labo !== false)
-        {
-            this.#laboID = data.id_Labo;
-        }
-        else
-        {
-            this.#laboID = -1;
-        }
-
-    }
-
-    async loadQuantitiesRessource() {
-        const ressourceData = await this.fetchData(API_QUERY_PARAMS.resourceQuantities(this.#session.id_Player, this.#session.id_Univers));
-
-        this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
-            new QuantiteRessource(id_Ressource, type, quantite)
-        );
-
-    }
-
-    async loadTechnologies() 
-    {
-        
-        if (this.#laboID !== -1)
-        {
-            const data = await this.fetchData(API_QUERY_PARAMS.technologies(this.#laboID));
-
-            const technos = data.map(item => {
-                return new Technologie(
-                    item.id,
-                    item.niveau,
-                    item.type_technologie,
-                    item.cout_metal,
-                    item.cout_deuterium,
-                    item.temps_recherche * (2 ** (item.niveau - 1))
-                );
-            });
-
-            this.#technologies = this.mergeTechnologies(this.#defaultTechnologies, technos);
-        }
-    }
-
-    mergeTechnologies(defaultTechnologies, existingTechnologies) {
-        const mergedTechnologies = [];
-    
-        defaultTechnologies.forEach(defaultTechno => {
-            let existingTechno = null;
-
-            existingTechno = existingTechnologies.find(existingTechno => existingTechno.type === defaultTechno.type);
-
-    
-            if (existingTechno) {
-                mergedTechnologies.push(existingTechno);
-            } else {
-                mergedTechnologies.push(defaultTechno);
-            }
-        });
-    
-        return mergedTechnologies;
-    }
-
-    checkEnoughRessource(id, type) 
-    {
-        const technologie = this.#technologies.find(technologie => technologie.id === id);
-
-        const quantiteMetal = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite);
-        const quantiteDeuterium = parseInt(this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite);
-
-        
-            if (quantiteDeuterium < technologie.cout_deuterium) 
-            {
-                if (technologie.type === "ARMEMENT") 
-                {
-                    if (quantiteMetal < technologie.cout_metal) 
-                    {
-                        return false;
-                    }
-                }
-                return false;
-            }
-
-
-        return true;
-
-    }
-
-    decreaseRessource(id, type) 
-    {
-        const technologie = this.#technologies.find(technologie => technologie.id === id);
-
-        const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
-        const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
-
-        const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
-        const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
-
-        if (technologie.type === "ARMEMENT") 
-        {
-            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite -= technologie.cout_metal;
-            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
-
-            this.decreaseRessourceToAPI(idQuantiteMetal, "METAL", technologie.cout_metal);
-            this.decreaseRessourceToAPI(idQuantiteDeuterium, "DEUTERIUM", technologie.cout_deuterium);
-        }
-        else {
-            this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite -= technologie.cout_deuterium;
-
-            this.decreaseRessourceToAPI(idQuantiteDeuterium, "METAL", technologie.cout_deuterium);
-        }
-
-    }
-
-    async decreaseRessourceToAPI(id, type, quantite) 
-    {
-        const ressourceData = {
-            id_Ressource: parseInt(id),
-            quantite: parseInt(quantite)
-        };
-
-        fetch(API_BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(ressourceData)
-        });
-    }
-    
-    async createTechnologieToAPI(type) {
-        const technologieData = {
-            id_Labo: this.#laboID,
-            type: type
         };
     
-        try {
-            const response = await fetch(API_BASE_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(technologieData),
-            });
-    
-            const jsonData = await response.json();
-            const dataToReturn = jsonData.id_New_Technologie;
-    
-            return dataToReturn;
-        } catch (error) {
-            console.error('Erreur:', error);
-            throw error;
-        }
-    }    
-
-    async upgradeTechnologieToAPI(id_Technologie)
-    {
-        const technologieData = {
-            id_Labo: this.#laboID,
-            id_Technologie: id_Technologie
-        };
-    
-        await fetch(API_BASE_URL, {
-            method: 'POST',
-            body: JSON.stringify(technologieData)
-        });
-    }
-
-    async upgradeTechnologie(id, type) 
-    {
-        const oldId = id;
-
-        if(!this.checkEnoughRessource(id, type))
-        {
-            alert("Pas assez de ressources");
-            return;
-        }
-
-        this.decreaseRessource(id, type);
-
-        if (id < 0) {
-            try {
-                const dataToReturn = await this.createTechnologieToAPI(type.toUpperCase());
-                console.log("Success to create techno:", dataToReturn);
-                
-                if(dataToReturn > 0){
-                    const techno = this.#technologies.find(technologie => technologie.id === id).id = dataToReturn;
-                    id = dataToReturn;
-                }
-
-
-            } catch (error) {
-                alert("Error while creating techno - please refresh the page:" + error);
+        const planets = data.map(item => {
+            const config = celestialBodyConfig[item.position];
+            if (config) {
+                this.#solarSystem.sun.addSatellite(createCelestialBody(item, config));
+                return createCelestialBody(item, config);
             }
-        }
-
-        const technologie = this.#technologies.find(technologie => technologie.id === id);
-
-        technologie.level++;
-
-        technologie.temps_recherche = Math.round(technologie.temps_recherche * 2);
-            
-        this.upgradeTechnologieToAPI(technologie.id)
-            .then(() => {
-                this.notify(oldId, technologie.id);
-            })
-            .catch(error => {
-                alert("Error while upgrading techno - please refresh the page:" + error);
-            }
-        );
-    }
-
-    async loadTechnoRequired() {
-        const data = await this.fetchData(API_QUERY_PARAMS.technoRequired);
-
-        const technos = data.map(item => {
-            return new TechnoRequired(
-                item.technologie,
-                item.technologie_necessaire,
-                item.technologie_necessaire_niveau
-            );
         });
-        
-        this.#technoRequired = technos;
+
+        this.#solarSystem.planets = planets;
+        console.log(this.#solarSystem);
     }
+
         
 }
