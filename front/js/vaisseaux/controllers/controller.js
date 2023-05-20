@@ -1,10 +1,13 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
-import { Vaisseau } from "../models/vaisseaux.js";
+import { Vaisseaux } from "../models/vaisseaux.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIvaisseaux.php";
-
-export class VaisseauxController extends Notifier{
+const API_QUERY_PARAMS = {
+    defaultVaisseaux: "?default_vaisseaux",
+    nbVaisseaux: (id_Player, id_Univers) => `?number_vaisseaux&id_Player=${id_Player}&id_Univers=${id_Univers}`,
+};
+export class Controller extends Notifier{
    #session;
    #vaisseaux;
    #flotte;
@@ -17,6 +20,11 @@ export class VaisseauxController extends Notifier{
     }
 
     get vaisseau(){ return this.#vaisseaux; }
+    get session(){ return this.#session; }
+    get flotte(){ return this.#flotte; }
+
+    set session(session){ this.#session = session; }
+    set flotte(flotte){ this.#flotte = flotte; }
     set vaisseau(vaisseaux){ this.#vaisseaux = vaisseaux; }
 
     async fetchData(endpoint) {
@@ -25,25 +33,47 @@ export class VaisseauxController extends Notifier{
     }
 
     async loadVaisseaux(){
-        const vaisseauData = await this.fetchData("?number_vaisseaux&id_Player=" + this.#session.id_Player + "&id_Univers=" + this.#session.id_Univers );
-        this.#vaisseaux = vaisseauData.map(({id_Vaisseau, type}) => 
-            new Vaisseau(id_Vaisseau, type)
-        );
+        const vaisseauData = await this.fetchData(API_QUERY_PARAMS.defaultVaisseaux);
+
+        const vaisseaux = data.map(item => {
+          return new Vaisseaux(
+            item.id, 
+            item.type,
+            item.cout_metal,
+            item.cout_deuterium,
+            item.temps_construction,
+            item.point_attaque,
+            item.point_defense,
+            item.capacite_fret);
+        });
+        this.#vaisseaux = vaisseaux;
     }
 
     ajoutFlotte(vaisseau) {
         this.flotte.ajoutVaisseau(vaisseau);
       }
     
-      supprimerVaisseau(vaisseau) {
+    ajoutVaisseauToApi(vaisseau){
+      const vaisseauData = {
+        id: vaisseau.id,
+        type: vaisseau.type,
+      };
+
+      fetch(API_BASE_URL, {
+        method: "POST",
+        body: JSON.stringify(vaisseauData),
+      });
+    }
+
+    supprimerVaisseau(vaisseau) {
         this.flotte.retirerVaisseau(vaisseau);
       }
     
-      obtenirVaisseaux() {
+    obtenirVaisseaux() {
         return this.flotte.obtenirVaisseaux();
       }
     
-      async loadFlotte(idFlotte) {
+    async loadFlotte(idFlotte) {
         const vaisseauData = await fetchData(`?vaisseaux&flotte=${idFlotte}`); 
         const flotte = new Flotte(); 
       

@@ -30,9 +30,4 @@ export class FlotteController {
   
     return flotte; 
   }
-
-  async loadAllVaissaux(id) {
-    
-
-  
 }

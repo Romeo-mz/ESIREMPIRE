@@ -1,5 +1,4 @@
 import { Observer } from "../pattern/observer.js";
-import { Vaisseau } from "../models/vaisseaux.js";
 export class View extends Observer 
 {
     #controller;

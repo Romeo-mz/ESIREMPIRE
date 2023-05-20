@@ -1,6 +1,6 @@
 export class Observer
 {
-    notify(oldId, newId)
+    notify()
     {
         throw new Error("You have to define this function !");
     }
