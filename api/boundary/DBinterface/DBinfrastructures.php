@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-// define('DB_LOGIN', "api_infrastructures");
-// define('DB_PWD', "kqV3qbr/AX)r9VI1");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 class DBinfrastructures extends DBinterface {
 

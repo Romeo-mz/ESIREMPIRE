@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_spacework");
-define('DB_PWD', "o!fN32FUD.BMqeSb");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 class DBspacework extends DBinterface {
 
