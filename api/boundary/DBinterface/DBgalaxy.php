@@ -27,5 +27,15 @@ class DBgalaxy extends DBinterface {
         return $this->fetchAllRows('SELECT p.id, p.nom, p.position, j.pseudo FROM planete p LEFT JOIN joueur j ON p.id_Joueur = j.id WHERE id_Systeme_Solaire = ? ORDER BY p.position', [$idSolarSystem]);
     }
 
+    public function getLowestGalaxies($idUnivers)
+    {
+        return $this->fetchValue('SELECT MIN(id) FROM galaxie WHERE id_Univers = ?', [$idUnivers]);
+    }
+
+    public function getLowestSystems($idGalaxy)
+    {
+        return $this->fetchValue('SELECT MIN(id) FROM systemesolaire WHERE id_Galaxie = ?', [$idGalaxy]);
+    }
+
 }
 
