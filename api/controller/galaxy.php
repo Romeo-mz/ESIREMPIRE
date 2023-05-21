@@ -12,14 +12,14 @@ class Galaxy
         $this->dbInterface = new DBgalaxy();
     }
 
-    public function getGalaxies($id_Univers)
+    public function getGalaxiesList($id_Univers)
     {
-        return $this->dbInterface->getGalaxies($id_Univers);
+        return $this->dbInterface->getGalaxiesList($id_Univers);
     }
 
-    public function getSystems($id_Galaxy)
+    public function getSystemsList($id_Galaxy)
     {
-        return $this->dbInterface->getSystems($id_Galaxy);
+        return $this->dbInterface->getSystemsList($id_Galaxy);
     }
 
     public function getPlanets($id_SolarSystem)

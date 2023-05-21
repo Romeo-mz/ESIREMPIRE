@@ -12,19 +12,18 @@ class DBgalaxy extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
-    public function getGalaxies($idUnivers)
+    public function getGalaxiesList($idUnivers)
     {
         return $this->fetchAllRows('SELECT id, nom FROM galaxie WHERE id_univers = ? ORDER BY nom', [$idUnivers]);
     }
 
-    public function getSystems($idGalaxy)
+    public function getSystemsList($idGalaxy)
     {
         return $this->fetchAllRows('SELECT id, nom FROM systemesolaire WHERE id_Galaxie = ? ORDER BY nom', [$idGalaxy]);
     }
 
     public function getPlanets($idSolarSystem)
     {
-        // get id, name and position and pseudo of player of planets
         return $this->fetchAllRows('SELECT p.id, p.nom, p.position, j.pseudo FROM planete p LEFT JOIN joueur j ON p.id_Joueur = j.id WHERE id_Systeme_Solaire = ? ORDER BY p.position', [$idSolarSystem]);
     }
 
