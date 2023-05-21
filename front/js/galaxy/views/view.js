@@ -301,8 +301,8 @@ export class View extends Observer
             const solarSystemElement = document.createElement("option");
             solarSystemElement.value = solarSystem.id;
 
-            // if (solarSystem.id === systemId)
-            //     solarSystemElement.setAttribute("selected", "selected");
+            if (solarSystem.id === systemId)
+                solarSystemElement.setAttribute("selected", "selected");
 
             solarSystemElement.innerHTML = solarSystem.nom;
             solarSystemListElement.appendChild(solarSystemElement);

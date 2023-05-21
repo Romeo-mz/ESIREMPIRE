@@ -90,7 +90,7 @@ export class Controller extends Notifier
             "7": { radius: 15, distance: 400, color: "#a33a35", rotationSpeed: 0.15, orbitalSpeed: 0.15 },
             "8": { radius: 12, distance: 440, color: "#a33a35", rotationSpeed: 0.4, orbitalSpeed: 0.4 },
             "9": { radius: 20, distance: 490, color: "#a33a35", rotationSpeed: 0.08, orbitalSpeed: 0.08 },
-            "10": { radius: 25, distance: 550, color: "#a33a35", rotationSpeed: 0.1, orbitalSpeed: 0.1 },
+            "10": { radius: 25, distance: 550, color: "#a33a35", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
         };
     
         const createCelestialBody = (item, config) => {
