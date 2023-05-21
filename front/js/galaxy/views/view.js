@@ -232,7 +232,7 @@ export class View extends Observer
       this.context.rotate(-celestialBody.rotationAngle);
     }
     this.context.fillText(celestialBody.name, 0, 0);
-    
+
     if(celestialBody.id === this.#controller.session.id_Planet.toString())
         this.context.fillText("Your Planet", 0, 0);
     else
@@ -355,6 +355,8 @@ export class View extends Observer
         });
 
         this.solarSystem = this.#controller.solarSystem;
+
+        console.log(this.#controller.solarSystem);
     }
 
 }
