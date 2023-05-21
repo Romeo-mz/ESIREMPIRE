@@ -32,6 +32,14 @@ export class CelestialBody
         this.satellites.push(star);
     }
 
+    removeSatellite(star)
+    {
+        const index = this.satellites.indexOf(star);
+        if (index > -1)
+            this.satellites.splice(index, 1);
+    }
+    
+
     update(elapsedTime)
     {
         this.rotationAngle += elapsedTime * this.rotationSpeed / 1000.0;

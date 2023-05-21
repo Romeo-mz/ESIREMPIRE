@@ -35,14 +35,10 @@ export class Controller extends Notifier
         ];
 
         
-        this.#solarSystem = [
-            {
-                id: [],
-                name: [],
-                sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
-                planets: []
-            }
-        ];
+        this.#solarSystem = {
+            sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
+            planets: []
+        };
     }
 
     get session() { return this.#session; }
@@ -62,8 +58,23 @@ export class Controller extends Notifier
         return response.json();
     }
 
-    async loadPlanets(galaxyId, systemId) 
+    loadNewPlanets(galaxyId, systemId)
     {
+        this.loadPlanets(galaxyId, systemId)
+            .then(() => {
+                this.notify(galaxyId, systemId);
+            }
+        );
+    }
+
+    async loadPlanets(galaxyId, systemId = 0) 
+    {
+        // Empty
+        this.#solarSystem.planets = [];
+        this.#solarSystem.sun.satellites = [];
+        this.#galaxiesList = [];
+        this.#solarSystemList = [];
+
         const data = await this.fetchData(API_QUERY_PARAMS.loadPlanets(this.#session.id_Univers, galaxyId, systemId));
 
         const galaxiesList = data.galaxies;
@@ -99,7 +110,7 @@ export class Controller extends Notifier
         const planets = data.planets.map(item => {
             const config = celestialBodyConfig[item.position];
             if (config) {
-                this.#solarSystem[0].sun.addSatellite(createCelestialBody(item, config));
+                this.#solarSystem.sun.addSatellite(createCelestialBody(item, config));
                 return createCelestialBody(item, config);
             }
         });
@@ -107,7 +118,5 @@ export class Controller extends Notifier
         this.#galaxiesList = galaxiesList;
         this.#solarSystemList = solarSystemList;
         this.#solarSystem.planets = planets;
-    }
-
-        
+    }   
 }

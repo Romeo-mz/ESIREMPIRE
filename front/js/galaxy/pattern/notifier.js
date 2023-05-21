@@ -12,8 +12,8 @@ export class Notifier
         this.#observers.push(observer);
     }
 
-    notify() 
+    notify(galaxyId, systemId) 
     {
-        this.#observers.forEach(observer => observer.notify());
+        this.#observers.forEach(observer => observer.notify(galaxyId, systemId));
     }
 }
