@@ -1,7 +1,7 @@
 export class CelestialBody
 {
 
-    // #id;
+    id;
 
     constructor(id, name, playerName, radius, distance, color, rotationSpeed, orbitalSpeed, hasShadow)
     {
@@ -23,9 +23,6 @@ export class CelestialBody
 
         this.satellites = [];
     }
-
-    // get id() { return this.#id; }
-    // set id(id) { this.#id = id; }
 
     addSatellite(star)
     {

@@ -56,7 +56,9 @@ export class View extends Observer
 
                 if (planet) 
                 {
-                  // Go to the planet page
+                    if(planet.id === this.#controller.session.id_Planet.toString())
+                        // Go to infrastructure page
+                        window.location.href = "./infrastructures.html";
                 }
             }
         });
@@ -230,6 +232,12 @@ export class View extends Observer
       this.context.rotate(-celestialBody.rotationAngle);
     }
     this.context.fillText(celestialBody.name, 0, 0);
+    
+    if(celestialBody.id === this.#controller.session.id_Planet.toString())
+        this.context.fillText("Your Planet", 0, 0);
+    else
+        this.context.fillText(celestialBody.name, 0, 0);
+
     this.context.restore();
 
     if (celestialBody.hasShadow) {
@@ -319,8 +327,8 @@ export class View extends Observer
             const galaxyElement = document.createElement("option");
             galaxyElement.value = galaxy.id;
 
-            // if (galaxy.id === galaxyId) 
-            //     galaxyElement.setAttribute("selected", "selected");
+            if (galaxy.id === galaxyId) 
+                galaxyElement.setAttribute("selected", "selected");
 
             galaxyElement.innerHTML = galaxy.nom;
             galaxyListElement.appendChild(galaxyElement);
