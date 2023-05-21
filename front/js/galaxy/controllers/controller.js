@@ -4,29 +4,55 @@ import { CelestialBody } from "../models/celestial-object.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
-    loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_System=${systemId}`,
-    test: "?id_SolarSystem=2"
+    loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_SolarSystem=${systemId}`
     // technoRequired: "?techno_required"
 };
 
 export class Controller extends Notifier
 {
     #session;
+    #galaxiesList;
     #solarSystem;
+    #solarSystemList;
 
     constructor()
     {
         super();
         this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+
+        this.#galaxiesList = [
+            {
+                id: [],
+                name: []
+            }
+        ];
+
+        this.#solarSystemList = [
+            {
+                id: [],
+                name: []
+            }
+        ];
+
         
-        this.#solarSystem = {
-            sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
-            planets: []
-        };
+        this.#solarSystem = [
+            {
+                id: [],
+                name: [],
+                sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
+                planets: []
+            }
+        ];
     }
 
     get session() { return this.#session; }
     set session(session) { this.#session = session; }
+
+    get galaxiesList() { return this.#galaxiesList; }
+    set galaxiesList(galaxiesList) { this.#galaxiesList = galaxiesList; }
+
+    get solarSystemList() { return this.#solarSystemList; }
+    set solarSystemList(solarSystemList) { this.#solarSystemList = solarSystemList; }
 
     get solarSystem() { return this.#solarSystem; }
     set solarSystem(solarSystem) { this.#solarSystem = solarSystem; }
@@ -38,8 +64,11 @@ export class Controller extends Notifier
 
     async loadPlanets(galaxyId, systemId) 
     {
-        const data = await this.fetchData(API_QUERY_PARAMS.test);
-    
+        const data = await this.fetchData(API_QUERY_PARAMS.loadPlanets(this.#session.id_Univers, galaxyId, systemId));
+
+        const galaxiesList = data.galaxies;
+        const solarSystemList = data.sys_sols;
+
         const celestialBodyConfig = {
             "1": { radius: 15, distance: 70, color: "#4f4160", rotationSpeed: 0.5, orbitalSpeed: 0.5 },
             "2": { radius: 20, distance: 130, color: "#d3a147", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
@@ -67,16 +96,17 @@ export class Controller extends Notifier
             );
         };
     
-        const planets = data.map(item => {
+        const planets = data.planets.map(item => {
             const config = celestialBodyConfig[item.position];
             if (config) {
-                this.#solarSystem.sun.addSatellite(createCelestialBody(item, config));
+                this.#solarSystem[0].sun.addSatellite(createCelestialBody(item, config));
                 return createCelestialBody(item, config);
             }
         });
 
+        this.#galaxiesList = galaxiesList;
+        this.#solarSystemList = solarSystemList;
         this.#solarSystem.planets = planets;
-        console.log(this.#solarSystem);
     }
 
         

@@ -4,7 +4,7 @@ import { View } from "../views/view.js";
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
 
-    myController.loadPlanets()
+    myController.loadPlanets(1, 1)
         .then(() => {
             console.log("Success to load planets")
             const myView = new View(myController);

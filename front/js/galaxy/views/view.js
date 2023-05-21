@@ -33,10 +33,10 @@ export class View extends Observer
             Math.pow(mousePosition.x - sunPosition.x, 2) +
               Math.pow(mousePosition.y - sunPosition.y, 2)
           );
-          if (distance < this.#controller.solarSystem.sun.radius) {
+          if (distance < this.#controller.solarSystem[0].sun.radius) {
             console.log("Developped by Hugo with love <3");
           } else {
-            const planet = this.#controller.solarSystem.sun.satellites.find((satellite) => {
+            const planet = this.#controller.solarSystem[0].sun.satellites.find((satellite) => {
               return distance < satellite.distance + satellite.radius;
             });
             if (planet) {
@@ -58,11 +58,11 @@ export class View extends Observer
             Math.pow(mousePosition.x - sunPosition.x, 2) +
               Math.pow(mousePosition.y - sunPosition.y, 2)
           );
-          if (distance < this.#controller.solarSystem.sun.radius) {
+          if (distance < this.#controller.solarSystem[0].sun.radius) {
             document.getElementById("planetName").innerHTML = "Sun";
             document.getElementById("playerName").innerHTML = "";
           } else {
-            const planet = this.#controller.solarSystem.sun.satellites.find(
+            const planet = this.#controller.solarSystem[0].sun.satellites.find(
               (satellite) => {
                 return distance < satellite.distance + satellite.radius;
               }
@@ -88,8 +88,8 @@ export class View extends Observer
         this.context.beginPath();
     
         // Init textures
-        this.#controller.solarSystem.sun.initTexture() 
-        this.#controller.solarSystem.sun.satellites.forEach((satellite) => {
+        this.#controller.solarSystem[0].sun.initTexture() 
+        this.#controller.solarSystem[0].sun.satellites.forEach((satellite) => {
           satellite.initTexture();
         });
 
@@ -182,7 +182,7 @@ export class View extends Observer
         //Moves the coordinate system to the center of the canvas
         this.context.translate(this.canvas.width / 2, this.canvas.height / 2);
         //Draws the solar system starting with the sun
-        this.drawCelestialBody(this.#controller.solarSystem.sun);
+        this.drawCelestialBody(this.#controller.solarSystem[0].sun);
         //Restores the context to its states at the previous call of save
         this.context.restore();
     }
@@ -211,7 +211,7 @@ export class View extends Observer
         // Draws the solar system
         this.drawSolarSystem();
         // Updates celestial bodies position
-        this.#controller.solarSystem.sun.update(elapsedTime);
+        this.#controller.solarSystem[0].sun.update(elapsedTime);
         // Requests a new frame as soon as possible
         requestAnimationFrame(() => { this.animate(now) });
     }
