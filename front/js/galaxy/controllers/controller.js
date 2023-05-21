@@ -5,7 +5,7 @@ import { CelestialBody } from "../models/celestial-object.js";
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
     loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_System=${systemId}`,
-    test: "?id_SolarSystem=1"
+    test: "?id_SolarSystem=2"
     // technoRequired: "?techno_required"
 };
 

@@ -87,6 +87,7 @@ export class View extends Observer
     
         this.context.beginPath();
     
+        // Init textures
         this.#controller.solarSystem.sun.initTexture() 
         this.#controller.solarSystem.sun.satellites.forEach((satellite) => {
           satellite.initTexture();
@@ -98,40 +99,39 @@ export class View extends Observer
       }   
 
 
-    resize() {
+    resize() 
+    {
         const width = this.canvas.clientWidth;
         const height = this.canvas.clientHeight;
-        if (this.canvas.width !== width || this.canvas.height !== height) {
+        if (this.canvas.width !== width || this.canvas.height !== height) 
+        {
           this.canvas.width = width;
           this.canvas.height = height;
           this.drawSolarSystem();
         }
     }
 
-    drawCelestialBody(celestialBody) {
+    drawCelestialBody(celestialBody) 
+    {
         this.context.save();
         this.context.rotate(celestialBody.orbitalAngle);
         this.context.translate(celestialBody.distance, 0);
     
-        if (celestialBody.hasShadow) {
-          this.context.beginPath();
-          this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
-          this.context.fillStyle = "#000000";
-          this.context.fill();
-          this.context.save();
-          this.context.beginPath();
-          this.context.arc(-celestialBody.radius * 2,0,celestialBody.radius * 2,0,2 * Math.PI);
+        if (celestialBody.hasShadow) 
+        {
+            this.context.beginPath();
+            this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
+            this.context.fillStyle = "#000000";
+            this.context.fill();
+            this.context.save();
+            this.context.beginPath();
+            this.context.arc(-celestialBody.radius * 2,0,celestialBody.radius * 2,0,2 * Math.PI);
         }
 
-    
         this.context.beginPath();
-        this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
-
-        // console.log(celestialBody.texture);
-        
+        this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);        
         const pattern = this.context.createPattern(celestialBody.texture, "no-repeat");
-
-           const coef = (celestialBody.radius * 2) / celestialBody.texture.width;
+        const coef = (celestialBody.radius * 2) / celestialBody.texture.width;
         this.context.save();
         this.context.rotate(celestialBody.rotationAngle);
         this.context.translate(-celestialBody.radius, -celestialBody.radius);
@@ -139,27 +139,32 @@ export class View extends Observer
         this.context.fillStyle = pattern;
         this.context.fill();
         this.context.restore();
-        
     
         this.context.save();
         this.context.textAlign = "center";
         this.context.textBaseline = "middle";
         this.context.font = "30px Arial";
-        if (celestialBody.name !== "Sun") {
-          this.context.fillStyle = "#FFFFFF";
-          const textOffset = celestialBody.radius + 20;
-          this.context.translate(0, -textOffset);
-        } else {
-          this.context.fillStyle = "#000000";
+
+        if (celestialBody.name !== "Sun") 
+        {
+            this.context.fillStyle = "#FFFFFF";
+            const textOffset = celestialBody.radius + 20;
+            this.context.translate(0, -textOffset);
+        } else 
+        {
+            this.context.fillStyle = "#000000";
         }
-        if (celestialBody.name !== "Sun") {
-          this.context.rotate(-celestialBody.rotationAngle);
+
+        if (celestialBody.name !== "Sun") 
+        {
+            this.context.rotate(-celestialBody.rotationAngle);
         }
         this.context.fillText(celestialBody.name, 0, 0);
         this.context.restore();
     
-        if (celestialBody.hasShadow) {
-          this.context.restore();
+        if (celestialBody.hasShadow) 
+        {
+            this.context.restore();
         }
     
         celestialBody.satellites.forEach((satellite) => {
