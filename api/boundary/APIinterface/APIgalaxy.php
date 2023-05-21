@@ -45,9 +45,9 @@ class APIgalaxy
         //     $galaxies = $this->controller->getGalaxies($_GET['id_Univers']);
         //     $this->sendResponse(200, 'OK', json_encode($galaxies));
         // }
-         if (isset($_GET['id_Univers']) && isset($_GET['id_Galaxy']) && isset($_GET['id_SolarSystem'])) 
+        if (isset($_GET['planets']) && isset($_GET['id_Universe']) && isset($_GET['id_Galaxy']) && isset($_GET['id_SolarSystem'])) 
         {
-            $galaxies = $this->controller->getGalaxiesList($_GET['id_Univers']);
+            $galaxies = $this->controller->getGalaxiesList($_GET['id_Universe']);
             $sys_sols = $this->controller->getSystemsList($_GET['id_Galaxy']);
             $planets = $this->controller->getPlanets($_GET['id_SolarSystem']);
 
