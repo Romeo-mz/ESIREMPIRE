@@ -39,7 +39,6 @@ class Spacework
     public function addShip($id_Spacework, $type, $id_joueur)
     {
         $this->dbInterface->addShip($id_Spacework, $type);
-        $this->dbInterface->addToDefense($id_joueur);
     }
 
     public function updateQuantityRessource($id_Ressource, $quantite)

@@ -153,7 +153,5 @@ class DBspacework extends DBinterface {
                 tn.id_Technologie_Necessaire = tt2.id;');
     }
 
-    
-
 }
 

@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     myController.loadVaisseaux()
         .then(() => {
             console.log("Success to load all vaisseaux")
-            myController.loadFlotte()
-                .then(() => {
-                    console.log("Success to load flotte")
-                    myController.notify();
-                })
-                .catch(error => {
-                    alert("Error while loading vaisseaux - please refresh the page")
-                });
+            // myController.loadFlotte()
+            //     .then(() => {
+            //         console.log("Success to load flotte")
+            //         myController.notify();
+            //     })
+            //     .catch(error => {
+            //         alert("Error while loading vaisseaux - please refresh the page")
+            //     });
         })
         .catch(error => {
             alert("Error while loading default vaisseaux - please refresh the page")
