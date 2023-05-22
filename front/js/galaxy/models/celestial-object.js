@@ -55,7 +55,7 @@ export class CelestialBody
         return new Promise((resolve, reject) =>
         {
             this.texture = new Image();
-            this.texture.src = `img/${this.name.toLowerCase()}.png`;
+            this.texture.src = `img/planets/${this.name.toLowerCase()}.png`;
             this.texture.onload = async () =>
             {
                 for (const satellite of this.satellites)

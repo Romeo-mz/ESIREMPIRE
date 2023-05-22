@@ -201,6 +201,7 @@ export class View extends Observer
       this.context.save();
       this.context.beginPath();
       this.context.arc(-celestialBody.radius * 2, 0, celestialBody.radius * 2, 0, 2 * Math.PI);
+      this.context.clip();
     }
 
     this.context.beginPath();
@@ -213,7 +214,28 @@ export class View extends Observer
     this.context.scale(coef, coef);
     this.context.fillStyle = pattern;
     this.context.fill();
-    this.context.restore();
+    this.context.restore();    
+
+    if (celestialBody.hasShadow) {
+      this.context.restore();
+      this.context.save();
+
+      this.context.beginPath();
+      this.context.arc(0, 0, celestialBody.radius, 0, 2 * Math.PI);
+      this.context.clip();
+
+      const gradient = this.context.createRadialGradient(-celestialBody.radius * 2, 0, 0, -celestialBody.radius * 2, 0, celestialBody.radius * 2);
+      gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+      gradient.addColorStop(0.8, "rgba(0, 0, 0, 0)");
+      gradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+
+      this.context.fillStyle = gradient;
+      this.context.fill();
+    
+        // Restore the context and remove the clipping mask
+        this.context.restore();
+
+    }
 
     this.context.save();
     this.context.textAlign = "center";
@@ -239,10 +261,6 @@ export class View extends Observer
         this.context.fillText(celestialBody.name, 0, 0);
 
     this.context.restore();
-
-    if (celestialBody.hasShadow) {
-      this.context.restore();
-    }
 
     celestialBody.satellites.forEach((satellite) => {
       this.drawOrbit(satellite);
