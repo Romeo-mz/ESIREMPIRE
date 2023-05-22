@@ -86,11 +86,11 @@ export class Controller extends Notifier
             "3": { radius: 30, distance: 180, color: "#355ca3", rotationSpeed: 0.35, orbitalSpeed: 0.35 },
             "4": { radius: 18, distance: 240, color: "#a33a35", rotationSpeed: 0.05, orbitalSpeed: 0.05 },
             "5": { radius: 20, distance: 290, color: "#a33a35", rotationSpeed: 0.45, orbitalSpeed: 0.45 },
-            "6": { radius: 22, distance: 350, color: "#a33a35", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
+            "6": { radius: 22, distance: 350, color: "#a33a35", rotationSpeed: 0.25, orbitalSpeed: 0.25 },
             "7": { radius: 15, distance: 400, color: "#a33a35", rotationSpeed: 0.15, orbitalSpeed: 0.15 },
             "8": { radius: 12, distance: 440, color: "#a33a35", rotationSpeed: 0.4, orbitalSpeed: 0.4 },
             "9": { radius: 20, distance: 490, color: "#a33a35", rotationSpeed: 0.08, orbitalSpeed: 0.08 },
-            "10": { radius: 25, distance: 550, color: "#a33a35", rotationSpeed: 0.2, orbitalSpeed: 0.2 },
+            "10": { radius: 25, distance: 550, color: "#a33a35", rotationSpeed: 0.20, orbitalSpeed: 0.20 },
         };
     
         const createCelestialBody = (item, config) => {
