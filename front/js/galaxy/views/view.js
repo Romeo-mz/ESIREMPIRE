@@ -142,7 +142,6 @@ export class View extends Observer {
         });
     }
 
-
     createSolarSystemList() {
         const solarSystemListElement = document.getElementById("solarsystem");
         const solarSystemList = this.#controller.solarSystemList;
@@ -165,7 +164,6 @@ export class View extends Observer {
             );
         });
     }
-
 
     resize() {
         const width = this.canvas.clientWidth;
@@ -348,7 +346,6 @@ export class View extends Observer {
 
     }
 
-
     notify(galaxyId, systemId) {
         this.updateSolarSystemList(systemId);
         this.updateGalaxiesList(galaxyId);
@@ -359,8 +356,6 @@ export class View extends Observer {
         });
 
         this.solarSystem = this.#controller.solarSystem;
-
-        console.log(this.#controller.solarSystem);
     }
 
 }
