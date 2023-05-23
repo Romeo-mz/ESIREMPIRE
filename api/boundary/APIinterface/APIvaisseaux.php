@@ -31,15 +31,16 @@ class APIvaisseau{
         }
     }
 
-    private function handleGet(){
+    private function handleGet()
+    {
         if (isset($_GET['id_Vaisseaux']) && isset($_GET['id_Univers'])){
             $vaisseauID = $this->controller->getVaisseauID($_GET['id_Univers']);
-            $this->sendResponse(200, 'OK', json_encode(array('id_Vaisseaux' => $vaisseauID)));
+            $this->sendResponse(200, 'OK', json_encode($vaisseauID));
         }
         else if(isset($_GET['default_vaisseaux']) && isset($_GET['id_Planet']))
         {
             $defaultVaisseaux = $this->controller->getDefaultVaisseaux($_GET['id_Planet']);
-            $this->sendResponse(200, 'OK', json_encode(array('id_Vaisseaux' => $defaultVaisseaux)));
+            $this->sendResponse(200, 'OK', json_encode($defaultVaisseaux));
         }
         
     }

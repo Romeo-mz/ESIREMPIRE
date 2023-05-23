@@ -3,11 +3,11 @@ import { View } from "../views/view.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
-    const myView = new View(myController);
 
     myController.loadVaisseaux()
         .then(() => {
             console.log("Success to load all vaisseaux")
+            const myView = new View(myController);
             // myController.loadFlotte()
             //     .then(() => {
             //         console.log("Success to load flotte")
