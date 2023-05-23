@@ -4,14 +4,14 @@
 }
 
 html {
-    margin: 0px;
+    margin: 0;
     height: 100%;
     width: 100%;
     font-family: 'Orbitron', sans-serif;
     font-size: 16px;
- }
+}
 
- body {
+body {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,8 +23,7 @@ html {
     background-attachment: fixed;
     font-family: 'Orbitron', sans-serif;
     color: #333333;
-    
- }
+}
 
 main {
     margin: 0 auto;
@@ -38,6 +37,7 @@ h1 {
 
 h2 {
     font-size: 24px;
+    text-align: center;
     margin-top: 0;
 }
 
@@ -47,7 +47,8 @@ h2 {
     flex-wrap: wrap;
 }
 
-.spaceships-flotte, .spaceships-disponibles {
+.spaceships-flotte,
+.spaceships-disponibles {
     padding: 0 10px;
 }
 
@@ -63,6 +64,18 @@ h2 {
     padding: 20px;
 }
 
+.spaceship-liste {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.spaceship-disponible,
+.spaceship-flotte {
+    width: 200px;
+    margin: 10px;
+}
+
 .spaceship-img {
     max-width: 100%;
     max-height: 100%;
@@ -72,4 +85,11 @@ h2 {
     height: 200px;
     overflow: hidden;
     margin-bottom: 20px;
+}
+
+.spaceship-disponible-img,
+.spaceship-flotte-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }

@@ -114,13 +114,13 @@ export class View extends Observer
     getImageSrcForType(type) {
         switch (type) {
             case "CHASSEUR":
-                return "front/img/chasseur.png";
+                return "/front/img/chasseur.png";
             case "CROISEUR":
-                return "../../img/croiseur.png";
+                return "/front/img/croiseur.png";
             case "TRANSPORTEUR":
-                return "../../img/transporteur.png";
+                return "/front/img/transporteur.png";
             case "COLONISATEUR":
-                return "../../img/colonisateur.png";
+                return "/front/img/colonisateur.png";
             default:
                 return "";
         }
