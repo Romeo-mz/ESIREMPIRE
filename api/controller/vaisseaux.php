@@ -20,9 +20,9 @@ class Vaisseau{
 
 
 
-    public function getAllVaisseauID($id_joueur, $id_univers){
-        return $this->dbInterface->getAllVaisseauID($id_joueur, $id_univers);
-    }
+    // public function getAllVaisseauID($id_joueur, $id_univers){
+    //     return $this->dbInterface->getAllVaisseauID($id_joueur, $id_univers);
+    // }
 
 
     // public function getFlotte($id_Vaisseau){

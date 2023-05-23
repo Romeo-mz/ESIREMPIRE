@@ -15,15 +15,16 @@ export class View extends Observer
     createVaisseaux()
     {
         const vaisseaux = this.#controller.vaisseaux;
-        
-        forEach(vaisseaux, (vaisseau) => {
-            createVaisseauElement(vaisseau);
+        vaisseaux.forEach(vaisseau => {
+            console.log(vaisseau);
+            this.createVaisseauElement(vaisseau);         
         });
     }
 
     createVaisseauElement(vaisseau){
+        console.log(vaisseau.id);
         let parentDivId = "spaceship-disponible-liste";
-
+        
         let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "spaceship-disponible");
         let div_information = this.createOrUpdateElement("div", `spaceship-disponible-information-${vaisseau.id}`, "spaceship-disponible-information");
         let div_image = this.createOrUpdateElement("div", `spaceship-disponible-image-${vaisseau.id}`, "spaceship-disponible-image");
