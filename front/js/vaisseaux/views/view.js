@@ -24,7 +24,8 @@ export class View extends Observer
     createVaisseauElement(vaisseau){
         let parentDivId = "spaceship-disponible-liste";
 
-        let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "div-vaisseau");
+        let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "spaceship-disponible");
+        let div_information = this.createOrUpdateElement("div", `spaceship-disponible-information-${vaisseau.id}`, "spaceship-disponible-information");
 
     }
 
@@ -93,7 +94,7 @@ export class View extends Observer
         element.innerHTML = innerHTML;
         return element;
     }
-    
+
     getImageSrcForType(type) {
         switch (type) {
             case "chasseur":
