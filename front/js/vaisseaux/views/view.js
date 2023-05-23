@@ -41,7 +41,9 @@ export class View extends Observer
         div.appendChild(div_information);
 
         document.getElementById(parentDivId).appendChild(div);
-    }
+    }   
+
+    
         // getVaisseauById(vaisseauId) {
     //     return this.#controller.vaisseaux.find((vaisseau) => vaisseau.id === vaisseauId);
     // }
