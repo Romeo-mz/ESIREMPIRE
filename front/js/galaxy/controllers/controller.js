@@ -1,11 +1,11 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { CelestialBody } from "../models/celestial-object.js";
+import { sessionService } from "../../SessionService.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
     loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_SolarSystem=${systemId}`
-    // technoRequired: "?techno_required"
 };
 
 export class Controller extends Notifier
