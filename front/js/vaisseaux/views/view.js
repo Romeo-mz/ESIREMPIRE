@@ -26,10 +26,23 @@ export class View extends Observer
 
         let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "spaceship-disponible");
         let div_information = this.createOrUpdateElement("div", `spaceship-disponible-information-${vaisseau.id}`, "spaceship-disponible-information");
+        let div_image = this.createOrUpdateElement("div", `spaceship-disponible-image-${vaisseau.id}`, "spaceship-disponible-image");
+        let img = this.createOrUpdateElement("img", `spaceship-disponible-img-${vaisseau.id}`, "spaceship-disponible-img");
 
+        let div_information_type = this.createOrUpdateElement("div", `spaceship-disponible-type-${vaisseau.id}`, "spaceship-disponible-type", "<b>" + vaisseau.type + "</b>");
+        let div_information_quantite = this.createOrUpdateElement("div", `spaceship-disponible-quantite-${vaisseau.id}`, "spaceship-disponible-quantite", "<b>" + vaisseau.quantite + "</b>");
+
+        img.src = this.getImageSrcForType(vaisseau.type);
+        
+        div_image.appendChild(img);
+        div_information.appendChild(div_information_type);
+        div_information.appendChild(div_information_quantite);
+        div.appendChild(div_image);
+        div.appendChild(div_information);
+
+        document.getElementById(parentDivId).appendChild(div);
     }
-
-    // getVaisseauById(vaisseauId) {
+        // getVaisseauById(vaisseauId) {
     //     return this.#controller.vaisseaux.find((vaisseau) => vaisseau.id === vaisseauId);
     // }
 
