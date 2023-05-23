@@ -16,7 +16,6 @@ export class View extends Observer
 
     updateRessources() {
         const ressources = this.#controller.quantiteRessource;
-
         this.removePreviousRessources();
 
         ressources.forEach(ressource => {

@@ -14,11 +14,11 @@ export class View extends Observer
 
     createVaisseaux()
     {
-      const vaisseaux = this.#controller.vaisseaux;
-
-      forEach(vaisseaux, (vaisseau) => {
-        createVaisseauElement(vaisseau);
-      });
+        const vaisseaux = this.#controller.vaisseaux;
+        console.log(vaisseaux);
+        forEach(vaisseaux, (vaisseau) => {
+            createVaisseauElement(vaisseau);
+        });
     }
 
     createVaisseauElement(vaisseau){
