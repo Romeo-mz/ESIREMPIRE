@@ -115,17 +115,16 @@ export class Controller extends Notifier {
         }
       }
 
-      console.log("Flotte:", flotte);
-
-      // Faites ce que vous voulez avec la flotte (par exemple, enregistrez-la dans le contrôleur)
-      // this.#session.flotte = flotte;
-
-      // Ensuite, vous pouvez invoquer this.notify() pour notifier les observateurs du changement de la flotte.
-      // this.notify();
+      
+      
+      this.#session.flotte = flotte;
+      console.log("Flotte:", this.#session.flotte);
+      this.notify();
     });
   }
 
   isVaisseauAvailable(type, quantity) {
+
     if (quantity > 0) {
       const vaisseau = this.#vaisseaux.find(v => v.type === type);
       return vaisseau && vaisseau.quantite >= quantity;
