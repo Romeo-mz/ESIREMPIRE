@@ -73,32 +73,64 @@ export class Controller extends Notifier {
       const colonisateurQuantityInput = document.getElementById("nombre-vaisseau-colonisateur");
 
       const flotte = [];
-      
+
       if (chasseurCheckbox.checked) {
         const chasseurQuantity = parseInt(chasseurQuantityInput.value);
-        flotte.push({ type: "Chasseur", quantity: chasseurQuantity });
+        const chasseurAvailable = this.isVaisseauAvailable("CHASSEUR", chasseurQuantity);
+        if (chasseurAvailable) {
+          flotte.push({ type: "CHASSEUR", quantity: chasseurQuantity });
+        } else {
+          alert("Not enough Chasseur available");
+        }
       }
 
       if (croiseurCheckbox.checked) {
         const croiseurQuantity = parseInt(croiseurQuantityInput.value);
-        flotte.push({ type: "Croiseur", quantity: croiseurQuantity });
+        const croiseurAvailable = this.isVaisseauAvailable("CROISEUR", croiseurQuantity);
+        if (croiseurAvailable) {
+          flotte.push({ type: "CROISEUR", quantity: croiseurQuantity });
+        } else {
+          alert("Not enough Croiseur available");
+        }
       }
 
       if (transporteurCheckbox.checked) {
         const transporteurQuantity = parseInt(transporteurQuantityInput.value);
-        flotte.push({ type: "Transporteur", quantity: transporteurQuantity });
+        const transporteurAvailable = this.isVaisseauAvailable("TRANSPORTEUR", transporteurQuantity);
+        if (transporteurAvailable) {
+          flotte.push({ type: "TRANSPORTEUR", quantity: transporteurQuantity });
+        } else {
+          alert("Not enough Transporteur available");
+        }
       }
 
       if (colonisateurCheckbox.checked) {
         const colonisateurQuantity = parseInt(colonisateurQuantityInput.value);
-        flotte.push({ type: "Colonisateur", quantity: colonisateurQuantity });
+        const colonisateurAvailable = this.isVaisseauAvailable("COLONISATEUR", colonisateurQuantity);
+        console.log(this.#vaisseaux);
+        if (colonisateurAvailable) {
+          flotte.push({ type: "COLONISATEUR", quantity: colonisateurQuantity });
+        } else {
+          alert("Not enough Colonisateur available");
+        }
       }
 
       console.log("Flotte:", flotte);
 
-      this.#session.flotte = flotte;
+      // Faites ce que vous voulez avec la flotte (par exemple, enregistrez-la dans le contrôleur)
+      // this.#session.flotte = flotte;
 
-      this.notify();
+      // Ensuite, vous pouvez invoquer this.notify() pour notifier les observateurs du changement de la flotte.
+      // this.notify();
     });
   }
+
+  isVaisseauAvailable(type, quantity) {
+    if (quantity > 0) {
+      const vaisseau = this.#vaisseaux.find(v => v.type === type);
+      return vaisseau && vaisseau.quantite >= quantity;
+    }
+  }
+
+
 }
