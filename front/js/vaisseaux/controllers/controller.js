@@ -10,11 +10,14 @@ const API_QUERY_PARAMS = {
 export class Controller extends Notifier {
   #session;
   #vaisseaux;
+  #flotte;
 
   constructor() {
     super();
     this.#session = new Session("roro", 2, 1, 355, [1, 2, 3]);
     this.#vaisseaux = [];
+    this.#flotte = [];
+
   }
 
   get vaisseaux() { return this.#vaisseaux; }
@@ -43,40 +46,59 @@ export class Controller extends Notifier {
 
     this.#vaisseaux = vaisseaux;
   }
+  createFlotte(selectedVaisseaux) {
+    const flotte = selectedVaisseaux.map(vaisseau => {
+      const quantity = parseInt(document.getElementById(`nombre-${vaisseau.id}`).value);
+      vaisseau.flotteQuantity = quantity;
+      return vaisseau;
+    });
 
-  // ajoutFlotte(vaisseau) {
-  //     this.flotte.ajoutVaisseau(vaisseau);
-  //   }
+    this.#flotte = flotte;
+  }
+  loadFlotte() {
+    const form = document.getElementById("vaisseau-form");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
 
-  // ajoutVaisseauToApi(vaisseau){
-  //   const vaisseauData = {
-  //     id: vaisseau.id,
-  //     type: vaisseau.type,
-  //   };
+      const chasseurCheckbox = document.getElementById("vaisseau-chasseur");
+      const chasseurQuantityInput = document.getElementById("nombre-vaisseau-chasseur");
 
-  // fetch(API_BASE_URL, {
-  //   method: "POST",
-  //   body: JSON.stringify(vaisseauData),
-  // });
-  // }
-  // supprimerVaisseau(vaisseau) {
-  //     this.flotte.retirerVaisseau(vaisseau);
-  //   }
+      const croiseurCheckbox = document.getElementById("vaisseau-croiseur");
+      const croiseurQuantityInput = document.getElementById("nombre-vaisseau-croiseur");
 
-  // obtenirVaisseaux() {
-  //     return this.flotte.obtenirVaisseaux();
-  //   }
+      const transporteurCheckbox = document.getElementById("vaisseau-transporteur");
+      const transporteurQuantityInput = document.getElementById("nombre-vaisseau-transporteur");
 
-  // async loadFlotte(idFlotte) {
-  //     const vaisseauData = await fetchData(`?vaisseaux&flotte=${idFlotte}`); 
-  //     const flotte = new Flotte(); 
+      const colonisateurCheckbox = document.getElementById("vaisseau-colonisateur");
+      const colonisateurQuantityInput = document.getElementById("nombre-vaisseau-colonisateur");
 
-  //     vaisseauData.forEach(({ id, type }) => {
-  //       const vaisseau = new Vaisseau(id, type); 
+      const flotte = [];
+      
+      if (chasseurCheckbox.checked) {
+        const chasseurQuantity = parseInt(chasseurQuantityInput.value);
+        flotte.push({ type: "Chasseur", quantity: chasseurQuantity });
+      }
 
-  //       flotte.ajouterVaisseau(vaisseau); 
-  //     });
+      if (croiseurCheckbox.checked) {
+        const croiseurQuantity = parseInt(croiseurQuantityInput.value);
+        flotte.push({ type: "Croiseur", quantity: croiseurQuantity });
+      }
 
-  //     return flotte; 
-  //   }
+      if (transporteurCheckbox.checked) {
+        const transporteurQuantity = parseInt(transporteurQuantityInput.value);
+        flotte.push({ type: "Transporteur", quantity: transporteurQuantity });
+      }
+
+      if (colonisateurCheckbox.checked) {
+        const colonisateurQuantity = parseInt(colonisateurQuantityInput.value);
+        flotte.push({ type: "Colonisateur", quantity: colonisateurQuantity });
+      }
+
+      console.log("Flotte:", flotte);
+
+      this.#session.flotte = flotte;
+
+      this.notify();
+    });
+  }
 }

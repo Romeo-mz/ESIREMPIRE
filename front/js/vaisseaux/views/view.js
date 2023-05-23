@@ -1,30 +1,28 @@
 import { Observer } from "../pattern/observer.js";
-export class View extends Observer 
-{
+export class View extends Observer {
     #controller;
 
-    constructor(controller) 
-    {
+    constructor(controller) {
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
 
         this.createVaisseaux();
-    }   
+        console.log("View constructor");
+    }
 
-    createVaisseaux()
-    {
+    createVaisseaux() {
         const vaisseaux = this.#controller.vaisseaux;
         vaisseaux.forEach(vaisseau => {
             console.log(vaisseau);
-            this.createVaisseauElement(vaisseau);         
+            this.createVaisseauElement(vaisseau);
         });
     }
 
-    createVaisseauElement(vaisseau){
+    createVaisseauElement(vaisseau) {
         console.log(vaisseau.id);
         let parentDivId = "spaceship-disponible-liste";
-        
+
         let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "spaceship-disponible");
         let div_information = this.createOrUpdateElement("div", `spaceship-disponible-information-${vaisseau.id}`, "spaceship-disponible-information");
         let div_image = this.createOrUpdateElement("div", `spaceship-disponible-image-${vaisseau.id}`, "spaceship-disponible-image");
@@ -34,7 +32,7 @@ export class View extends Observer
         let div_information_quantite = this.createOrUpdateElement("div", `spaceship-disponible-quantite-${vaisseau.id}`, "spaceship-disponible-quantite", "<b>" + vaisseau.quantite + "</b>");
 
         img.src = this.getImageSrcForType(vaisseau.type);
-        
+
         div_image.appendChild(img);
         div_information.appendChild(div_information_type);
         div_information.appendChild(div_information_quantite);
@@ -42,10 +40,22 @@ export class View extends Observer
         div.appendChild(div_information);
 
         document.getElementById(parentDivId).appendChild(div);
-    }   
+    }
+    getSelectedVaisseaux() {
+        const vaisseaux = this.#controller.vaisseaux;
+        const selectedVaisseaux = [];
 
-    
-        // getVaisseauById(vaisseauId) {
+        vaisseaux.forEach(vaisseau => {
+            const quantity = parseInt(document.getElementById(`nombre-${vaisseau.id}`).value);
+            if (quantity > 0) {
+                selectedVaisseaux.push({ ...vaisseau });
+            }
+        });
+
+        return selectedVaisseaux;
+    }
+
+    // getVaisseauById(vaisseauId) {
     //     return this.#controller.vaisseaux.find((vaisseau) => vaisseau.id === vaisseauId);
     // }
 
@@ -53,9 +63,9 @@ export class View extends Observer
     //     const flotteElement = document.querySelector(".spaceship-flotte");
     //     const flotteTitle = flotteElement.querySelector("#flotte-title");
     //     const spaceshipContainer = flotteElement.querySelector(".spaceship");
-      
+
     //     const flotte = getFlotte(flotteElement);
-      
+
     //     if (flotte.length === 0) {
     //       spaceshipContainer.innerHTML = "<p>Aucun vaisseau dans la flotte</p>";
     //     } else {
@@ -63,7 +73,7 @@ export class View extends Observer
     //       spaceshipContainer.innerHTML = "";
     //       flotte.forEach((vaisseauId) => {
     //         const vaisseau = getVaisseauById(vaisseauId);
-      
+
     //         const spaceshipElement = document.createElement("div");
     //         spaceshipElement.classList.add("spaceship");
     //         spaceshipElement.innerHTML = `
@@ -75,7 +85,7 @@ export class View extends Observer
     //             <p class="spaceship-attack">Attack: ${vaisseau.attack}</p>
     //           </div>
     //         `;
-      
+
     //         spaceshipContainer.appendChild(spaceshipElement);
     //       });
     //     }
@@ -86,22 +96,20 @@ export class View extends Observer
 
     // addVaisseau(vaisseauId) {
     //     addVaisseauToFlotte(vaisseauId);
-      
+
     //     updateFlotte();
     //   }
- 
+
     // removeVaisseau(vaisseauId) {
-        
+
     //     removeVaisseauFromFlotte(vaisseauId);
-      
+
     //     updateFlotte();
     //   }
-    createOrUpdateElement(tagName, id, className, innerHTML = "") 
-    {
+    createOrUpdateElement(tagName, id, className, innerHTML = "") {
         let element = document.getElementById(id);
 
-        if (!element) 
-        {
+        if (!element) {
             element = document.createElement(tagName);
             element.id = id;
             element.className = className;
@@ -126,8 +134,7 @@ export class View extends Observer
         }
     }
 
-    notify() 
-    { 
+    notify() {
         // this.updateHistorique();
     }
 
