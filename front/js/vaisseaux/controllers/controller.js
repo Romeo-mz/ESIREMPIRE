@@ -2,7 +2,7 @@ import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { Vaisseaux } from "../models/vaisseaux.js";
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIvaisseaux.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIvaisseaux.php";
 const API_QUERY_PARAMS = {
   defaultVaisseaux: (id_Planet) => `?default_vaisseaux&id_Planet=${id_Planet}`,
   nbVaisseaux: (id_Player, id_Univers) => `?number_vaisseaux&id_Player=${id_Player}&id_Univers=${id_Univers}`,
