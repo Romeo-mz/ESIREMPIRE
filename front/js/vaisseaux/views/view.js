@@ -17,13 +17,14 @@ export class View extends Observer
       const vaisseaux = this.#controller.vaisseaux;
 
       forEach(vaisseaux, (vaisseau) => {
-
-        
-
+        createVaisseauElement(vaisseau);
+      });
     }
 
     createVaisseauElement(vaisseau){
-        
+        let parentDivId = "spaceship-disponible-liste";
+
+        let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "div-vaisseau");
 
     }
 
@@ -78,7 +79,21 @@ export class View extends Observer
       
     //     updateFlotte();
     //   }
-      
+    createOrUpdateElement(tagName, id, className, innerHTML = "") 
+    {
+        let element = document.getElementById(id);
+
+        if (!element) 
+        {
+            element = document.createElement(tagName);
+            element.id = id;
+            element.className = className;
+        }
+
+        element.innerHTML = innerHTML;
+        return element;
+    }
+    
     getImageSrcForType(type) {
         switch (type) {
             case "chasseur":
