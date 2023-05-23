@@ -49,27 +49,27 @@ class APIlogin
             return;
         }
         
-        $result = $this->controller->login($username, $password);
+        $result = $this->controller->login($username, $password, $univers);
         
         if($result == 0)
         {
             http_response_code(200);
-            echo "Login successful";
+            header('Location: http://esirempire/front/galaxy.html');
         }
         else if($result == 1)
         {
             http_response_code(401);
-            echo "Wrong password";
+            header('Location: http://esirempire/front/login.php?wrong_password');
         }
         else if($result == 2)
         {
             http_response_code(401);
-            echo "Wrong username";
+            header('Location: http://esirempire/front/login.php?wrong_username');
         }
         else if($result == 3)
         {
             http_response_code(401);
-            echo "Wrong univers";
+            header('Location: http://esirempire/front/login.php?wrong_universe');
         }
     }
 }

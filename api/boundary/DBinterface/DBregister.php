@@ -21,7 +21,7 @@ class DBregister extends DBinterface {
     }
 
     public function isEmail($mail){
-        return $this->fetchAllRows('SELECT * FROM joueur WHERE mail = ?', [$mail]);
+        return $this->fetchAllRows('SELECT * FROM joueur WHERE email = ?', [$mail]);
     }
 
     public function registerJoueur($username, $password, $mail){
