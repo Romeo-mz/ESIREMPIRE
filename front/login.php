@@ -23,11 +23,11 @@ $universes = json_decode($universes, true);
         </div>
         <div class="right">
             <h1>LOGIN</h1>
-            <form action="../api/boundary/APIinterface/APIlogin.php" method="post">
-                <input type="text" name="username" placeholder="Username" required>
+            <form id="loginForm">
+                <input type="text" name="username" placeholder="Username" required id="usernameInput">
                 
-                <input type="password" name="password" placeholder="Password" required>
-                <select name="univers" id="univers-select">
+                <input type="password" name="password" placeholder="Password" required id="passwordInput">
+                <select name="univers" id="universSelect">
                     <?php foreach($universes as $universe): ?>
                         <option value="<?= $universe['id'] ?>"><?= $universe['nom'] ?></option>
                     <?php endforeach; ?>
@@ -37,10 +37,11 @@ $universes = json_decode($universes, true);
 
                 <label for="remember">Se souvenir de moi</label>
                 <input type="checkbox" name="remember" id="remember">
-                <input type="submit" value="Login">
+                <button type="submit">Login</button>
             </form>
             <span class="register">Vous n'avez pas de compte <a href="register.php">Register</a></p>
         </div>
     </main>
+    <script src="js/authentifier/login.js"></script>
 </body>
 </html>

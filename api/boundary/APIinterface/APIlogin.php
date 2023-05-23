@@ -12,7 +12,6 @@ class APIlogin
     public function __construct($controller)
     {
         $this->controller = $controller;
-        // $this->request();
     }
 
     public function request()
@@ -38,9 +37,11 @@ class APIlogin
 
     private function postRequest()
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $univers = $_POST['univers'];
+        $data = json_decode(file_get_contents("php://input"));
+
+        $username = $data->username;
+        $password = $data->password;
+        $univers = $data->universe;
 
         if(!isset($username) || !isset($password) || !isset($univers))
         {
@@ -54,22 +55,22 @@ class APIlogin
         if($result == 0)
         {
             http_response_code(200);
-            header('Location: http://esirempire/front/galaxy.html');
+            // header('Location: http://esirempire/front/galaxy.html');
         }
         else if($result == 1)
         {
             http_response_code(401);
-            header('Location: http://esirempire/front/login.php?wrong_password');
+            // header('Location: http://esirempire/front/login.php?wrong_password');
         }
         else if($result == 2)
         {
             http_response_code(401);
-            header('Location: http://esirempire/front/login.php?wrong_username');
+            // header('Location: http://esirempire/front/login.php?wrong_username');
         }
         else if($result == 3)
         {
             http_response_code(401);
-            header('Location: http://esirempire/front/login.php?wrong_universe');
+            // header('Location: http://esirempire/front/login.php?wrong_universe');
         }
     }
 }
