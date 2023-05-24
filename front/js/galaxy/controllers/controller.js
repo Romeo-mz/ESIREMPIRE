@@ -1,7 +1,6 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { CelestialBody } from "../models/celestial-object.js";
-import { sessionService } from "../../SessionService.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
@@ -18,7 +17,6 @@ export class Controller extends Notifier
     constructor()
     {
         super();
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
 
         this.#galaxiesList = [
             {
@@ -33,12 +31,25 @@ export class Controller extends Notifier
                 name: []
             }
         ];
-
         
         this.#solarSystem = {
             sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
             planets: []
         };
+
+        const sessionServiceString = sessionStorage.getItem('sessionService');
+        const sessionService = JSON.parse(sessionServiceString).sessionData;
+
+        for (let i = 0; i < sessionService.id_Planets.length; i++)
+        {
+            sessionService.id_Planets[i] = parseInt(sessionService.id_Planets[i].id);
+        }
+        for (let i = 0; i < sessionService.id_Ressources.length; i++)
+        {
+            sessionService.id_Ressources[i] = parseInt(sessionService.id_Ressources[i].id);
+        }
+
+        this.#session = new Session(sessionService.pseudo, parseInt(sessionService.id_Player), parseInt(sessionService.id_Univers), sessionService.id_Planets, sessionService.id_Ressources);
     }
 
     get session() { return this.#session; }
@@ -69,6 +80,8 @@ export class Controller extends Notifier
 
     async loadPlanets(galaxyId, systemId = 0) 
     {
+
+
         // Empty
         this.#solarSystem.planets = [];
         this.#solarSystem.sun.satellites = [];

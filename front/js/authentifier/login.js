@@ -1,14 +1,12 @@
-import { sessionService } from '../SessionService.js';
+import { SessionService } from "../SessionService.js";
 
 document.getElementById('loginForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent form submission
+    event.preventDefault();
 
-    // Retrieve input values
     const username = document.getElementById('usernameInput').value;
     const password = document.getElementById('passwordInput').value;
     const universe = document.getElementById('universSelect').value;
 
-    // Perform login logic
     fetch('http://esirempire/api/boundary/APIinterface/APIlogin.php', {
         method: 'POST',
         headers: {
@@ -27,9 +25,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
             return response.json();
         })
         .then(data => {
-            // Process login response
             if (data.success) {
-                // Login successful, redirect to another page or perform further actions
                 
                 const sessionData = {
                     id_Player: data.id_Player,
@@ -39,19 +35,19 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
                     id_Ressources: data.id_Ressources
                 };
                 
-                // Set the session data using the SessionService
+                const sessionService = new SessionService();
                 sessionService.setSessionData(sessionData);
 
-                console.log(sessionService);
+                sessionStorage.setItem('sessionService', JSON.stringify(sessionService));                
+
+                window.location.href = './galaxy.html';
 
             } else {
-                // Login failed, display error message or take appropriate action
                 const errorMessage = data.message || 'Login failed';
                 console.log(errorMessage);
             }
         })
         .catch(error => {
-            // Handle any errors
             console.error(error);
         });
 });

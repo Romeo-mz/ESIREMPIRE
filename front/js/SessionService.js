@@ -1,4 +1,4 @@
-class SessionService {
+export class SessionService {
     constructor() {
         this.sessionData = {};
     }
@@ -15,5 +15,3 @@ class SessionService {
         this.sessionData = { ...this.sessionData, ...updatedData };
     }
 }
-
-export const sessionService = new SessionService();

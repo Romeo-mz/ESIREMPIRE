@@ -3,7 +3,7 @@ export class Session
     #pseudo;
     #id_Player;
     #id_Univers;
-    #id_Planet;
+    #id_Planet = [];
     #id_Ressource = [];
 
     constructor(pseudo, id_Player, id_Univers, id_Planet, id_Ressource)
