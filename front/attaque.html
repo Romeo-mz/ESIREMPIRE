@@ -13,24 +13,30 @@
     <main>
         <h1>Attaque</h1>
         <form id="attaque-form" action="../api/boundary/APIinterface/APIattaque.php" method="post">
-            <label for="univers">Univers :</label>
-            <select id="univers" name="univers">
+            <div id="univers">
+                <label for="univers">Univers :</label>
+                <select id="univers" name="univers">
+                    
+                </select>
+            </div>
+            <br>
+
+            <div id="galaxie">
+                <label for="galaxie">Galaxie :</label>
+                <select id="galaxie" name="galaxie">
+                    
+                </select>
+            </div>
+            <br>
+
+            <div id="planete">
+                <label for="planete">Planète :</label>
+                <select id="planete" name="planete">
+                    
+                </select>
                 
             </select>
             <br>
-
-            <label for="galaxie">Galaxie :</label>
-            <select id="galaxie" name="galaxie">
-                
-            </select>
-            <br>
-
-            <label for="planete">Planète :</label>
-            <select id="planete" name="planete">
-                
-            </select>
-            <br>
-
             
             <button type="submit">Lancer l'attaque</button>
         </form>

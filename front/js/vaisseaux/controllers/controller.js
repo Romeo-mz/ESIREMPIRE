@@ -121,13 +121,10 @@ export class Controller extends Notifier {
       this.notify();
       if (this.#session.flotte.length > 0) {
         // Convertir les informations de la flotte en une chaîne JSON encodée
-        const flotteData = JSON.stringify(this.#session.flotte);
-      
-        // Encoder les données de la flotte pour être transmises dans l'URL
-        const encodedFlotteData = encodeURIComponent(flotteData);
-      
+        const flotteData = this.#session.flotte;
+          
         // Construire l'URL de la page d'attaque avec les paramètres de la flotte
-        const attaqueURL = `attaque.html?flotte=${encodedFlotteData}`;
+        const attaqueURL = `attaque.html?flotte=${flotteData}`;
       
         // Rediriger l'utilisateur vers la page d'attaque
         window.location.href = attaqueURL;
