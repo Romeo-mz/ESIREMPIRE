@@ -46,8 +46,7 @@ export class Controller extends Notifier
         }
 
         this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
-   
-        console.log(this.#session);
+
     }
 
     get infrastructures() { return this.#infrastructures; }

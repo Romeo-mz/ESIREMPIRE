@@ -3,6 +3,7 @@ import { Session } from "../models/session.js";
 import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
 import { Technologie } from "../models/technologie.js";
+import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIsearch.php";
 const API_QUERY_PARAMS = {
@@ -32,7 +33,19 @@ export class Controller extends Notifier
 
         this.#laboID;
 
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+        let id_Planets = [];
+        let id_Ressources = [];
+
+        for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
+        {
+            id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
+        }
+        for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
+        {
+            id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
+        }
+
+        this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
     }
 
     get technologies() { return this.#technologies; }
@@ -77,7 +90,7 @@ export class Controller extends Notifier
 
     async loadLaboratoireID()
     {
-        const data = await this.fetchData(API_QUERY_PARAMS.laboID(this.#session.id_Planet));
+        const data = await this.fetchData(API_QUERY_PARAMS.laboID(this.#session.id_CurrentPlanet));
 
         if (data.id_Labo !== false)
         {
