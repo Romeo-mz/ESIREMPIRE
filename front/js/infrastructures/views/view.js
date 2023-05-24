@@ -111,6 +111,14 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
@@ -244,6 +252,14 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
@@ -344,6 +360,14 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";

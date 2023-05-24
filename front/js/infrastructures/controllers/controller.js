@@ -186,6 +186,17 @@ export class Controller extends Notifier
         this.notify();
     }
 
+    setUpgradingSomething(id)
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+        infrastructure.upgradingState = true;
+    }
+
+    isUpgradingSomething()
+    {
+        return this.#infrastructures.some(infrastructure => infrastructure.isUpgrading());
+    }
+
     checkEnoughRessource(id, type) 
     {
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
