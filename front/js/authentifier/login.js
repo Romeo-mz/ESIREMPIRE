@@ -1,4 +1,4 @@
-import { SessionService } from "../SessionService.js";
+import sessionDataService from '../SessionDataService.js';
 
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -27,19 +27,15 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         .then(data => {
             if (data.success) {
                 
-                const sessionData = {
+                sessionDataService.setSessionData({
                     id_Player: data.id_Player,
                     pseudo: data.pseudo,
                     id_Univers: data.id_Univers,
                     id_Planets: data.id_Planetes,
-                    id_Ressources: data.id_Ressources
-                };
+                    id_Ressources: data.id_Ressources,
+                    id_CurrentPlanet: 0
+                });            
                 
-                const sessionService = new SessionService();
-                sessionService.setSessionData(sessionData);
-
-                sessionStorage.setItem('sessionService', JSON.stringify(sessionService));                
-
                 window.location.href = './galaxy.html';
 
             } else {

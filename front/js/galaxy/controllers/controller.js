@@ -1,7 +1,7 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { CelestialBody } from "../models/celestial-object.js";
-import { SessionService } from "../../SessionService.js";
+import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
@@ -38,19 +38,20 @@ export class Controller extends Notifier
             planets: []
         };
 
-        const sessionServiceString = sessionStorage.getItem('sessionService');
-        const sessionService = JSON.parse(sessionServiceString).sessionData;
+        let id_Planets = [];
+        let id_Ressources = [];
 
-        for (let i = 0; i < sessionService.id_Planets.length; i++)
+        for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
         {
-            sessionService.id_Planets[i] = parseInt(sessionService.id_Planets[i].id);
+            id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
         }
-        for (let i = 0; i < sessionService.id_Ressources.length; i++)
+        for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
         {
-            sessionService.id_Ressources[i] = parseInt(sessionService.id_Ressources[i].id);
+            id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
         }
 
-        this.#session = new Session(sessionService.pseudo, parseInt(sessionService.id_Player), parseInt(sessionService.id_Univers), sessionService.id_Planets, sessionService.id_Ressources);
+        this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources);
+   
     }
 
     get session() { return this.#session; }
@@ -72,19 +73,13 @@ export class Controller extends Notifier
 
     goToInfrastructurePage(planetId)
     {
-        const sessionData = { id_Current_Planet: planetId };
-        // get the previous sessionService from sessionStorage
-        const sessionServiceString = sessionStorage.getItem('sessionService');
-        const sessionService = JSON.parse(sessionServiceString).sessionData;
+        // Access sessionData from any MVC component
+        // console.log(sessionDataService.getSessionData());
 
-        console.log(sessionService);
+        // Update sessionData from any MVC component
+        sessionDataService.updateSessionData({ id_CurrentPlanet: parseInt(planetId) });
 
-
-        // save the updated sessionService in sessionStorage
-        // sessionStorage.setItem('sessionService', JSON.stringify(sessionService));
-
-        
-        // window.location.href = "./infrastructures.html";
+        window.location.href = "./infrastructures.html";
     }
 
     loadNewPlanets(galaxyId, systemId)
@@ -98,8 +93,6 @@ export class Controller extends Notifier
 
     async loadPlanets(galaxyId, systemId = 0) 
     {
-
-
         // Empty
         this.#solarSystem.planets = [];
         this.#solarSystem.sun.satellites = [];
