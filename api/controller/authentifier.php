@@ -16,20 +16,22 @@ class Authentifier
     public function login($username, $password, $univers) {
         $hashedPassword = hash("SHA512", $password);
         $result = $this->DBinterfaceLogin->login($username, $hashedPassword);
-
-        
     
         if (!$result) 
         {
-            return 2; // code 2: Wrong username
+            $session = [
+                'success' => false,
+                'message' => 'Username incorrect'
+            ];
+            return $session;
         }
-    
         if ($result[0]['mdp'] === $hashedPassword && $username === $result[0]['pseudo']) 
         {
             $idRessources = $this->DBinterfaceLogin->getIdRessources($univers, $result[0]['id']);
             $idPlanets = $this->DBinterfaceLogin->getIdPlanets($univers, $result[0]['id']);
 
             $session = [
+                'success' => true,
                 'id_Player' => $result[0]['id'],
                 'pseudo' => $result[0]['pseudo'],
                 'id_Univers' => $univers,
@@ -37,12 +39,15 @@ class Authentifier
                 'id_Planetes' => $idPlanets,
             ];
 
-            session_start();
-            $_SESSION['user'] = $session;
+            return $session;
 
-            return 0;
         } else {
-            return 1;
+            $session = [
+                'success' => false,
+                'message' => 'Password incorrect'
+            ];
+
+            return $session;
         }
     }
 

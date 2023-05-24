@@ -20,22 +20,23 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     })
         .then(response => {
             if (!response.ok) {
-            throw new Error('Erreur lors de la requête à l\'API');
+                throw new Error('Erreur lors de la requête à l\'API');
             }
             return response.json();
         })
         .then(data => {
-            console.log(data);
+            // console.log(data.id_Player);
             // Process login response
-            // if (data.success) {
-            //     // Login successful, redirect to another page or perform further actions
-            //     window.location.href = '/dashboard';
-            // } else {
-            //     // Login failed, display error message or take appropriate action
-            //     const errorMessage = data.message || 'Login failed';
-            //     console.log(errorMessage);
-            //     //   document.getElementById('errorContainer').textContent = errorMessage;
-            // }
+
+            if (data.success) {
+                // Login successful, redirect to another page or perform further actions
+                console.log(data.id_Player);
+            } else {
+                // Login failed, display error message or take appropriate action
+                const errorMessage = data.message || 'Login failed';
+                console.log(errorMessage);
+                //   document.getElementById('errorContainer').textContent = errorMessage;
+            }
         })
         .catch(error => {
             // Handle any errors

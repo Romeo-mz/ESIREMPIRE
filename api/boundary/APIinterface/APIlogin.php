@@ -52,27 +52,13 @@ class APIlogin
         
         $result = $this->controller->login($username, $password, $univers);
         
-        if($result == 0)
+        if($result['success'])
         {
-            // http_response_code(200);
-            
-            $this->sendResponse(200, 'OK', json_encode($_SESSION['user']));
-            // header('Location: http://esirempire/front/galaxy.html');
+            $this->sendResponse(200, 'OK', json_encode($result));
         }
-        else if($result == 1)
+        else
         {
-            http_response_code(401);
-            // header('Location: http://esirempire/front/login.php?wrong_password');
-        }
-        else if($result == 2)
-        {
-            http_response_code(401);
-            // header('Location: http://esirempire/front/login.php?wrong_username');
-        }
-        else if($result == 3)
-        {
-            http_response_code(401);
-            // header('Location: http://esirempire/front/login.php?wrong_universe');
+            $this->sendResponse(401, 'Error while authentification', json_encode($result));
         }
     }
 
