@@ -49,9 +49,11 @@ export class View extends Observer {
                 });
 
                 if (planet) {
-                    if (planet.id === this.#controller.session.id_Planet.toString())
-                        // Go to infrastructure page
-                        window.location.href = "./infrastructures.html";
+                    for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
+                        if (planet.id === this.#controller.session.id_Planet[i].toString())
+                            // Go to infrastructure page
+                            this.#controller.goToInfrastructurePage(planet.id);
+                    }
                 }
             }
         });
@@ -221,7 +223,6 @@ export class View extends Observer {
 
             // Restore the context and remove the clipping mask
             this.context.restore();
-
         }
 
         this.context.save();
@@ -242,10 +243,13 @@ export class View extends Observer {
         }
         this.context.fillText(celestialBody.name, 0, 0);
 
-        if (celestialBody.id === this.#controller.session.id_Planet.toString())
-            this.context.fillText("Your Planet", 0, 0);
-        else
-            this.context.fillText(celestialBody.name, 0, 0);
+        for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
+            if (celestialBody.id === this.#controller.session.id_Planet[i].toString())
+                this.context.fillText("Your Planet", 0, 0);
+            else
+                this.context.fillText(celestialBody.name, 0, 0);
+        }
+
 
         this.context.restore();
 

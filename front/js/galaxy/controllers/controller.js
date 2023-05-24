@@ -1,6 +1,7 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { CelestialBody } from "../models/celestial-object.js";
+import { SessionService } from "../../SessionService.js";
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
@@ -67,6 +68,23 @@ export class Controller extends Notifier
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
+    }
+
+    goToInfrastructurePage(planetId)
+    {
+        const sessionData = { id_Current_Planet: planetId };
+        // get the previous sessionService from sessionStorage
+        const sessionServiceString = sessionStorage.getItem('sessionService');
+        const sessionService = JSON.parse(sessionServiceString).sessionData;
+
+        console.log(sessionService);
+
+
+        // save the updated sessionService in sessionStorage
+        // sessionStorage.setItem('sessionService', JSON.stringify(sessionService));
+
+        
+        // window.location.href = "./infrastructures.html";
     }
 
     loadNewPlanets(galaxyId, systemId)
