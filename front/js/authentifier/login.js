@@ -27,9 +27,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
             return response.json();
         })
         .then(data => {
-            // console.log(data.id_Player);
             // Process login response
-
             if (data.success) {
                 // Login successful, redirect to another page or perform further actions
                 
@@ -50,7 +48,6 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
                 // Login failed, display error message or take appropriate action
                 const errorMessage = data.message || 'Login failed';
                 console.log(errorMessage);
-                //   document.getElementById('errorContainer').textContent = errorMessage;
             }
         })
         .catch(error => {
