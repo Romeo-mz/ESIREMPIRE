@@ -35,11 +35,11 @@ $universes = json_decode($universes, true);
                 
                 <br/><br/>
 
-                <label for="remember">Se souvenir de moi</label>
-                <input type="checkbox" name="remember" id="remember">
+                <!-- <label for="remember">Se souvenir de moi</label> -->
+                <!-- <input type="checkbox" name="remember" id="remember"> -->
                 <button type="submit">Login</button>
             </form>
-            <span class="register">Vous n'avez pas de compte <a href="register.php">Register</a></p>
+            <span class="register">Vous n'avez pas de compte ? <a href="register.php">Register</a></p>
         </div>
     </main>
     <script src="js/authentifier/login.js" type="module"></script>
