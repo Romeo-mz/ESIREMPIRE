@@ -160,7 +160,14 @@ export class View extends Observer
             technologie.level === "0" ? "Construire <br>" + technologie.temps_recherche + "s" : "Améliorer <br> " + technologie.temps_recherche + "s"
         );
 
-        button_upgrade.addEventListener("click", () => {
+        button_upgrade.addEventListener("click", () => 
+        {
+            if(!this.#controller.checkEnoughRessource(technologie.id, technologie.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
+
             button_upgrade.disabled = true;
             let remainingTime = technologie.temps_recherche;
             button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";

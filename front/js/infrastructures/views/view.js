@@ -111,6 +111,11 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
             // Check if the player is not already upgrading something
             if (this.#controller.isUpgradingSomething()) {
                 alert("Vous ne pouvez pas améliorer une installation en cours.");
@@ -252,6 +257,11 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
             // Check if the player is not already upgrading something
             if (this.#controller.isUpgradingSomething()) {
                 alert("Vous ne pouvez pas améliorer une installation en cours.");
@@ -360,6 +370,11 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
             // Check if the player is not already upgrading something
             if (this.#controller.isUpgradingSomething()) {
                 alert("Vous ne pouvez pas améliorer une installation en cours.");

@@ -222,12 +222,6 @@ export class Controller extends Notifier
     {
         const ship = this.#ships.find(ship => ship.id === id);
 
-        if(!this.checkEnoughRessource(id, type))
-        {
-            alert("Pas assez de ressources");
-            return;
-        }
-
         this.decreaseRessource(id, type);
 
         try {

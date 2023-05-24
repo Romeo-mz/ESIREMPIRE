@@ -118,6 +118,11 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () => 
         {
+            if(!this.#controller.checkEnoughRessource(ship.id, ship.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
             // Check if the player is not already upgrading something
             if (this.#controller.isUpgradingSomething()) {
                 alert("Vous ne pouvez pas construire un vaisseau en cours.");

@@ -258,13 +258,7 @@ export class Controller extends Notifier
     async upgradeTechnologie(id, type) 
     {
         const oldId = id;
-
-        if(!this.checkEnoughRessource(id, type))
-        {
-            alert("Pas assez de ressources");
-            return;
-        }
-
+        
         this.decreaseRessource(id, type);
 
         if (id < 0) {

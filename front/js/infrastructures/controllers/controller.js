@@ -74,6 +74,7 @@ export class Controller extends Notifier
     
     async upgradeInfrastructure(id, type) 
     {
+        const oldId = id;
 
         if(!this.checkEnoughRessource(id, type))
         {
