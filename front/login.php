@@ -42,6 +42,6 @@ $universes = json_decode($universes, true);
             <span class="register">Vous n'avez pas de compte <a href="register.php">Register</a></p>
         </div>
     </main>
-    <script src="js/authentifier/login.js"></script>
+    <script src="js/authentifier/login.js" type="module"></script>
 </body>
 </html>

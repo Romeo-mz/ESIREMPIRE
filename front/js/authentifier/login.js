@@ -1,3 +1,5 @@
+import { sessionService } from '../SessionService.js';
+
 document.getElementById('loginForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form submission
 
@@ -30,7 +32,20 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
 
             if (data.success) {
                 // Login successful, redirect to another page or perform further actions
-                console.log(data.id_Player);
+                
+                const sessionData = {
+                    id_Player: data.id_Player,
+                    pseudo: data.pseudo,
+                    id_Univers: data.id_Univers,
+                    id_Planets: data.id_Planetes,
+                    id_Ressources: data.id_Ressources
+                };
+                
+                // Set the session data using the SessionService
+                sessionService.setSessionData(sessionData);
+
+                console.log(sessionService);
+
             } else {
                 // Login failed, display error message or take appropriate action
                 const errorMessage = data.message || 'Login failed';
