@@ -116,7 +116,16 @@ export class View extends Observer
             "Construire <br>" + ship.temps_construction + "s"
         );
 
-        button_upgrade.addEventListener("click", () => {
+        button_upgrade.addEventListener("click", () => 
+        {
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas construire un vaisseau en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(ship.id);
+
             button_upgrade.disabled = true;
             let remainingTime = ship.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + remainingTime + "s";

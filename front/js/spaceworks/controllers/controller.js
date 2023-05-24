@@ -96,6 +96,17 @@ export class Controller extends Notifier
         this.#ships = ships;
     }
 
+    setUpgradingSomething(id)
+    {
+        const ship = this.#ships.find(ship => ship.id === id);
+        ship.upgradingState = true;
+    }
+
+    isUpgradingSomething()
+    {
+        return this.#ships.some(ship => ship.isUpgrading());
+    }
+
     async loadSpaceworkID()
     {
         const data = await this.fetchData(API_QUERY_PARAMS.spaceworkID(this.#session.id_CurrentPlanet));

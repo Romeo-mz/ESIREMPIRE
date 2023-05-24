@@ -9,6 +9,7 @@ export class Ship
     #point_attaque;
     #point_defense;
     #capacite_fret;
+    #upgradingState;
 
     constructor(id, type, quantite, cout_metal, cout_deuterium, temps_construction, point_attaque, point_defense, capacite_fret)
     {
@@ -21,6 +22,7 @@ export class Ship
         this.#point_attaque = point_attaque;
         this.#point_defense = point_defense;
         this.#capacite_fret = capacite_fret;
+        this.#upgradingState = false;
     }
 
     get id() { return this.#id; }
@@ -42,4 +44,13 @@ export class Ship
     set point_attaque(point_attaque) { this.#point_attaque = point_attaque; }
     set point_defense(point_defense) { this.#point_defense = point_defense; }
     set capacite_fret(capacite_fret) { this.#capacite_fret = capacite_fret; }
+
+    get upgradingState() { return this.#upgradingState; }
+    set upgradingState(upgradingState) { this.#upgradingState = upgradingState; }
+
+    isUpgrading()
+    {
+        return this.#upgradingState;
+    }
+
 }
