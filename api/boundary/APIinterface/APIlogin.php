@@ -54,7 +54,9 @@ class APIlogin
         
         if($result == 0)
         {
-            http_response_code(200);
+            // http_response_code(200);
+            
+            $this->sendResponse(200, 'OK', json_encode($_SESSION['user']));
             // header('Location: http://esirempire/front/galaxy.html');
         }
         else if($result == 1)
@@ -73,6 +75,19 @@ class APIlogin
             // header('Location: http://esirempire/front/login.php?wrong_universe');
         }
     }
+
+    private function sendResponse($statusCode, $statusText, $body = null)
+    {
+        header("HTTP/1.1 {$statusCode} {$statusText}");
+
+        if ($body != null) {
+            header("Content-Type: application/json");
+            echo $body;
+        }
+        
+        exit;
+    }
+
 }
 
 

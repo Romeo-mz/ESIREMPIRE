@@ -16,6 +16,8 @@ class Authentifier
     public function login($username, $password, $univers) {
         $hashedPassword = hash("SHA512", $password);
         $result = $this->DBinterfaceLogin->login($username, $hashedPassword);
+
+        
     
         if (!$result) 
         {
@@ -24,6 +26,20 @@ class Authentifier
     
         if ($result[0]['mdp'] === $hashedPassword && $username === $result[0]['pseudo']) 
         {
+            $idRessources = $this->DBinterfaceLogin->getIdRessources($univers, $result[0]['id']);
+            $idPlanets = $this->DBinterfaceLogin->getIdPlanets($univers, $result[0]['id']);
+
+            $session = [
+                'id_Player' => $result[0]['id'],
+                'pseudo' => $result[0]['pseudo'],
+                'id_Univers' => $univers,
+                'id_Ressources' => $idRessources,
+                'id_Planetes' => $idPlanets,
+            ];
+
+            session_start();
+            $_SESSION['user'] = $session;
+
             return 0;
         } else {
             return 1;

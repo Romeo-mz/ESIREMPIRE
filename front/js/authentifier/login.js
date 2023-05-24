@@ -6,12 +6,6 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     const password = document.getElementById('passwordInput').value;
     const universe = document.getElementById('universSelect').value;
 
-    console.log(JSON.stringify({
-        username: username,
-        password: password,
-        universe: universe
-    }))
-
     // Perform login logic
     fetch('http://esirempire/api/boundary/APIinterface/APIlogin.php', {
         method: 'POST',
