@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="css/attaque.css">
+    <title>Attaque</title>
+</head>
+
+<body>
+    <main>
+        <h1>Attaque</h1>
+        <form id="attaque-form" action="../api/boundary/APIinterface/APIattaque.php" method="post">
+            <label for="univers">Univers :</label>
+            <select id="univers" name="univers">
+                
+            </select>
+            <br>
+
+            <label for="galaxie">Galaxie :</label>
+            <select id="galaxie" name="galaxie">
+                
+            </select>
+            <br>
+
+            <label for="planete">Planète :</label>
+            <select id="planete" name="planete">
+                
+            </select>
+            <br>
+
+            
+            <button type="submit">Lancer l'attaque</button>
+        </form>
+    </main>
+</body>
+
+</html>

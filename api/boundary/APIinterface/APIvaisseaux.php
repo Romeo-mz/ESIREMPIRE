@@ -8,7 +8,8 @@ $controller_instance = new Vaisseau();
 $api_vaisseau = new APIvaisseau($controller_instance);
 $api_vaisseau->handleRequest();
 
-class APIvaisseau{
+class APIvaisseau
+{
     private $controller;
 
     public function __construct($controller)
@@ -16,33 +17,41 @@ class APIvaisseau{
         $this->controller = $controller;
     }
 
-    public function handleRequest(){
+    public function handleRequest()
+    {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
         switch ($requestMethod) {
             case 'GET':
                 $this->handleGet();
                 break;
             case 'POST':
-                // $this->handlePost();
+                $this->handlePost();
                 break;
             default:
                 $this->sendResponse(405, 'Method Not Allowed');
                 break;
         }
     }
+    private function handlePost()
+    {
+        header('../../../front/attaque.php');
+        $nbrChasseur = $_POST['nombre-vaisseau-chasseur'];
+        $nbrCroiseur = $_POST['nombre-vaisseau-croiseur'];
+        $nbrTransporteur = $_POST['nombre-vaisseau-transporteur'];
+        $nbrColonisateur = $_POST['nombre-vaisseau-colonisateur'];
 
+
+    }
     private function handleGet()
     {
-        if (isset($_GET['id_Vaisseaux']) && isset($_GET['id_Univers'])){
+        if (isset($_GET['id_Vaisseaux']) && isset($_GET['id_Univers'])) {
             $vaisseauID = $this->controller->getVaisseauID($_GET['id_Univers']);
             $this->sendResponse(200, 'OK', json_encode($vaisseauID));
-        }
-        else if(isset($_GET['default_vaisseaux']) && isset($_GET['id_Planet']))
-        {
+        } else if (isset($_GET['default_vaisseaux']) && isset($_GET['id_Planet'])) {
             $defaultVaisseaux = $this->controller->getDefaultVaisseaux($_GET['id_Planet']);
             $this->sendResponse(200, 'OK', json_encode($defaultVaisseaux));
         }
-        
+
     }
 
     private function sendResponse($statusCode, $statusText, $body = null)
@@ -53,7 +62,7 @@ class APIvaisseau{
             header("Content-Type: application/json");
             echo $body;
         }
-        
+
         exit;
     }
 

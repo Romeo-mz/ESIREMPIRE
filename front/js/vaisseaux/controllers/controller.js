@@ -107,7 +107,6 @@ export class Controller extends Notifier {
       if (colonisateurCheckbox.checked) {
         const colonisateurQuantity = parseInt(colonisateurQuantityInput.value);
         const colonisateurAvailable = this.isVaisseauAvailable("COLONISATEUR", colonisateurQuantity);
-        console.log(this.#vaisseaux);
         if (colonisateurAvailable) {
           flotte.push({ type: "COLONISATEUR", quantity: colonisateurQuantity });
         } else {
@@ -120,6 +119,20 @@ export class Controller extends Notifier {
       this.#session.flotte = flotte;
       console.log("Flotte:", this.#session.flotte);
       this.notify();
+      if (this.#session.flotte.length > 0) {
+        // Convertir les informations de la flotte en une chaîne JSON encodée
+        const flotteData = JSON.stringify(this.#session.flotte);
+      
+        // Encoder les données de la flotte pour être transmises dans l'URL
+        const encodedFlotteData = encodeURIComponent(flotteData);
+      
+        // Construire l'URL de la page d'attaque avec les paramètres de la flotte
+        const attaqueURL = `attaque.html?flotte=${encodedFlotteData}`;
+      
+        // Rediriger l'utilisateur vers la page d'attaque
+        window.location.href = attaqueURL;
+      }
+
     });
   }
 
@@ -131,5 +144,8 @@ export class Controller extends Notifier {
     }
   }
 
-
+  addVaisseauToFlotteToApi() {
+  
+    const vaisseauId = document.getElementById("vaisseau-id").value; 
+  }
 }

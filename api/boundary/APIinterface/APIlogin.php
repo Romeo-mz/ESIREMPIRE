@@ -21,7 +21,7 @@ class APIlogin
     {
         $this->controller = $controller;
         $this->session_controller = $session_controller;
-        // $this->request();
+        $this->request();
     }
 
     public function request()
