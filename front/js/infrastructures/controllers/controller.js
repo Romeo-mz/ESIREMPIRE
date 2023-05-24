@@ -31,8 +31,6 @@ export class Controller extends Notifier
         this.#infraTechnoRequired = [];
         this.#technologiesPlayer = [];
 
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
-
         let id_Planets = [];
         let id_Ressources = [];
 
