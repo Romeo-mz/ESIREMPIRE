@@ -114,18 +114,16 @@ export class Controller extends Notifier {
         }
       }
 
-      
-      
+
+
       this.#session.flotte = flotte;
-      console.log("Flotte:", this.#session.flotte);
+
       this.notify();
       if (this.#session.flotte.length > 0) {
-        // Convertir les informations de la flotte en une chaîne JSON encodée
-        const flotteData = this.#session.flotte;
-          
-        // Construire l'URL de la page d'attaque avec les paramètres de la flotte
-        const attaqueURL = `attaque.html?flotte=${flotteData}`;
-      
+        const flotteData = JSON.stringify(this.#session.flotte);
+        const encodedData = encodeURIComponent(flotteData);
+        const attaqueURL = `attaque.html?flotte=${encodedData}`;
+        console.log(attaqueURL);
         // Rediriger l'utilisateur vers la page d'attaque
         window.location.href = attaqueURL;
       }
@@ -142,7 +140,7 @@ export class Controller extends Notifier {
   }
 
   addVaisseauToFlotteToApi() {
-  
-    const vaisseauId = document.getElementById("vaisseau-id").value; 
+
+    const vaisseauId = document.getElementById("vaisseau-id").value;
   }
 }
