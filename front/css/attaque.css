@@ -49,7 +49,23 @@ html {
     padding: 30px;
     width: 100%;
   }
+  #attaque-form {
+    display: flex;
+    flex-direction: row;
+  }
   
+  #attaque-liste {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+   
+  }
+  
+  #attaque-liste label {
+    margin-bottom: 10px;
+  }
+  
+ 
   input {
     font-family: Roboto;
     border: none;

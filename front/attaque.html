@@ -10,41 +10,56 @@
 </head>
 
 <body>
-    <div id="flotte-container">
-        <p>Flotte</p>
-    </div>
     <main>
         <h1>Attaque</h1>
         <form id="attaque-form" action="../api/boundary/APIinterface/APIattaque.php" method="post">
             <div id="univers">
-                <label for="univers">Univers :</label>
+                <label for="univers">Choix univers</label>
                 <select id="univers" name="univers">
 
                 </select>
             </div>
             <br>
-
-            <div id="galaxie">
-                <label for="galaxie">Galaxie :</label>
-                <select id="galaxie" name="galaxie">
-
-                </select>
-            </div>
             <br>
+            <div id="attaque-liste">
+                <label>Attaquer </label><br>
+                <input type="radio" name="attaque" value="1"> <br>
+                <input type="radio" name="attaque" value="2"> <br>
+                <input type="radio" name="attaque" value="3"> <br>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Joueur</th>
+                        <th>Galaxie</th>
+                        <th>Système Solaire</th>
+                        <th>Planète</th>
+                        <th>Flotte</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Joueur 1</td>
+                        <td>Galaxie 1</td>
+                        <td>Système Solaire 1</td>
+                        <td>Planète 1</td>
+                        <td>Flotte</td>
+                    </tr>
+                    <tr>
+                        <td>Joueur 2</td>
+                        <td>Planète 2</td>
+                        <td>Flotte</td>
+                    </tr>
+                    <tr>
+                        <td>Joueur 3</td>
+                        <td>Planète 3</td>
+                        <td>Flotte</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <div id="planete">
-                <label for="planete">Planète :</label>
-                <select id="planete" name="planete">
-
-                </select>
-
-                </select>
-                <br>
-
-                <button type="submit">Lancer l'attaque</button>
+            <button type="submit">Lancer l'attaque</button>
         </form>
     </main>
     <script src="js/attaque/attaque.js"></script>
 </body>
-
-</html>
