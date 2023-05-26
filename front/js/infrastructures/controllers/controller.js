@@ -16,6 +16,7 @@ const API_QUERY_PARAMS = {
     loadDefaultInstallations: "?default_installation",
     loadDefaultRessources: "?default_ressource",
     loadQuantiteRessource: (playerId, universeId) => `?quantity_ressource_player&id_Player=${playerId}&id_Universe=${universeId}`,
+    loadTechnoRequired: "?techno_required"
 };
 
 export class Controller extends Notifier
@@ -521,7 +522,7 @@ export class Controller extends Notifier
     }
 
     async loadTechnoRequired() {
-        const data = await this.fetchData(`?techno_required`);
+        const data = await this.fetchData(API_QUERY_PARAMS.loadTechnoRequired);
 
         const technos = data.map(item => {
             return new TechnoRequired(
