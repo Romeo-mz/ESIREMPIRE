@@ -241,14 +241,20 @@ export class View extends Observer {
         if (celestialBody.name !== "Sun") {
             this.context.rotate(-celestialBody.rotationAngle);
         }
-        this.context.fillText(celestialBody.name, 0, 0);
+        // this.context.fillText(celestialBody.name, 0, 0);
+
+        let isPlanetPlayer = false;
 
         for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
-            if (celestialBody.id === this.#controller.session.id_Planet[i].toString())
-                this.context.fillText("Your Planet", 0, 0);
-            else
-                this.context.fillText(celestialBody.name, 0, 0);
+            if (celestialBody.id === this.#controller.session.id_Planet[i].toString()) {
+                isPlanetPlayer = true;
+            }
         }
+
+        if (isPlanetPlayer) {
+            this.context.fillText("Your Planet", 0, 0);
+        } else
+            this.context.fillText(celestialBody.name, 0, 0);
 
 
         this.context.restore();
