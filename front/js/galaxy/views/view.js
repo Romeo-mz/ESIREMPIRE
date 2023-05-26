@@ -241,7 +241,6 @@ export class View extends Observer {
         if (celestialBody.name !== "Sun") {
             this.context.rotate(-celestialBody.rotationAngle);
         }
-        // this.context.fillText(celestialBody.name, 0, 0);
 
         let isPlanetPlayer = false;
 
