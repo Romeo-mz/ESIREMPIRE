@@ -10,6 +10,13 @@ import { Technologie } from "../models/technologie.js";
 import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+const API_QUERY_PARAMS = {
+    loadInfrastructures: (planetId) => `?id_Planet=${planetId}`,
+    loadDefaultDefenses: "?default_defense",
+    loadDefaultInstallations: "?default_installation",
+    loadDefaultRessources: "?default_ressource",
+    loadQuantiteRessource: (playerId, universeId) => `?quantity_ressource_player&id_Player=${playerId}&id_Universe=${universeId}`,
+};
 
 export class Controller extends Notifier
 {
@@ -411,7 +418,7 @@ export class Controller extends Notifier
     }
     
     async loadQuantitiesRessource() {
-        const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
+        const ressourceData = await this.fetchData(API_QUERY_PARAMS.loadQuantiteRessource(this.#session.id_Player, this.#session.id_Univers));
 
         this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
             new QuantiteRessource(id_Ressource, type, quantite)
@@ -421,9 +428,9 @@ export class Controller extends Notifier
     
     async loadDefaultInfrastructures() {
         const [defenseData, installationData, ressourceData] = await Promise.all([
-            this.fetchData("?default_defense"),
-            this.fetchData("?default_installation"),
-            this.fetchData("?default_ressource")
+            this.fetchData(API_QUERY_PARAMS.loadDefaultDefenses),
+            this.fetchData(API_QUERY_PARAMS.loadDefaultInstallations),
+            this.fetchData(API_QUERY_PARAMS.loadDefaultRessources)
         ]);
       
         let negativeID = -1;
@@ -468,7 +475,7 @@ export class Controller extends Notifier
     }
     
     async loadInfrastructureFromAPI() {
-        const data = await this.fetchData(`?id_Planet=${this.#session.id_CurrentPlanet}`);
+        const data = await this.fetchData(API_QUERY_PARAMS.loadInfrastructures(this.#session.id_CurrentPlanet));
         const infrastructures = data.map(item => {
             if (item.installation_type != null) {
                 return new Installation(
