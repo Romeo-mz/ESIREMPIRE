@@ -35,14 +35,16 @@ class APIattaque
 
     public function handleGet()
     {
-        if (isset($_GET['$id_Joueur']) && isset($_GET['$id_Univers'])) {
-
-            echo('ok');
-        
+        if (isset($_GET['id_Joueur']) && isset($_GET['id_Univers'])) {
+            $listeEnnemis = $this->controller->getListeEnnemis($_GET['id_Joueur'], $_GET['id_Univers']);
+            $this->sendResponse(200, 'OK', json_encode($listeEnnemis));
+            exit; // Add this line to stop execution after sending the response
         } else {
             $this->sendResponse(400, 'Bad Request', 'Missing parameter');
         }
     }
+    
+    
 
     public function handlePost()
     {

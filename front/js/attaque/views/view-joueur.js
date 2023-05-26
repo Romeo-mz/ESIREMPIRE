@@ -10,7 +10,7 @@ export class View extends Observer {
         
     }
 
-    #loadJoueurEnnemis() {
+    loadJoueurEnnemis() {
         const ennemisTableBody = document.querySelector('#attaque-liste');
         ennemisTableBody.innerHTML = '';
       
@@ -34,7 +34,7 @@ export class View extends Observer {
           ennemisTableBody.appendChild(row);
         });
       }
-      
+
     createOrUpdateElement(tagName, id, className, innerHTML = "") {
         let element = document.getElementById(id);
 
@@ -51,7 +51,7 @@ export class View extends Observer {
 
     
     notify() {
-        this.displayEnnemis();
+        this.loadJoueurEnnemis();
     }
 
 }

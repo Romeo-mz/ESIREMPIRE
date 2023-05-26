@@ -3,7 +3,7 @@ import { Session } from "../models/session.js";
 
 const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIattaque.php";
 const API_QUERY_PARAMS = {
-  defaultEnnemis: (id_Joueur, id_Univers) => `?default_ennemmis&id_Joueur=${id_Joueur}&id_Univers=${id_Univers}`,
+  defaultEnnemis: (id_Joueur, id_Univers) => `?default_ennemis&id_Joueur=${id_Joueur}&id_Univers=${id_Univers}`,
   nbDefense: (id_Joueur, id_Univers) => `?nbDefense&id_Player=${id_Joueur}&id_Univers=${id_Univers}`,
 };
 export class Controller extends Notifier {
@@ -24,8 +24,11 @@ export class Controller extends Notifier {
   
   async loadJoueurEnnemis() {
     const response = await fetch(API_BASE_URL + API_QUERY_PARAMS.defaultEnnemis(this.#session.id_Player, this.#session.id_Univers));
-    console.log('test');
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
     const data = await response.json();
+    console.log(data); // Log the parsed JSON data
     this.#joueurEnnemis = data.filter((joueur) => joueur.id !== this.#session.id);
     this.notify();
   }
