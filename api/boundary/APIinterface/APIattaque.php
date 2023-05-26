@@ -35,21 +35,12 @@ class APIattaque
 
     public function handleGet()
     {
-        if (isset($_GET['flotte'])) {
-            $flotteData = $_GET['flotte'];
-            $flotte = json_decode(urldecode($flotteData), true);
-            $flotteHtml = '<div id="flotte-container">';
-            $flotteHtml .= '<h2>Flotte</h2>';
-            foreach ($flotte as $vaisseau) {
-                $flotteHtml .= '<p>Type: ' . $vaisseau['type'] . ', Quantity: ' . $vaisseau['quantity'] . '</p>';
-            }
-            $flotteHtml .= '</div>';
+        if (isset($_GET['$id_Joueur']) && isset($_GET['$id_Univers'])) {
 
-            // Afficher la flotte sur la page
-            echo $flotteHtml;
+            echo('ok');
+        
         } else {
-            // Gérer le cas où le paramètre 'flotte' est manquant
-            $this->sendResponse(400, 'Bad Request', 'Missing flotte parameter');
+            $this->sendResponse(400, 'Bad Request', 'Missing parameter');
         }
     }
 

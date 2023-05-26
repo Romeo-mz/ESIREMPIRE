@@ -13,13 +13,6 @@
     <main>
         <h1>Attaque</h1>
         <form id="attaque-form" action="../api/boundary/APIinterface/APIattaque.php" method="post">
-            <div id="univers">
-                <label for="univers">Choix univers</label>
-                <select id="univers" name="univers">
-
-                </select>
-            </div>
-            <br>
             <br>
             <div id="attaque-liste">
                 <label>Attaquer </label><br>
@@ -37,7 +30,7 @@
                         <th>Flotte</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="joueur-liste">
                     <tr>
                         <td>Joueur 1</td>
                         <td>Galaxie 1</td>
@@ -61,5 +54,7 @@
             <button type="submit">Lancer l'attaque</button>
         </form>
     </main>
-    <script src="js/attaque/attaque.js"></script>
+    <script src="js/attaque/application/application.js" type="module"></script>
 </body>
+
+</html>

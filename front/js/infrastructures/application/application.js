@@ -3,7 +3,7 @@ import { View } from "../views/view.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const myController = new Controller();
-    const myView = new View(myController);
+    const myView = new View(myController); //Need to delete this line ?
 
     myController.loadDefaultInfrastructures()
         .then(() => {
