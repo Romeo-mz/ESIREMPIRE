@@ -4,6 +4,7 @@ import { QuantiteRessource } from "../models/quantiteressource.js";
 import { ShipTechnoRequired } from "../models/shiptechnorequired.js";
 import { Technologie } from "../models/technologie.js";
 import { Ship } from "../models/ship.js";
+import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIspacework.php";
 const API_QUERY_PARAMS = {
@@ -32,10 +33,22 @@ export class Controller extends Notifier
         
         this.#spaceworkID = -1;
 
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
-
         this.#shipTechnoRequired = [];
         this.#shipTechnoRequired.push(new ShipTechnoRequired("CROISEUR", "IONS", "4"));
+
+        let id_Planets = [];
+        let id_Ressources = [];
+
+        for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
+        {
+            id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
+        }
+        for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
+        {
+            id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
+        }
+
+        this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
     }
 
     get ships() { return this.#ships; }
@@ -81,9 +94,20 @@ export class Controller extends Notifier
         this.#ships = ships;
     }
 
+    setUpgradingSomething(id)
+    {
+        const ship = this.#ships.find(ship => ship.id === id);
+        ship.upgradingState = true;
+    }
+
+    isUpgradingSomething()
+    {
+        return this.#ships.some(ship => ship.isUpgrading());
+    }
+
     async loadSpaceworkID()
     {
-        const data = await this.fetchData(API_QUERY_PARAMS.spaceworkID(this.#session.id_Planet));
+        const data = await this.fetchData(API_QUERY_PARAMS.spaceworkID(this.#session.id_CurrentPlanet));
 
         if (data.id_Spacework !== false)
         {
@@ -121,7 +145,7 @@ export class Controller extends Notifier
     {        
         if (this.#spaceworkID !== -1)
         {
-            const data = await this.fetchData(API_QUERY_PARAMS.technologiesPlayer(this.#session.id_Planet));
+            const data = await this.fetchData(API_QUERY_PARAMS.technologiesPlayer(this.#session.id_CurrentPlanet));
 
             const technos = data.map(item => {
                 return new Technologie(
@@ -197,12 +221,6 @@ export class Controller extends Notifier
     async addShip(id, type) 
     {
         const ship = this.#ships.find(ship => ship.id === id);
-
-        if(!this.checkEnoughRessource(id, type))
-        {
-            alert("Pas assez de ressources");
-            return;
-        }
 
         this.decreaseRessource(id, type);
 

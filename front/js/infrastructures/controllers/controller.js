@@ -7,6 +7,7 @@ import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
 import { InfraTechnoRequired } from "../models/infratechnorequired.js";
 import { Technologie } from "../models/technologie.js";
+import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
 
@@ -30,7 +31,20 @@ export class Controller extends Notifier
         this.#infraTechnoRequired = [];
         this.#technologiesPlayer = [];
 
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+        let id_Planets = [];
+        let id_Ressources = [];
+
+        for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
+        {
+            id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
+        }
+        for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
+        {
+            id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
+        }
+
+        this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
+
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -58,6 +72,7 @@ export class Controller extends Notifier
     
     async upgradeInfrastructure(id, type) 
     {
+        const oldId = id;
 
         if(!this.checkEnoughRessource(id, type))
         {
@@ -168,6 +183,17 @@ export class Controller extends Notifier
         this.upgradeInfrastructureToAPI(infrastructure.id);
 
         this.notify();
+    }
+
+    setUpgradingSomething(id)
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+        infrastructure.upgradingState = true;
+    }
+
+    isUpgradingSomething()
+    {
+        return this.#infrastructures.some(infrastructure => infrastructure.isUpgrading());
     }
 
     checkEnoughRessource(id, type) 
@@ -349,7 +375,7 @@ export class Controller extends Notifier
     async upgradeInfrastructureToAPI(id_Infrastructure)
     {
         const infrastructureData = {
-            id_Planet: this.#session.id_Planet,
+            id_Planet: this.#session.id_CurrentPlanet,
             id_Infrastructure: id_Infrastructure
         };
     
@@ -361,7 +387,7 @@ export class Controller extends Notifier
     
     async createInfrastructureToAPI(id, type) {
         const infrastructureData = {
-            id_Planet: this.#session.id_Planet,
+            id_Planet: this.#session.id_CurrentPlanet,
             type: type
         };
     
@@ -442,7 +468,7 @@ export class Controller extends Notifier
     }
     
     async loadInfrastructureFromAPI() {
-        const data = await this.fetchData(`?id_Planet=${this.#session.id_Planet}`);
+        const data = await this.fetchData(`?id_Planet=${this.#session.id_CurrentPlanet}`);
         const infrastructures = data.map(item => {
             if (item.installation_type != null) {
                 return new Installation(

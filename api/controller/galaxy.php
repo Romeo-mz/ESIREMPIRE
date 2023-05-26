@@ -12,19 +12,35 @@ class Galaxy
         $this->dbInterface = new DBgalaxy();
     }
 
-    public function getGalaxies($id_Univers)
+    public function getGalaxiesList($id_Univers)
     {
-        return $this->dbInterface->getGalaxies($id_Univers);
+        return $this->dbInterface->getGalaxiesList($id_Univers);
     }
 
-    public function getSystems($id_Galaxy)
+    public function getSystemsList($id_Galaxy)
     {
-        return $this->dbInterface->getSystems($id_Galaxy);
+        return $this->dbInterface->getSystemsList($id_Galaxy);
     }
 
-    public function getPlanets($id_SolarSystem)
+    public function getPlanets($id_Univers, $id_Galaxy, $id_SolarSystem)
     {
-        return $this->dbInterface->getPlanets($id_SolarSystem);
+
+        if ($id_Galaxy == 0) // get the lowest id where id_Univers = $id_Univers
+            $id_Galaxy = $this->dbInterface->getLowestGalaxies($id_Univers);
+        if ($id_SolarSystem == 0) // get the lowest id where id_Galaxy = $id_Galaxy
+            $id_SolarSystem = $this->dbInterface->getLowestSystems($id_Galaxy);
+
+        $galaxies = $this->dbInterface->getGalaxiesList($id_Univers);
+        $sys_sols = $this->dbInterface->getSystemsList($id_Galaxy);
+        $planets = $this->dbInterface->getPlanets($id_SolarSystem);
+
+        $response = array(
+            'galaxies' => $galaxies,
+            'sys_sols' => $sys_sols,
+            'planets' => $planets
+        );
+
+        return $response;
     }
 
 }

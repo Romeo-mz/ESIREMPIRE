@@ -5,9 +5,8 @@ export class Session
     #id_Univers;
     #id_Planet = [];
     #id_Ressource = [];
-    #id_CurrentPlanet;
 
-    constructor(pseudo, id_Player, id_Univers, id_Planet, id_Ressource, id_CurrentPlanet)
+    constructor(pseudo, id_Player, id_Univers, id_Planet, id_Ressource)
     {
         this.#pseudo = pseudo;
         this.#id_Player = id_Player;
@@ -16,7 +15,6 @@ export class Session
         this.#id_Ressource[0] = id_Ressource[0];
         this.#id_Ressource[1] = id_Ressource[1];
         this.#id_Ressource[2] = id_Ressource[2];
-        this.#id_CurrentPlanet = id_CurrentPlanet;
     }
 
     get pseudo() { return this.#pseudo; }
@@ -33,8 +31,5 @@ export class Session
 
     get id_Ressource() { return this.#id_Ressource; }
     set id_Ressource(id_Ressource) { this.#id_Ressource = id_Ressource; }
-
-    get id_CurrentPlanet() { return this.#id_CurrentPlanet; }
-    set id_CurrentPlanet(id_CurrentPlanet) { this.#id_CurrentPlanet = id_CurrentPlanet; }
 
 }
