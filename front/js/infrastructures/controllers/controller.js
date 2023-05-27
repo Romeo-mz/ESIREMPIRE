@@ -16,7 +16,8 @@ const API_QUERY_PARAMS = {
     loadDefaultInstallations: "?default_installation",
     loadDefaultRessources: "?default_ressource",
     loadQuantiteRessource: (playerId, universeId) => `?quantity_ressource_player&id_Player=${playerId}&id_Universe=${universeId}`,
-    loadTechnoRequired: "?techno_required"
+    loadTechnoRequired: "?techno_required",
+    loadBonusRessources: (planetID) => `?bonus_ressources&id_Planet=${planetID}`
 };
 
 export class Controller extends Notifier
@@ -76,6 +77,13 @@ export class Controller extends Notifier
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
+    }
+
+    async loadBonusRessources()
+    {
+        const data = await this.fetchData(API_QUERY_PARAMS.loadBonusRessources(this.#session.id_CurrentPlanet));
+
+        console.log(data);
     }
     
     async upgradeInfrastructure(id, type) 

@@ -23,7 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
                                             myController.loadTechnologies()
                                                 .then(() => {
                                                     console.log("Success to load techno")
-                                                    myController.notify();
+                                                    myController.loadBonusRessources()
+                                                        .then(() => {
+                                                            console.log("Success to bonus ressource")
+                                                            myController.notify();
+                                                        }
+                                                        )
+                                                        .catch(error => {
+                                                            alert("Error while loading bonus ressource - please refresh the page")
+                                                        }
+                                                        );
                                                 }
                                                 )
                                                 .catch(error => {
