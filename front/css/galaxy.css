@@ -1,141 +1,79 @@
-@font-face {
-    font-family: 'Orbitron';
-    src: url('Orbitron-Regular.ttf');
-}
-
-html {
-    margin: 0px;
-    height: 100%;
-    width: 100%;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
- }
- 
- body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
     margin: 0;
-    min-height: 100vh;
-    background-image: linear-gradient(135deg, #f09ff6 10%, #4E8DA6 100%);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: 'Orbitron', sans-serif;
-    color: #333333;
-    
- }
- main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 80%;
-    max-width: 80%;
-    max-height: 70%;
-    margin: 0 auto;
-    background: #FFFFFF;
-    border-radius: 10px;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    box-shadow: 0 0 20px 6px #68446a9e;
-    font-size: 25px;
+    background-image: url("../img/space-bg.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
 }
 
-
-.div-galaxy {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 80%;
-    color: black;
+canvas {
+    width: 100%;
+    height: 100%;
 }
 
-.div-sys-sol {
+.title-chooseSolarsystem {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 35px;
+    text-align: center;
+}
+.title-chooseGalaxy {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 35px;
+    text-align: center;
+}
+
+.div-planetInformation {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 340px;
+    height: 200px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    z-index: 1;
+}
+
+.div-select{
+    position: absolute;
+    top: 0;
+    left: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    width: 80%;
-    color: black;
-    margin-bottom: 20px;
+    width: 300px;
+    height: 200px;
 }
 
 select {
-    width: 200px;
+  text-align: center;
+    width: 300px;
     height: 40px;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid white;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    font-size: 16px;
-    padding: 5px;
-    margin-bottom: 20px;
+    outline: none;
+}
+
+option {
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid white;
+    border-radius: 5px;
+    outline: none;
     text-align: center;
 }
 
-input {
-    width: 180px;
-    height: 40px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    font-size: 16px;
-    padding: 5px;
-    margin-bottom: 20px;
-}
-
-
-/* Div Styles */
-.div-planet {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Table Styles */
-.planet-tab {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 1rem;
-}
-
-.planet-tab th,
-.planet-tab td {
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    text-align: center;
-}
-
-.planet-tab tr {
-    width: 200px;    
-}
-
-.planet-tab th {
-    background-color: #f3f3f3;
-    font-weight: bold;
-}
-
-.planet-tab tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.planet-tab tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 767px) {
-    .div-planet {
-        width: 95%;
-    }
-
-    .planet-tab {
-        font-size: 0.9rem;
-    }
-
-    .planet-title {
-        font-size: 1.75rem;
-    }
-}
