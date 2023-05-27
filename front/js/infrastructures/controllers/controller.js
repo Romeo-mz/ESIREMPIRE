@@ -7,6 +7,7 @@ import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
 import { InfraTechnoRequired } from "../models/infratechnorequired.js";
 import { Technologie } from "../models/technologie.js";
+import { Bonus } from "../models/bonus.js";
 import sessionDataService from '../../SessionDataService.js';
 
 const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
@@ -29,6 +30,7 @@ export class Controller extends Notifier
     #technoRequired;
     #infraTechnoRequired;
     #technologiesPlayer;
+    #bonusRessources;
 
     constructor()
     {
@@ -39,6 +41,7 @@ export class Controller extends Notifier
         this.#technoRequired = [];
         this.#infraTechnoRequired = [];
         this.#technologiesPlayer = [];
+        this.#bonusRessources = [];
 
         let id_Planets = [];
         let id_Ressources = [];
@@ -83,7 +86,11 @@ export class Controller extends Notifier
     {
         const data = await this.fetchData(API_QUERY_PARAMS.loadBonusRessources(this.#session.id_CurrentPlanet));
 
-        console.log(data);
+        this.#bonusRessources = data.map(({ energie, deuterium, metal }) =>
+            new Bonus(parseFloat(energie), parseFloat(deuterium), parseFloat(metal))
+        );
+
+        // console.log(this.#bonusRessources);
     }
     
     async upgradeInfrastructure(id, type) 

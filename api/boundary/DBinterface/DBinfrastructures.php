@@ -17,7 +17,7 @@ class DBinfrastructures extends DBinterface {
         return $this->fetchAllRows("
         SELECT 
             energie, 
-            deuteurium, 
+            deuterium, 
             metal
         FROM 
             bonusressources
