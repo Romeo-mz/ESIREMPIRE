@@ -8,6 +8,23 @@
     <title>EsiremPire - Home Page</title>
 </head>
 <body>
+
+    <main>
+
+        <h1>Accueil</h1>
+
+        <div class="container">
+
+            <button onclick="window.location.href='galaxy.html';">Galaxy</button>
+            <button onclick="window.location.href='infrastructures.html';">Infrastructure</button>
+            <button onclick="window.location.href='search.html';">Labotatoire</button>
+            <button onclick="window.location.href='spaceworks.html';">Chantier Spatial</button>
+            <button onclick="window.location.href='fleet.php';">Flotte</button>
+            <button onclick="window.location.href='attaque.php';">Attaque</button>
+
+        </div>
+
+    </main>
     
 </body>
 </html>
