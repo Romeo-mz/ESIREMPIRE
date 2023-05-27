@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url("../img/bg-home.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
