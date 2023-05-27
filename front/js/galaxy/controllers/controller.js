@@ -71,15 +71,11 @@ export class Controller extends Notifier
         return response.json();
     }
 
-    goToInfrastructurePage(planetId)
+    goToHomePage(planetId)
     {
-        // Access sessionData from any MVC component
-        // console.log(sessionDataService.getSessionData());
-
-        // Update sessionData from any MVC component
         sessionDataService.updateSessionData({ id_CurrentPlanet: parseInt(planetId) });
 
-        window.location.href = "./infrastructures.html";
+        window.location.href = "./home.html";
     }
 
     loadNewPlanets(galaxyId, systemId)

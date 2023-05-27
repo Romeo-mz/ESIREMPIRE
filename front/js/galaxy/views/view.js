@@ -52,7 +52,7 @@ export class View extends Observer {
                     for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
                         if (planet.id === this.#controller.session.id_Planet[i].toString())
                             // Go to infrastructure page
-                            this.#controller.goToInfrastructurePage(planet.id);
+                            this.#controller.goToHomePage(planet.id);
                     }
                 }
             }
