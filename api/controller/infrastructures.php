@@ -10,6 +10,11 @@ class Infrastructures
     {
         $this->dbInterface = new DBinfrastructures();
     }
+
+    public function getBonusRessources($id_Planet)
+    {
+        return $this->dbInterface->getBonusRessources($id_Planet);
+    }
     
     public function getInfrastructures($id_Planet)
     {

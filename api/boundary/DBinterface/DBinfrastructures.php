@@ -12,6 +12,25 @@ class DBinfrastructures extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function getBonusRessources($id_Planet)
+    {
+        return $this->fetchAllRows("
+        SELECT 
+            energie, 
+            deuteurium, 
+            metal
+        FROM 
+            bonusressources
+        WHERE id IN (
+            SELECT 
+                id_Bonus_Ressources
+            FROM 
+                planete
+            WHERE 
+                id = ?
+        );", [$id_Planet]);
+    }
+
     public function getInfrastructuresByPlanetId($id_Planet) 
     {
         return $this->fetchAllRows('
