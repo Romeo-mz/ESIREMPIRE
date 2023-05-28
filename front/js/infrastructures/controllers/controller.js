@@ -123,7 +123,7 @@ export class Controller extends Notifier
 
         infrastructure.level++;
 
-        // Find "Usine de nanites level"
+        // Find "Usine de nanites" level
         const usineNanitesLevel = this.#infrastructures.find(infrastructure => infrastructure.type_installation === "Usine de nanites").level;
 
         if(infrastructure instanceof Installation) 
@@ -448,8 +448,6 @@ export class Controller extends Notifier
         ]);
       
         let negativeID = -1;
-
-        console.log(this.#bonusRessources.metal);
       
         const defaultInfrastructures = [
             ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
@@ -459,7 +457,7 @@ export class Controller extends Notifier
                 new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
             ),
             ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
-                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal * (1 + this.#bonusRessources.metal), ressource_production_energie, ressource_production_deuterium)
+                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal * (1 + this.#bonusRessources.metal), ressource_production_energie * (1 + this.#bonusRessources.energie), ressource_production_deuterium * (1 + this.#bonusRessources.deuterium))
             )
         ];
       
@@ -499,32 +497,32 @@ export class Controller extends Notifier
                     item.infrastructure_niveau,
                     item.installation_id,
                     item.installation_type,
-                    Math.round(item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.installation_temps_construction * (2 ** (item.infrastructure_niveau - 1))
+                    (item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.installation_temps_construction * (2 ** (item.infrastructure_niveau))
                 );
             } else if (item.ressource_type != null) {
                 return new Ressource(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.ressource_type,
-                    Math.round(item.ressource_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.ressource_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.ressource_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.ressource_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
-                    item.ressource_production_metal,
-                    item.ressource_production_energie,
-                    item.ressource_production_deuterium
+                    (item.ressource_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_cout_deuterium * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_temps_construction * (2 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.ressource_production_metal * (1 + this.#bonusRessources.metal),
+                    item.ressource_production_energie * (1 + this.#bonusRessources.energie),
+                    item.ressource_production_deuterium * (1 + this.#bonusRessources.deuterium)
                 );
             } else if (item.defense_type != null) {
                 return new Defense(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.defense_type,
-                    Math.round(item.defense_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.defense_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.defense_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.defense_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
+                    (item.defense_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.defense_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.defense_cout_deuterium * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.defense_temps_construction * (2 ** (item.infrastructure_niveau)),
                     item.defense_point_attaque,
                     item.defense_point_defense
                 );
