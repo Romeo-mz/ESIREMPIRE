@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const myView = new View(myController);
     // await myController.displayJoueurEnnemis();
     // console.log("Success to display all ennemis");
-    
-    myController.notify();
+  
   } catch (error) {
     console.error("An error occurred:", error);
   }
