@@ -27,6 +27,14 @@ class Authentifier
         }
         if ($result[0]['mdp'] === $hashedPassword && $username === $result[0]['pseudo']) 
         {
+            $number = $this->DBinterfaceLogin->checkIfPlayerHavePlanet($univers, $result[0]['id']);
+
+            if ($number == 0) {
+                $this->DBinterfaceLogin->addPlanetToPlayer($univers, $result[0]['id']);
+                $resourcesId = $this->DBinterfaceLogin->addRessourcesToPlayer($univers, $result[0]['id']);
+                $this->DBinterfaceLogin->linkJoueurUnivers($univers, $result[0]['id'], $resourcesId);
+            }
+
             $idRessources = $this->DBinterfaceLogin->getIdRessources($univers, $result[0]['id']);
             $idPlanets = $this->DBinterfaceLogin->getIdPlanets($univers, $result[0]['id']);
 
