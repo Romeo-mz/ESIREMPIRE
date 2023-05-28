@@ -28,7 +28,7 @@ class DBinfrastructures extends DBinterface {
                 planete
             WHERE 
                 id = ?
-        );", [$id_Planet]);
+        );", [$id_Planet])[0];
     }
 
     public function getInfrastructuresByPlanetId($id_Planet) 

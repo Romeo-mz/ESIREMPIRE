@@ -41,7 +41,6 @@ export class Controller extends Notifier
         this.#technoRequired = [];
         this.#infraTechnoRequired = [];
         this.#technologiesPlayer = [];
-        this.#bonusRessources = [];
 
         let id_Planets = [];
         let id_Ressources = [];
@@ -77,6 +76,9 @@ export class Controller extends Notifier
     get technologiesPlayer() { return this.#technologiesPlayer; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
 
+    get bonusRessources() { return this.#bonusRessources; }
+    set bonusRessources(bonusRessources) { this.#bonusRessources = bonusRessources; }
+
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
@@ -86,11 +88,7 @@ export class Controller extends Notifier
     {
         const data = await this.fetchData(API_QUERY_PARAMS.loadBonusRessources(this.#session.id_CurrentPlanet));
 
-        this.#bonusRessources = data.map(({ energie, deuterium, metal }) =>
-            new Bonus(parseFloat(energie), parseFloat(deuterium), parseFloat(metal))
-        );
-
-        // console.log(this.#bonusRessources);
+        this.#bonusRessources = new Bonus(parseFloat(data.energie), parseFloat(data.deuterium), parseFloat(data.metal));
     }
     
     async upgradeInfrastructure(id, type) 
@@ -450,6 +448,8 @@ export class Controller extends Notifier
         ]);
       
         let negativeID = -1;
+
+        console.log(this.#bonusRessources.metal);
       
         const defaultInfrastructures = [
             ...defenseData.map(({ type, defense_cout_metal, defense_cout_energie, defense_cout_deuterium, defense_temps_construction, defense_point_attaque, defense_point_defense }) =>
@@ -459,7 +459,7 @@ export class Controller extends Notifier
                 new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
             ),
             ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
-                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
+                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal * (1 + this.#bonusRessources.metal), ressource_production_energie, ressource_production_deuterium)
             )
         ];
       
