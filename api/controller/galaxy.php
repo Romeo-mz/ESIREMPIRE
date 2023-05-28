@@ -12,6 +12,16 @@ class Galaxy
         $this->dbInterface = new DBgalaxy();
     }
 
+    public function getPlanetName($id_planet)
+    {
+        return $this->dbInterface->getPlanetName($id_planet);
+    }
+
+    public function renamePlanet($idPlanet, $newName)
+    {
+        $this->dbInterface->renamePlanet($idPlanet, $newName);
+    }
+
     public function getGalaxiesList($id_Univers)
     {
         return $this->dbInterface->getGalaxiesList($id_Univers);

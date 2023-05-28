@@ -12,6 +12,16 @@ class DBgalaxy extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function renamePlanet($idPlanet, $newName)
+    {
+        $this->executeQuery('UPDATE planete SET nom = ? WHERE id = ?', [$newName, $idPlanet]);
+    }
+
+    public function getPlanetName($idPlanet)
+    {
+        return $this->fetchValue('SELECT nom FROM planete WHERE id = ?', [$idPlanet]);
+    }
+
     public function getGalaxiesList($idUnivers)
     {
         return $this->fetchAllRows('SELECT id, nom FROM galaxie WHERE id_univers = ? ORDER BY nom', [$idUnivers]);
