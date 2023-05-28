@@ -49,8 +49,6 @@ class APIattaque
         }
     }
 
-    
-    
 
     public function handlePost()
     {

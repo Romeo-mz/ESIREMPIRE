@@ -47,17 +47,8 @@ class DBattaque extends DBinterface {
                     tv.id
             ) AS sq ON tv.id = sq.type_id;', [$id_Spacework]);
 
-            var_dump($ships);
+        return $ships;
 
-        // return $this->fetchAllRows('
-        //     SELECT
-        //         id_Type,
-        //         quantite
-        //     FROM
-        //         flotte
-        //     WHERE
-        //         id_Joueur = ? AND id_Planete = ?;
-        // ', [$idDefenderPlayer, $idDefenderPlanet]);
     }
 
     public function getShipsPoint()

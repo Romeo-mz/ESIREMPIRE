@@ -31,6 +31,8 @@ class Attaque{
 
         // Create a fleet with the ships
         $fleet = new Fleet($ships);
+
+        var_dump($fleet);
     }
 
     private function createDefenderFleet($id_Defender_Player, $id_Defender_Planet)
@@ -38,24 +40,26 @@ class Attaque{
         $shipsPoint = $this->dbInterface->getShipsPoint();
         $fleet_Defender_Composition = $this->dbInterface->getFleet($id_Defender_Player, $id_Defender_Planet);
 
-        var_dump($fleet_Defender_Composition);
+        // var_dump($shipsPoint);
+        // var_dump($fleet_Defender_Composition);
 
-        // $ships = array();
+        $ships = array();
 
-        // for ($i = 0; $i < count($shipsPoint); $i++) {
-        //     $quantity = $this->dbInterface->getShipsQuantity($id_Defender_Player, $id_Defender_Planet, $shipsPoint[$i]['type']);
-        //     $type = $shipsPoint[$i]['type'];
-        //     $point_attaque = $shipsPoint[$i]['point_attaque'];
-        //     $point_defense = $shipsPoint[$i]['point_defense'];
-        //     $capacite_fret = $shipsPoint[$i]['capacite_fret'];
+        for ($i = 0; $i < count($fleet_Defender_Composition); $i++) {
+            $quantity = $fleet_Defender_Composition[$i]['quantity'];
+            $type = $fleet_Defender_Composition[$i]['type'];
+            $point_attaque = $shipsPoint[$i]['point_attaque'];
+            $point_defense = $shipsPoint[$i]['point_defense'];
+            $capacite_fret = $shipsPoint[$i]['capacite_fret'];
 
-        //     for ($j = 0; $j < $quantity; $j++) {
-        //         $ships[] = new Ship($type, $point_attaque, $point_defense, $capacite_fret);
-        //     }
-        // }
+            for ($j = 0; $j < $quantity; $j++) {
+                $ships[] = new Ship($type, $point_attaque, $point_defense, $capacite_fret);
+            }
+        }
 
-        // // Create a fleet with the ships
-        // $fleet = new Fleet($ships);
+        // Create a fleet with the ships
+        $fleet = new Fleet($ships);
+
     }
 
     private function createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet) 
