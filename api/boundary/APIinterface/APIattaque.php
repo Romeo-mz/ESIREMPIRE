@@ -59,7 +59,7 @@ class APIattaque
         // Start attack
         if (isset($data['id_Attacker_Player']) && isset($data['id_Defender_Player']) && isset($data['id_Attacker_Planet']) && isset($data['id_Defender_Planet']) && isset($data['fleet_Attacker'])) 
         {
-            $this->controller->startAttack(isset($data['id_Attacker_Player']) && isset($data['id_Defender_Player']) && isset($data['id_Attacker_Planet']) && isset($data['id_Defender_Planet']) && isset($data['fleet_Attacker']));
+            $this->controller->attack($data['id_Attacker_Player'], $data['id_Defender_Player'], $data['id_Attacker_Planet'], $data['id_Defender_Planet'], $data['fleet_Attacker']);
             $this->sendResponse(200, 'OK');
         }
     }

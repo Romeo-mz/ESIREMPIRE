@@ -12,6 +12,67 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function getFleet($idDefenderPlayer, $idDefenderPlanet)
+    {
+        $id_Spacework =  $this->fetchValue('
+            SELECT ins.id
+            FROM installation AS ins
+            JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
+            JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
+            WHERE ti.type = "Chantier spatial" AND inf.id_Planete = ?;',
+            [$idDefenderPlanet]
+        );
+
+        if($id_Spacework === false){
+            return null;
+        }
+
+        $ships =  $this->fetchAllRows('
+            SELECT
+                tv.type,
+            COALESCE(sq.nb, 0) AS quantity
+            FROM
+                vaisseaudefaut vdf
+            LEFT JOIN typevaisseaux tv ON vdf.id_Type = tv.id
+            LEFT JOIN (
+                SELECT
+                    tv.id AS type_id,
+                    COUNT(v.id) AS nb
+                FROM
+                    vaisseau v
+                LEFT JOIN typevaisseaux tv ON v.id_Type = tv.id
+                WHERE
+                    v.id_Chantier_Spatial = ?
+                GROUP BY
+                    tv.id
+            ) AS sq ON tv.id = sq.type_id;', [$id_Spacework]);
+
+            var_dump($ships);
+
+        // return $this->fetchAllRows('
+        //     SELECT
+        //         id_Type,
+        //         quantite
+        //     FROM
+        //         flotte
+        //     WHERE
+        //         id_Joueur = ? AND id_Planete = ?;
+        // ', [$idDefenderPlayer, $idDefenderPlanet]);
+    }
+
+    public function getShipsPoint()
+    {
+        return $this->fetchAllRows('
+            SELECT
+                tv.type,
+                vdf.point_attaque,
+                vdf.point_defense,
+                vdf.capacite_fret
+            FROM
+                vaisseaudefaut vdf
+            LEFT JOIN typevaisseaux tv ON vdf.id_Type = tv.id;
+        ');
+    }
     
     public function getListeEnnemis($id_Joueur, $id_Univers){
         $listeEnnemis = "SELECT DISTINCT id_Joueur FROM joueurunivers WHERE id_Joueur != ? AND id_Univers = ?";
