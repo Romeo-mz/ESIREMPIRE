@@ -11,6 +11,12 @@
 
     <main>
 
+        <div class="div-disconnect">
+
+            <button class="btn-disconnect" onclick="window.location.href='login.php';">Déconnexion</button>
+
+        </div>
+
         <h1>Accueil</h1>
 
         <div class="container">
@@ -25,6 +31,16 @@
         </div>
 
     </main>
+
+    <script type="module">
+        import sessionDataService from './js/sessionDataService.js';
+
+        document.querySelector(".btn-disconnect").addEventListener("click", function() {
+            sessionDataService.deleteSessionData();
+            window.location.href = "login.php";
+        });
+
+    </script>
     
 </body>
 </html>

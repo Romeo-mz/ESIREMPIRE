@@ -53,6 +53,12 @@ button {
     margin: 10px;
 }
 
+.btn-disconnect {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 button:hover {
     cursor: pointer;
 }
