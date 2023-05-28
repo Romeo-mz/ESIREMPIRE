@@ -47,45 +47,12 @@ export class Controller extends Notifier {
     }
   }
 
-  // async displayJoueurEnnemis() {
-  //   const opponentList = document.getElementById("joueur-liste");
-
-  //   // Code pour vider le contenu actuel de la liste des adversaires
-  //   opponentList.innerHTML = '';
-
-  //   // Appel AJAX pour récupérer les informations des adversaires
-  //   const data = this.#joueurEnnemis;
-  //   data.forEach(opponent => {
-  //     const row = document.createElement("tr");
-  //     const joueurCell = document.createElement("td");
-  //     const galaxieCell = document.createElement("td");
-  //     const systemeCell = document.createElement("td");
-  //     const planeteCell = document.createElement("td");
-  //     const flotteCell = document.createElement("td");
-
-  //     joueurCell.textContent = opponent.joueur;
-  //     galaxieCell.textContent = opponent.galaxie;
-  //     systemeCell.textContent = opponent.systeme_solaire;
-  //     planeteCell.textContent = opponent.planete;
-  //     flotteCell.textContent = opponent.flotte;
-
-  //     row.appendChild(joueurCell);
-  //     row.appendChild(galaxieCell);
-  //     row.appendChild(systemeCell);
-  //     row.appendChild(planeteCell);
-  //     row.appendChild(flotteCell);
-
-  //     opponentList.appendChild(row);
-  //   });
-  // }
-
   async getDataEnnemis() {
     const idJoueurEnnemis = this.#idJoueurEnnemis;
     const data = [];
-  
+    
     for (const id of idJoueurEnnemis) {
       const response = await fetch(API_BASE_URL + API_QUERY_PARAMS.dataEnnemis(id.id_Joueur, this.#session.id_Univers));
-      console.log(id.id_Joueur);
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -93,8 +60,9 @@ export class Controller extends Notifier {
       const responseData = await response.json();
       data.push(responseData);
     }
+    // console.log(data); // Log the parsed JSON data for each idJoueurEnnemis
+    return data;
     
-    console.log(data); // Log the parsed JSON data for each idJoueurEnnemis
   }
 
 

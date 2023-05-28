@@ -45,11 +45,28 @@ class DBattaque extends DBinterface {
         
         $inQuery = implode(',', array_fill(0, count($id_Systeme_Solaire), '?'));
     
-        $query = "SELECT id, nom, id_Systeme_Solaire FROM planete WHERE id_Joueur = ? AND id_Systeme_Solaire IN ($inQuery)";
+        $query = "SELECT p.id as id, j.pseudo as pseudo, g.nom as nom_galaxie, ss.nom as nom_systeme_solaire, p.nom as nom_planete
+              FROM planete p
+              JOIN joueur j ON p.id_Joueur = j.id
+              JOIN systemesolaire ss ON p.id_Systeme_Solaire = ss.id
+              JOIN galaxie g ON ss.id_Galaxie = g.id
+              WHERE p.id_Joueur = ? AND p.id_Systeme_Solaire IN ($inQuery)";
         $params = array_merge([$id_Ennemis], $id_Systeme_Solaire);
         $dataEnnemis = $this->fetchAllRows($query, $params);
     
         return $dataEnnemis;
     }
     
+    public function getPseudo($id_Planet, $id_Univers){
+        $query = "SELECT joueur.pseudo
+        FROM joueur
+        INNER JOIN joueurunivers ON joueur.id = joueurunivers.id_Joueur
+        INNER JOIN planete ON joueur.id = planete.id_Joueur
+        WHERE joueurunivers.id_univers = ?
+        AND planete.id = ?
+        ";
+        $pseudo = $this->fetchAllRows($query, [$id_Planet, $id_Univers]);
+        return $pseudo;
+    }
+
 }
