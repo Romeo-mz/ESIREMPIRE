@@ -15,5 +15,9 @@ class Attaque{
         return $listeEnnemis;
     }
 
+    public function getDataEnnemis($listeEnnemis, $id_Univers){
+        $dataEnnemis = $this->dbInterface->getDataEnnemis($listeEnnemis, $id_Univers);
+        return $dataEnnemis;
+    }
 }
 ?>

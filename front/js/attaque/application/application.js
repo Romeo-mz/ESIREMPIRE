@@ -8,10 +8,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     await myController.getFlotteJoueur();
     console.log("Success to load all vaisseaux");
 
-    const myView = new View(myController);
+    
     await myController.loadJoueurEnnemis();
     console.log("Success to load all ennemis");
 
+    const myView = new View(myController);
+    // await myController.displayJoueurEnnemis();
+    // console.log("Success to display all ennemis");
+    
     myController.notify();
   } catch (error) {
     console.error("An error occurred:", error);

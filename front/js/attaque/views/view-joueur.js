@@ -7,32 +7,35 @@ export class View extends Observer {
         this.#controller = controller;
         this.#controller.addObserver(this);
 
-        
+        this.loadJoueurEnnemis();
     }
 
     loadJoueurEnnemis() {
-        const ennemisTableBody = document.querySelector('#attaque-liste');
+        const ennemisTableBody = document.querySelector('#joueur-liste');
         ennemisTableBody.innerHTML = '';
+        
+        
+        
+        const data = this.#controller.getDataEnnemis();
+        // data.forEach((ennemi, index) => {
+        //   const row = document.createElement('tr');
       
-        this.#controller.joueurEnnemis.forEach((ennemi, index) => {
-          const row = document.createElement('tr');
+        //   const radioTd = document.createElement('td');
+        //   const radioInput = document.createElement('input');
+        //   radioInput.type = 'radio';
+        //   radioInput.name = 'attaque';
+        //   radioInput.value = index + 1;
+        //   radioTd.appendChild(radioInput);
+        //   row.appendChild(radioTd);
       
-          const radioTd = document.createElement('td');
-          const radioInput = document.createElement('input');
-          radioInput.type = 'radio';
-          radioInput.name = 'attaque';
-          radioInput.value = index + 1;
-          radioTd.appendChild(radioInput);
-          row.appendChild(radioTd);
+        //   Object.values(ennemi).forEach((value) => {
+        //     const td = document.createElement('td');
+        //     td.textContent = value;
+        //     row.appendChild(td);
+        //   });
       
-          Object.values(ennemi).forEach((value) => {
-            const td = document.createElement('td');
-            td.textContent = value;
-            row.appendChild(td);
-          });
-      
-          ennemisTableBody.appendChild(row);
-        });
+        //   ennemisTableBody.appendChild(row);
+        // });
       }
 
     createOrUpdateElement(tagName, id, className, innerHTML = "") {
