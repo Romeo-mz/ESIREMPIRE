@@ -3,9 +3,10 @@ export class CelestialBody
 
     id;
 
-    constructor(id, name, playerName, radius, distance, color, rotationSpeed, orbitalSpeed, hasShadow)
+    constructor(id, position, name, playerName, radius, distance, color, rotationSpeed, orbitalSpeed, hasShadow)
     {
         this.id = id;
+        this.position = position;
         this.name = name ?? "";
         this.playerName = playerName ?? "";
         this.radius = radius;
@@ -55,7 +56,10 @@ export class CelestialBody
         return new Promise((resolve, reject) =>
         {
             this.texture = new Image();
-            this.texture.src = `img/planets/${this.name.toLowerCase()}.png`;
+            if(this.position === 0)
+                this.texture.src = `img/planets/sun.png`;
+            else
+                this.texture.src = `img/planets/p${this.position}.png`;
             this.texture.onload = async () =>
             {
                 for (const satellite of this.satellites)

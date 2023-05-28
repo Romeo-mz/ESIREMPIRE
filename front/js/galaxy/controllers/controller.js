@@ -34,7 +34,7 @@ export class Controller extends Notifier
         ];
         
         this.#solarSystem = {
-            sun: new CelestialBody(-1, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
+            sun: new CelestialBody(-1, 0, "Sun", "", 40, 0, "#fff68f", 0.1, 0),
             planets: []
         };
 
@@ -116,6 +116,7 @@ export class Controller extends Notifier
         const createCelestialBody = (item, config) => {
             return new CelestialBody(
                 item.id,
+                item.position,
                 item.nom,
                 item.pseudo,
                 config.radius,
@@ -126,6 +127,7 @@ export class Controller extends Notifier
                 true
             );
         };
+
     
         const planets = data.planets.map(item => {
             const config = celestialBodyConfig[item.position];
@@ -138,5 +140,7 @@ export class Controller extends Notifier
         this.#galaxiesList = galaxiesList;
         this.#solarSystemList = solarSystemList;
         this.#solarSystem.planets = planets;
+
+        console.log(this.#solarSystem);
     }   
 }
