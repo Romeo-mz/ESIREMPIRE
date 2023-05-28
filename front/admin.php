@@ -40,7 +40,6 @@ $universes = json_decode($universes, true);
             <h1 class="admin-title">ADMIN PANEL</h1>
             <form action="../api/boundary/APIinterface/APIadmin.php" method="POST">
 
-                <!-- Create Univers -->
                 <label for="universe_name">Créer un Univers <i>(vide: Univers X)</i>:</label><br>
                 <input type="text" name="universe_name" placeholder="Nom Univers" id="universe_name">
                 

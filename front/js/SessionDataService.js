@@ -20,6 +20,10 @@ class SessionDataService {
         const newData = { ...currentData, ...updatedData };
         this.setSessionData(newData);
     }
+
+    deleteSessionData() {
+        sessionStorage.removeItem('sessionData');
+    }
 }
 
 const sessionDataService = new SessionDataService();

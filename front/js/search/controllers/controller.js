@@ -68,6 +68,8 @@ export class Controller extends Notifier
         return response.json();
     }
 
+    
+
     async loadDefaultTechnologies()
     {
         const data = await this.fetchData(API_QUERY_PARAMS.defaultTechnologies);

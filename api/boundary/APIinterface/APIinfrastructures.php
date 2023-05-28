@@ -33,7 +33,12 @@ class APIinfrastructures
 
     private function handleGet()
     {
-        if (isset($_GET['id_Planet'])) 
+        if(isset($_GET['bonus_ressources']) && isset($_GET['id_Planet']))
+        {
+            $bonusRessources = $this->controller->getBonusRessources($_GET['id_Planet']);
+            $this->sendResponse(200, 'OK', json_encode($bonusRessources));
+        }
+        else if (isset($_GET['id_Planet'])) 
         {
             $infrastructures = $this->controller->getInfrastructures($_GET['id_Planet']);
             $this->sendResponse(200, 'OK', json_encode($infrastructures));

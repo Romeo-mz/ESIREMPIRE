@@ -52,7 +52,7 @@ export class View extends Observer {
                     for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
                         if (planet.id === this.#controller.session.id_Planet[i].toString())
                             // Go to infrastructure page
-                            this.#controller.goToInfrastructurePage(planet.id);
+                            this.#controller.goToHomePage(planet.id);
                     }
                 }
             }
@@ -156,10 +156,6 @@ export class View extends Observer {
 
             solarSystemElement.addEventListener("click", () => {
                 const galaxyElement = document.getElementById("galaxy");
-
-                console.log("galaxy id: " + galaxyElement.value);
-                console.log("sys id: " + solarSystemElement.value);
-
                 this.#controller.loadNewPlanets(galaxyElement.value, solarSystemElement.value);
             }
 
@@ -241,14 +237,19 @@ export class View extends Observer {
         if (celestialBody.name !== "Sun") {
             this.context.rotate(-celestialBody.rotationAngle);
         }
-        this.context.fillText(celestialBody.name, 0, 0);
+
+        let isPlanetPlayer = false;
 
         for (let i = 0; i < this.#controller.session.id_Planet.length; i++) {
-            if (celestialBody.id === this.#controller.session.id_Planet[i].toString())
-                this.context.fillText("Your Planet", 0, 0);
-            else
-                this.context.fillText(celestialBody.name, 0, 0);
+            if (celestialBody.id === this.#controller.session.id_Planet[i].toString()) {
+                isPlanetPlayer = true;
+            }
         }
+
+        if (isPlanetPlayer) {
+            this.context.fillText("Your Planet", 0, 0);
+        } else
+            this.context.fillText(celestialBody.name, 0, 0);
 
 
         this.context.restore();

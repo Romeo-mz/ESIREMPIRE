@@ -41,6 +41,22 @@ html {
     font-size: 25px;
 }
 
+.div-home-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.button-home-page {
+    width: 250px;
+    height: 80px;
+    font-size: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000000;
+    margin: 10px;
+}
+
 .search-hr {
     width: 100%;
     border: 2px solid #502a529e;
@@ -140,8 +156,8 @@ html {
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    width: 50%;
-    max-width: 50%;
+    width: 70%;
+    max-width: 80%;
     max-height: 100%;
     margin: 0 auto;
     background: #FFFFFF;
@@ -155,8 +171,8 @@ html {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 25%;
-    max-width: 25%;
+    width: 30%;
+    max-width: 30%;
     max-height: 100%;
     margin: 0 auto;
     background: #FFFFFF;
