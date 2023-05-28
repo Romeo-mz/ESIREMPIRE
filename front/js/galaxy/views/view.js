@@ -156,10 +156,6 @@ export class View extends Observer {
 
             solarSystemElement.addEventListener("click", () => {
                 const galaxyElement = document.getElementById("galaxy");
-
-                console.log("galaxy id: " + galaxyElement.value);
-                console.log("sys id: " + solarSystemElement.value);
-
                 this.#controller.loadNewPlanets(galaxyElement.value, solarSystemElement.value);
             }
 

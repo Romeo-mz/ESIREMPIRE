@@ -23,7 +23,6 @@ class SessionDataService {
 
     deleteSessionData() {
         sessionStorage.removeItem('sessionData');
-        this.setSessionData(null);
     }
 }
 

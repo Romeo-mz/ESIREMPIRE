@@ -241,13 +241,10 @@ export class View extends Observer
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
         if (infrastructure.cout_deuterium !== null)
             div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
-        console.log(infrastructure.production_metal);
         if(infrastructure.production_metal !== 0)
             div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + (infrastructure.production_metal * 60).toFixed(2) + "/min");
-        console.log(infrastructure.production_energie);
         if(infrastructure.production_energie !== 0)
             div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + (infrastructure.production_energie * 60).toFixed(2) + "/min");
-        console.log(infrastructure.production_deuterium);
         if(infrastructure.production_deuterium !== 0)
             div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + (infrastructure.production_deuterium * 60).toFixed(2) + "/min");
 
