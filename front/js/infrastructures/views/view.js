@@ -209,6 +209,8 @@ export class View extends Observer
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
 
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+
                     div.appendChild(div_strip_techno_required_list);
                     
                 }
@@ -331,6 +333,9 @@ export class View extends Observer
 
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
+            
+
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
 
                     div.appendChild(div_strip_techno_required_list);
                     
@@ -439,6 +444,8 @@ export class View extends Observer
 
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
+
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
 
                     div.appendChild(div_strip_techno_required_list);
                 }
