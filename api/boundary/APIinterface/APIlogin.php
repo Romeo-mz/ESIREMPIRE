@@ -1,17 +1,27 @@
 <?php
-
+require_once(__DIR__.'\..\SessionInterface.php');
+require_once('../../controller/SessionController.php');
 require_once('../../controller/authentifier.php');
+
+$session = new PHPSession();
 $controller_instance = new Authentifier();
-$api_login = new APIlogin($controller_instance);
+$session_controller = new SessionController($session);
+
+$session_controller->startSession();
+
+$api_login = new APIlogin($controller_instance, $session_controller);
 $api_login->request();
 
 class APIlogin
 {
     private $controller;
+    private $session_controller;
 
-    public function __construct($controller)
+    public function __construct($controller, $session_controller)
     {
         $this->controller = $controller;
+        $this->session_controller = $session_controller;
+        $this->request();
     }
 
     public function request()
@@ -54,7 +64,13 @@ class APIlogin
         
         if($result['success'])
         {
-            $this->sendResponse(200, 'OK', json_encode($result));
+            http_response_code(200);
+            echo "Login successful";
+            $id = $this->controller->getIdJoueur($username);
+            $ressources = $this->controller->getRessourcesJoueur($id, $univers);
+
+            $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
+            header('Location: ../../../front/galaxy.php');
         }
         else
         {

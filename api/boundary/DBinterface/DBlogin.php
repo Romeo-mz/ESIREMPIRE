@@ -105,4 +105,8 @@ class DBlogin extends DBinterface {
         return $this->fetchValue($query);
     }
 
+    public function getRessourcesJoueur($id_joueur, $id_univers){
+        $query = "SELECT id_Ressource FROM joueurunivers WHERE id_Joueur = ? AND id_Univers = ?";
+        return $this->fetchAllRows($query, [$id_joueur, $id_univers]);
+    }
 }

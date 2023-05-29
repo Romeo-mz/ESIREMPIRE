@@ -36,7 +36,7 @@ class Spacework
         return $this->dbInterface->getTechnologies($id_Planet);
     }
 
-    public function addShip($id_Spacework, $type)
+    public function addShip($id_Spacework, $type, $id_joueur)
     {
         $this->dbInterface->addShip($id_Spacework, $type);
     }

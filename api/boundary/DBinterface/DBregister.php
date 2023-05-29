@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-// define('DB_LOGIN', "api_admin");
-// define('DB_PWD', "lDMH6chWNK3um6fF");
+// define('DB_LOGIN', "root");
+// define('DB_PWD', "");
 
 class DBregister extends DBinterface {
 

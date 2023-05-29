@@ -135,4 +135,9 @@ class Authentifier
     public function getIdRessources(){
         return $this->DBinterfaceRegister->getIdRessources();
     }
+
+    public function getRessourcesJoueur($idJoueur, $idUnivers){
+        $result = $this->DBinterfaceLogin->getRessourcesJoueur($idJoueur, $idUnivers);
+        return $result;
+    }
 }

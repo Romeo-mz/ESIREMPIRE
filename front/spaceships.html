@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ESIREMPIRE - Spaceships</title>
+    <link rel="stylesheet" href="css/spaceships.css">
+</head>
+
+<body>
+    <main>
+        <h1>Spaceships</h1>
+        <div class="spaceships-disponible">
+            <h2>Disponibles</h2>
+            <div id="spaceship-disponible-liste" class="spaceship-liste">
+                <!-- Les vaisseaux disponibles seront ajoutés ici -->
+            </div>
+        </div>
+    </main>
+    <div class="choix" id="choix">
+        <h2>Choix des vaisseaux</h2>
+        <p>Sélectionnez les vaisseaux à ajouter à la flotte :</p>
+    
+        <form action="../api/boundary/APIinterface/APIvaisseaux.php" id="vaisseau-form">
+            <div class="vaisseau">
+                <input type="checkbox" id="vaisseau-chasseur" name="vaisseau-chasseur" value="vaisseau-chasseur">
+                <label for="vaisseau-chasseur">Chasseur</label>
+                <input type="number" id="nombre-vaisseau-chasseur" name="nombre-vaisseau-chasseur" min="0" value="0">
+            </div>
+    
+            <div class="vaisseau">
+                <input type="checkbox" id="vaisseau-croiseur" name="vaisseau-croiseur" value="vaisseau-croiseur">
+                <label for="vaisseau-croiseur">Croiseur</label>
+                <input type="number" id="nombre-vaisseau-croiseur" name="nombre-vaisseau-croiseur" min="0" value="0">
+            </div>
+
+            <div class="vaisseau">
+                <input type="checkbox" id="vaisseau-transporteur" name="vaisseau-transporteur" value="vaisseau-transporteur">
+                <label for="vaisseau-transporteur">Transporteur</label>
+                <input type="number" id="nombre-vaisseau-transporteur" name="nombre-vaisseau-transporteur" min="0" value="0">
+            </div>
+            
+            <div class="vaisseau">
+                <input type="checkbox" id="vaisseau-colonisateur" name="vaisseau-colonisateur" value="vaisseau-colonisateur">
+                <label for="vaisseau-colonisateur">Colonisateur</label>
+                <input type="number" id="nombre-vaisseau-colonisateur" name="nombre-vaisseau-colonisateur" min="0" value="0">
+            </div>
+            <button type="submit">Valider</button>
+        </form>
+    </div>
+    
+
+    <script src="js/vaisseaux/application/application.js" type="module"></script>
+</body>
+
+</html>

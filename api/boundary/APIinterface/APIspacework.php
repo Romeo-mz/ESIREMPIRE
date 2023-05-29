@@ -71,7 +71,7 @@ class APIspacework
     
         if (isset($data['id_Spacework']) && isset($data['type'])) 
         {
-            $this->controller->addShip($data['id_Spacework'], $data['type']);
+            $this->controller->addShip($data['id_Spacework'], $data['type'], $_SESSION['id_joueur']);
             $this->sendResponse(200, 'OK');
         }
         else if (isset($data['id_Ressource']) && isset($data['quantite']))

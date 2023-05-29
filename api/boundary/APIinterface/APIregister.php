@@ -1,15 +1,24 @@
 <?php
 require_once '../../controller/authentifier.php';
+require_once '../../controller/SessionController.php';
+require_once(__DIR__.'\..\SessionInterface.php');
+
+$session = new PHPSession();
 
 $controller_instance = new Authentifier();
-$api_register = new APIregister($controller_instance);
+$session_controller = new SessionController($session);
+
+$session_controller->startSession();
+
+$api_register = new APIregister($controller_instance, $session_controller);
 $api_register->request();
+
 class APIregister{
     private $controller;
-
-    public function __construct($controller){
+    private $session_controller;
+    public function __construct($controller, $session_controller){
         $this->controller = $controller;
-        
+        $this->session_controller = $session_controller;
     }
 
     public function request(){
@@ -41,6 +50,11 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
+
+            $id = $this->controller->getIdJoueur($username);
+            $univers = $this->controller->getIdUnivers();
+
+            $this->session_controller->storeJoueur($username, $id, $univers);
         }
         else if($result == 1){
             http_response_code(401);
@@ -142,7 +156,7 @@ class APIregister{
         $number_joueur = $this->getNumberJoueurUnivers($id_univers);
         
         $create_ressource = $this->controller->createRessource();
-
+        print_r($number_joueur);
         if($number_joueur < 50 && $id_joueur != null){
             $id_ressources = $this->controller->getIdRessources();
 
