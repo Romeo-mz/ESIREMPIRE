@@ -7,6 +7,9 @@ require_once('../../model/fleet.php');
 class Attaque{
     private $dbInterface;
 
+    private $fleet_Attacker;
+    private $fleet_Defender;
+
     public function __construct()
     {
         $this->dbInterface = new DBattaque();
@@ -30,18 +33,15 @@ class Attaque{
         }
 
         // Create a fleet with the ships
-        $fleet = new Fleet($ships);
+        $this->fleet_Attacker = new Fleet($ships);
 
-        var_dump($fleet);
+        // var_dump($this->fleet_Attacker);
     }
 
     private function createDefenderFleet($id_Defender_Player, $id_Defender_Planet)
     {
         $shipsPoint = $this->dbInterface->getShipsPoint();
         $fleet_Defender_Composition = $this->dbInterface->getFleet($id_Defender_Player, $id_Defender_Planet);
-
-        // var_dump($shipsPoint);
-        // var_dump($fleet_Defender_Composition);
 
         $ships = array();
 
@@ -58,7 +58,9 @@ class Attaque{
         }
 
         // Create a fleet with the ships
-        $fleet = new Fleet($ships);
+        $this->fleet_Defender = new Fleet($ships);
+
+        // var_dump($this->fleet_Defender);
 
     }
 
@@ -71,12 +73,6 @@ class Attaque{
     public function attack($id_Attacker_Player, $id_Defender_Player, $id_Attacker_Planet, $id_Defender_Planet, $fleet_Attacker_Composition)
     {
        $this->createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet);
-
-        // Get attacker fleet
-        // $attackerFleet = $this->dbInterface->getFleet($id_Attacker_Player, $id_Attacker_Planet, $fleet_Attacker);
-
-        // // Get defender planet
-        // $defenderPlanet = $this->dbInterface->getPlanet($id_Defender_Player, $id_Defender_Planet);
 
         // // Start attack
         // $combatReport = $this->startAttack($attackerFleet, $defenderPlanet);
