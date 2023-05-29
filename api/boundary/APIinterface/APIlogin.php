@@ -64,13 +64,7 @@ class APIlogin
         
         if($result['success'])
         {
-            http_response_code(200);
-            echo "Login successful";
-            $id = $this->controller->getIdJoueur($username);
-            $ressources = $this->controller->getRessourcesJoueur($id, $univers);
-
-            $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
-            header('Location: ../../../front/galaxy.php');
+            $this->sendResponse(200, 'OK', json_encode($result));
         }
         else
         {
