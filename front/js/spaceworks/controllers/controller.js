@@ -223,6 +223,8 @@ export class Controller extends Notifier
         const ship = this.#ships.find(ship => ship.id === id);
 
         this.decreaseRessource(id, type);
+        
+        ship.upgradingState = false;
 
         try {
             const dataToReturn = await this.addShipToAPI(type.toUpperCase());
@@ -231,6 +233,7 @@ export class Controller extends Notifier
             ship.quantite = parseInt(ship.quantite) + 1;
 
             this.notify(id);
+
 
         } catch (error) {
             alert("Error while adding ship - please refresh the page:" + error);
