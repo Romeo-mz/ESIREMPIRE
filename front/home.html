@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/home.css">
+    <title>EsiremPire - Home Page</title>
+</head>
+<body>
+
+    <main>
+
+        <div class="div-disconnect">
+
+            <button class="btn-disconnect" onclick="window.location.href='login.php';">Déconnexion</button>
+
+        </div>
+
+        <h1>Accueil</h1>
+
+        <div class="container">
+
+            <button onclick="window.location.href='galaxy.html';">Galaxy</button>
+            <button onclick="window.location.href='infrastructures.html';">Infrastructure</button>
+            <button onclick="window.location.href='search.html';">Laboratoire</button>
+            <button onclick="window.location.href='spaceworks.html';">Chantier Spatial</button>
+            <button onclick="window.location.href='fleet.php';">Flotte</button>
+            <button onclick="window.location.href='attaque.php';">Attaque</button>
+
+            <h3>Modifiez le nom de votre planète:</h3>
+            <input id="planet-name" type="text" placeholder="Planet Name">
+
+        </div>
+
+    </main>
+
+    <script type="module">
+        import sessionDataService from './js/sessionDataService.js';
+
+        if (sessionDataService.getSessionData() === null) {
+            window.location.href = "login.php";
+        }
+
+        fetch("http://esirempire/api/boundary/APIinterface/APIgalaxy.php?get_planet_name&id_planet=" + sessionDataService.getSessionData().id_CurrentPlanet)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("planet-name").value = data;
+            })
+
+        document.querySelector(".btn-disconnect").addEventListener("click", function() {
+            sessionDataService.deleteSessionData();
+            window.location.href = "login.php";
+        });
+
+        document.getElementById("planet-name").addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+
+                fetch("http://esirempire/api/boundary/APIinterface/APIgalaxy.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "id_Planet": sessionDataService.getSessionData().id_CurrentPlanet,
+                        "new_planet_name": event.target.value
+                    })
+                })
+                    .then(response => {
+                        if(response.status === 200) {
+                            alert("Votre nom de planete a bien été modifié !");
+                        }
+                    })
+            }
+        });
+
+    </script>
+    
+</body>
+</html>

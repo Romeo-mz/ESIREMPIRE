@@ -13,27 +13,49 @@ class Authentifier
         $this->DBinterfaceRegister = new DBregister();
     }
 
-    public function login($username, $password){
+    public function login($username, $password, $univers) {
+        $hashedPassword = hash("SHA512", $password);
+        $result = $this->DBinterfaceLogin->login($username, $hashedPassword);
+    
+        if (!$result) 
+        {
+            $session = [
+                'success' => false,
+                'message' => 'Username incorrect'
+            ];
+            return $session;
+        }
+        if ($result[0]['mdp'] === $hashedPassword && $username === $result[0]['pseudo']) 
+        {
+            $number = $this->DBinterfaceLogin->checkIfPlayerHavePlanet($univers, $result[0]['id']);
 
-        
-        $result = $this->DBinterfaceLogin->login($username, $password);
-        
-        if(!$result){
-            //echo "Error while preparing request";
-            return 2; // code 2 : Wrong username
-        }
-        
-        if($result[0]['mdp'] == $password && $username == $result[0]['pseudo']){
-            $_SESSION['id'] = $result[0]['id'];
-            $_SESSION['username'] = $result[0]['pseudo'];
-            //$_SESSION['univers'] = $result['univers'];
-            return 0;
-        }
-        else if($result){
-            return 1;
-        }
-        else{
-            return 2;
+            if ($number == 0) {
+                $this->DBinterfaceLogin->addPlanetToPlayer($univers, $result[0]['id']);
+                $resourcesId = $this->DBinterfaceLogin->addRessourcesToPlayer($univers, $result[0]['id']);
+                $this->DBinterfaceLogin->linkJoueurUnivers($univers, $result[0]['id'], $resourcesId);
+            }
+
+            $idRessources = $this->DBinterfaceLogin->getIdRessources($univers, $result[0]['id']);
+            $idPlanets = $this->DBinterfaceLogin->getIdPlanets($univers, $result[0]['id']);
+
+            $session = [
+                'success' => true,
+                'id_Player' => $result[0]['id'],
+                'pseudo' => $result[0]['pseudo'],
+                'id_Univers' => $univers,
+                'id_Ressources' => $idRessources,
+                'id_Planetes' => $idPlanets,
+            ];
+
+            return $session;
+
+        } else {
+            $session = [
+                'success' => false,
+                'message' => 'Password incorrect'
+            ];
+
+            return $session;
         }
     }
 
@@ -69,6 +91,7 @@ class Authentifier
         if (strlen($username) < 4) {
             return 2;
         }
+        $password = hash("SHA512" ,$password);
 
         //Insert user in database
         $result = $this->DBinterfaceRegister->register($username, $password, $mail);

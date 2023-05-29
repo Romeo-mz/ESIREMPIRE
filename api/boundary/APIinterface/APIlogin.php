@@ -47,9 +47,11 @@ class APIlogin
 
     private function postRequest()
     {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $univers = $_POST['univers'];
+        $data = json_decode(file_get_contents("php://input"));
+
+        $username = $data->username;
+        $password = $data->password;
+        $univers = $data->universe;
 
         if(!isset($username) || !isset($password) || !isset($univers))
         {
@@ -58,9 +60,9 @@ class APIlogin
             return;
         }
         
-        $result = $this->controller->login($username, $password);
+        $result = $this->controller->login($username, $password, $univers);
         
-        if($result == 0)
+        if($result['success'])
         {
             http_response_code(200);
             echo "Login successful";
@@ -70,22 +72,24 @@ class APIlogin
             $this->session_controller->storeJoueur($username, $id, $univers, $ressources);
             header('Location: ../../../front/galaxy.php');
         }
-        else if($result == 1)
+        else
         {
-            http_response_code(401);
-            echo "Wrong password";
-        }
-        else if($result == 2)
-        {
-            http_response_code(401);
-            echo "Wrong username";
-        }
-        else if($result == 3)
-        {
-            http_response_code(401);
-            echo "Wrong univers";
+            $this->sendResponse(401, 'Error while authentification', json_encode($result));
         }
     }
+
+    private function sendResponse($statusCode, $statusText, $body = null)
+    {
+        header("HTTP/1.1 {$statusCode} {$statusText}");
+
+        if ($body != null) {
+            header("Content-Type: application/json");
+            echo $body;
+        }
+        
+        exit;
+    }
+
 }
 
 

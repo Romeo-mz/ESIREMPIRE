@@ -7,8 +7,19 @@ import { QuantiteRessource } from "../models/quantiteressource.js";
 import { TechnoRequired } from "../models/technorequired.js";
 import { InfraTechnoRequired } from "../models/infratechnorequired.js";
 import { Technologie } from "../models/technologie.js";
+import { Bonus } from "../models/bonus.js";
+import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIinfrastructures.php";
+const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+const API_QUERY_PARAMS = {
+    loadInfrastructures: (planetId) => `?id_Planet=${planetId}`,
+    loadDefaultDefenses: "?default_defense",
+    loadDefaultInstallations: "?default_installation",
+    loadDefaultRessources: "?default_ressource",
+    loadQuantiteRessource: (playerId, universeId) => `?quantity_ressource_player&id_Player=${playerId}&id_Universe=${universeId}`,
+    loadTechnoRequired: "?techno_required",
+    loadBonusRessources: (planetID) => `?bonus_ressources&id_Planet=${planetID}`
+};
 
 export class Controller extends Notifier
 {
@@ -19,6 +30,7 @@ export class Controller extends Notifier
     #technoRequired;
     #infraTechnoRequired;
     #technologiesPlayer;
+    #bonusRessources;
 
     constructor()
     {
@@ -30,7 +42,20 @@ export class Controller extends Notifier
         this.#infraTechnoRequired = [];
         this.#technologiesPlayer = [];
 
-        this.#session = new Session("hugo", 2, 1, 355, [1, 2, 3]);
+        let id_Planets = [];
+        let id_Ressources = [];
+
+        for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
+        {
+            id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
+        }
+        for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
+        {
+            id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
+        }
+
+        this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
+
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -51,13 +76,24 @@ export class Controller extends Notifier
     get technologiesPlayer() { return this.#technologiesPlayer; }
     set technologiesPlayer(technologiesPlayer) { this.#technologiesPlayer = technologiesPlayer; }
 
+    get bonusRessources() { return this.#bonusRessources; }
+    set bonusRessources(bonusRessources) { this.#bonusRessources = bonusRessources; }
+
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
         return response.json();
     }
+
+    async loadBonusRessources()
+    {
+        const data = await this.fetchData(API_QUERY_PARAMS.loadBonusRessources(this.#session.id_CurrentPlanet));
+
+        this.#bonusRessources = new Bonus(parseFloat(data.energie), parseFloat(data.deuterium), parseFloat(data.metal));
+    }
     
     async upgradeInfrastructure(id, type) 
     {
+        const oldId = id;
 
         if(!this.checkEnoughRessource(id, type))
         {
@@ -87,7 +123,7 @@ export class Controller extends Notifier
 
         infrastructure.level++;
 
-        // Find "Usine de nanites level"
+        // Find "Usine de nanites" level
         const usineNanitesLevel = this.#infrastructures.find(infrastructure => infrastructure.type_installation === "Usine de nanites").level;
 
         if(infrastructure instanceof Installation) 
@@ -168,6 +204,17 @@ export class Controller extends Notifier
         this.upgradeInfrastructureToAPI(infrastructure.id);
 
         this.notify();
+    }
+
+    setUpgradingSomething(id)
+    {
+        const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
+        infrastructure.upgradingState = true;
+    }
+
+    isUpgradingSomething()
+    {
+        return this.#infrastructures.some(infrastructure => infrastructure.isUpgrading());
     }
 
     checkEnoughRessource(id, type) 
@@ -349,7 +396,7 @@ export class Controller extends Notifier
     async upgradeInfrastructureToAPI(id_Infrastructure)
     {
         const infrastructureData = {
-            id_Planet: this.#session.id_Planet,
+            id_Planet: this.#session.id_CurrentPlanet,
             id_Infrastructure: id_Infrastructure
         };
     
@@ -361,7 +408,7 @@ export class Controller extends Notifier
     
     async createInfrastructureToAPI(id, type) {
         const infrastructureData = {
-            id_Planet: this.#session.id_Planet,
+            id_Planet: this.#session.id_CurrentPlanet,
             type: type
         };
     
@@ -385,7 +432,7 @@ export class Controller extends Notifier
     }
     
     async loadQuantitiesRessource() {
-        const ressourceData = await this.fetchData("?quantity_ressource_player&id_Player=" + this.#session.id_Player + "&id_Universe=" + this.#session.id_Univers);
+        const ressourceData = await this.fetchData(API_QUERY_PARAMS.loadQuantiteRessource(this.#session.id_Player, this.#session.id_Univers));
 
         this.#quantiteRessource = ressourceData.map(({ id_Ressource, type, quantite }) =>
             new QuantiteRessource(id_Ressource, type, quantite)
@@ -395,9 +442,9 @@ export class Controller extends Notifier
     
     async loadDefaultInfrastructures() {
         const [defenseData, installationData, ressourceData] = await Promise.all([
-            this.fetchData("?default_defense"),
-            this.fetchData("?default_installation"),
-            this.fetchData("?default_ressource")
+            this.fetchData(API_QUERY_PARAMS.loadDefaultDefenses),
+            this.fetchData(API_QUERY_PARAMS.loadDefaultInstallations),
+            this.fetchData(API_QUERY_PARAMS.loadDefaultRessources)
         ]);
       
         let negativeID = -1;
@@ -410,7 +457,7 @@ export class Controller extends Notifier
                 new Installation(negativeID--, "0", negativeID--, type, installation_cout_metal, installation_cout_energie, installation_temps_construction)
             ),
             ...ressourceData.map(({ type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium }) =>
-                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal, ressource_production_energie, ressource_production_deuterium)
+                new Ressource(negativeID--, "0", type, ressource_cout_metal, ressource_cout_energie, ressource_cout_deuterium, ressource_temps_construction, ressource_production_metal * (1 + this.#bonusRessources.metal), ressource_production_energie * (1 + this.#bonusRessources.energie), ressource_production_deuterium * (1 + this.#bonusRessources.deuterium))
             )
         ];
       
@@ -442,7 +489,7 @@ export class Controller extends Notifier
     }
     
     async loadInfrastructureFromAPI() {
-        const data = await this.fetchData(`?id_Planet=${this.#session.id_Planet}`);
+        const data = await this.fetchData(API_QUERY_PARAMS.loadInfrastructures(this.#session.id_CurrentPlanet));
         const infrastructures = data.map(item => {
             if (item.installation_type != null) {
                 return new Installation(
@@ -450,32 +497,32 @@ export class Controller extends Notifier
                     item.infrastructure_niveau,
                     item.installation_id,
                     item.installation_type,
-                    Math.round(item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.installation_temps_construction * (2 ** (item.infrastructure_niveau - 1))
+                    (item.installation_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.installation_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.installation_temps_construction * (2 ** (item.infrastructure_niveau))
                 );
             } else if (item.ressource_type != null) {
                 return new Ressource(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.ressource_type,
-                    Math.round(item.ressource_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.ressource_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.ressource_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.ressource_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
-                    item.ressource_production_metal,
-                    item.ressource_production_energie,
-                    item.ressource_production_deuterium
+                    (item.ressource_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_cout_deuterium * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.ressource_temps_construction * (2 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.ressource_production_metal * (1 + this.#bonusRessources.metal),
+                    item.ressource_production_energie * (1 + this.#bonusRessources.energie),
+                    item.ressource_production_deuterium * (1 + this.#bonusRessources.deuterium)
                 );
             } else if (item.defense_type != null) {
                 return new Defense(
                     item.infrastructure_id,
                     item.infrastructure_niveau,
                     item.defense_type,
-                    Math.round(item.defense_cout_metal * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.defense_cout_energie * (1.6 ** (item.infrastructure_niveau - 1))),
-                    Math.round(item.defense_cout_deuterium * (1.6 ** (item.infrastructure_niveau - 1))),
-                    item.defense_temps_construction * (2 ** (item.infrastructure_niveau - 1)),
+                    (item.defense_cout_metal * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.defense_cout_energie * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    (item.defense_cout_deuterium * (1.6 ** (item.infrastructure_niveau))).toFixed(0),
+                    item.defense_temps_construction * (2 ** (item.infrastructure_niveau)),
                     item.defense_point_attaque,
                     item.defense_point_defense
                 );
@@ -488,7 +535,7 @@ export class Controller extends Notifier
     }
 
     async loadTechnoRequired() {
-        const data = await this.fetchData(`?techno_required`);
+        const data = await this.fetchData(API_QUERY_PARAMS.loadTechnoRequired);
 
         const technos = data.map(item => {
             return new TechnoRequired(

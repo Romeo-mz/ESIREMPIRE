@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/galaxy.css">
+    <title>EsirEmpire - Galaxy</title>
+</head>
+<body>
+    <div class="div-select">
+        <div class="div-select-galaxy">
+            <h1 class="title-chooseGalaxy">Choose Galaxy:</h1>
+            <select name="galaxy" id="galaxy">
+            </select>
+        </div>
+        <div class="div-select-solarsystem">
+            <h1 class="title-chooseSolarsystem">Choose Solar System:</h1>
+            <select name="solarsystem" id="solarsystem">
+            </select>
+        </div>
+    </div>
+
+    <div class="div-planetInformation">
+        <div class="div-planet-information_planetName">
+            <h1 id="planetName">Planet Name</h1>
+        </div>
+        <div class="div-planet-information_playerName">
+            <p id="playerName">Planet Description</p>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script src="js/galaxy/application/application.js" type="module"></script>
+</body>
+</html>

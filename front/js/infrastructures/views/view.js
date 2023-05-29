@@ -110,6 +110,19 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
@@ -195,6 +208,8 @@ export class View extends Observer
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
 
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+
                     div.appendChild(div_strip_techno_required_list);
                     
                 }
@@ -225,12 +240,12 @@ export class View extends Observer
             div_information_energie = this.createOrUpdateElement("div", `div-${prefix}-energie-ressource-${infrastructure.id}`, "div-infrastructure-energie", "Energie: " + infrastructure.cout_energie);
         if (infrastructure.cout_deuterium !== null)
             div_information_deuterium = this.createOrUpdateElement("div", `div-${prefix}-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-deuterium", "Deuterium: " + infrastructure.cout_deuterium);
-        if(infrastructure.production_metal !== null)
-            div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + infrastructure.production_metal * 60 + "/min");
-        if(infrastructure.production_energie !== null)
-            div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + infrastructure.production_energie * 60 + "/min");
-        if(infrastructure.production_deuterium !== null)
-            div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + infrastructure.production_deuterium * 60 + "/min");
+        if(infrastructure.production_metal !== 0)
+            div_production_metal = this.createOrUpdateElement("div", `div-${prefix}-production-metal-ressource-${infrastructure.id}`, "div-infrastructure-production-metal", "Production métal: " + (infrastructure.production_metal * 60).toFixed(2) + "/min");
+        if(infrastructure.production_energie !== 0)
+            div_production_energie = this.createOrUpdateElement("div", `div-${prefix}-production-energie-ressource-${infrastructure.id}`, "div-infrastructure-production-energie", "Production énergie: " + (infrastructure.production_energie * 60).toFixed(2) + "/min");
+        if(infrastructure.production_deuterium !== 0)
+            div_production_deuterium = this.createOrUpdateElement("div", `div-${prefix}-production-deuterium-ressource-${infrastructure.id}`, "div-infrastructure-production-deuterium", "Production deuterium: " + (infrastructure.production_deuterium * 60).toFixed(2) + "/min");
 
 
         let div_upgrade = this.createOrUpdateElement("div", `div-${prefix}-upgrade-ressource-${infrastructure.id}`, "div-infrastructure-upgrade");
@@ -243,6 +258,19 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
@@ -265,11 +293,11 @@ export class View extends Observer
             div_information.appendChild(div_information_energie);
         if(infrastructure.cout_deuterium !== null)
             div_information.appendChild(div_information_deuterium);
-        if(infrastructure.production_metal !== null)
+        if(div_production_metal !== null)
             div_information.appendChild(div_production_metal);
-        if(infrastructure.production_energie !== null)
+        if(div_production_energie !== null)
             div_information.appendChild(div_production_energie);
-        if(infrastructure.production_deuterium !== null)
+        if(div_production_deuterium !== null)
             div_information.appendChild(div_production_deuterium);
         div_upgrade.appendChild(button_upgrade);
 
@@ -301,6 +329,9 @@ export class View extends Observer
 
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
+            
+
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
 
                     div.appendChild(div_strip_techno_required_list);
                     
@@ -343,6 +374,19 @@ export class View extends Observer
 
         button_upgrade.addEventListener("click", () =>
         {
+            if(!this.#controller.checkEnoughRessource(infrastructure.id, infrastructure.type))
+            {
+                alert("Pas assez de ressources");
+                return;
+            }
+            // Check if the player is not already upgrading something
+            if (this.#controller.isUpgradingSomething()) {
+                alert("Vous ne pouvez pas améliorer une installation en cours.");
+                return;
+            }
+
+            this.#controller.setUpgradingSomething(infrastructure.id);
+
             button_upgrade.disabled = true;
             let remainingTime = infrastructure.temps_construction;
             button_upgrade.innerHTML = "En cours...<br>" + infrastructure.temps_construction + "s";
@@ -396,6 +440,8 @@ export class View extends Observer
 
                     button_upgrade.disabled = true;
                     button_upgrade.innerHTML = "Technologie requise";
+
+                    div.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
 
                     div.appendChild(div_strip_techno_required_list);
                 }

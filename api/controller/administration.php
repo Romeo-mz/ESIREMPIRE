@@ -52,7 +52,12 @@ class Administration
         return $result;
     }
 
-    
+    /**
+     * Creates a batch of planets in the last 50 solar systems in the database.
+     *
+     * @throws Some_Exception_Class when there is an error creating a planet.
+     * @return array the result of creating the planets.
+     */
     public function createSolarSystems() 
     {
         foreach ($this->getLast5GalaxiesId() as $GalaxyId) {
@@ -64,6 +69,11 @@ class Administration
         return $result;
     }
 
+    /**
+     * Creates a set of planets and stores them in the database.
+     *
+     * @return array the result of the database operation
+     */
     public function createPlanets()
     {
         $solarSystemIds = $this->getLast50SolarSystemsId();

@@ -23,28 +23,40 @@ class APIgalaxy
                 $this->handleGet();
                 break;
             default:
-                $this->sendResponse(405, 'Method Not Allowed');
+                $this->handlePost();
                 break;
         }
     }
 
     private function handleGet()
     {
-        if (isset($_GET['id_SolarSystem'])) 
+        if (isset($_GET['planets']) && isset($_GET['id_Universe']) && isset($_GET['id_Galaxy']) && isset($_GET['id_SolarSystem'])) 
         {
-            $planets = $this->controller->getPlanets($_GET['id_SolarSystem']);
-            $this->sendResponse(200, 'OK', json_encode($planets));
+            $response = $this->controller->getPlanets($_GET['id_Universe'], $_GET['id_Galaxy'], $_GET['id_SolarSystem']);
+            $this->sendResponse(200, 'OK', json_encode($response));
         }
-        else if (isset($_GET['id_Galaxy'])) 
+        if (isset($_GET['get_planet_name']) && isset($_GET['id_planet'])) 
         {
-            $sys_sols = $this->controller->getSystems($_GET['id_Galaxy']);
-            $this->sendResponse(200, 'OK', json_encode($sys_sols));
+            $response = $this->controller->getPlanetName($_GET['id_planet']);
+            $this->sendResponse(200, 'OK', json_encode($response));
         }
-        else if (isset($_GET['id_Univers'])) 
+        else 
         {
-            $galaxies = $this->controller->getGalaxies($_GET['id_Univers']);
-            $this->sendResponse(200, 'OK', json_encode($galaxies));
-        } else 
+            $this->sendResponse(400, 'Bad Request');
+        }
+    }
+
+    private function handlePost()
+    {
+        // decode json post data
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if (isset($data['id_Planet']) && isset($data['new_planet_name'])) 
+        {
+            $this->controller->renamePlanet($data['id_Planet'], $data['new_planet_name']);
+            $this->sendResponse(200, 'OK');
+        }
+        else 
         {
             $this->sendResponse(400, 'Bad Request');
         }
