@@ -2,12 +2,16 @@
 
 class DefenderPlanet {
 
+    private $id_Defender_Planet;
+    private $id_Defender_Player;
     private $fleet_Defender;
     private $infraDefensePoints;
     private $infraAttackPoints;
 
-    public function __construct($fleet_Defender, $infraDefensePoints, $infraAttackPoints)
+    public function __construct($id_Defender_Planet, $id_Defender_Player, $fleet_Defender, $infraDefensePoints, $infraAttackPoints)
     {
+        $this->id_Defender_Planet = $id_Defender_Planet;
+        $this->id_Defender_Player = $id_Defender_Player;
         $this->fleet_Defender = $fleet_Defender;
         $this->infraDefensePoints = $infraDefensePoints;
         $this->infraAttackPoints = $infraAttackPoints;

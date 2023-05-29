@@ -4,6 +4,7 @@ require_once('../../boundary/DBinterface/DBattaque.php');
 require_once('../../model/ship.php');
 require_once('../../model/fleet.php');
 require_once('../../model/defenderplanet.php');
+require_once('../../model/attackerplanet.php');
 
 class Attaque{
     private $dbInterface;
@@ -86,26 +87,28 @@ class Attaque{
             $attackPoints += $infrastructure['defense_point_attaque'];
         }
 
-        return new DefenderPlanet($fleet_Defender, $defensePoints, $attackPoints);
+        return new DefenderPlanet($id_Defender_Planet, $id_Defender_Player, $fleet_Defender, $defensePoints, $attackPoints);
     }
 
     public function attack($id_Attacker_Player, $id_Defender_Player, $id_Attacker_Planet, $id_Defender_Planet, $fleet_Attacker_Composition)
     {
        $fleets = $this->createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet);
+       $attackerPlanet = new AttackerPlanet($id_Attacker_Planet, $id_Attacker_Player, $fleets[0]);
        $defenderPlanet = $this->createDefenderPlanet($id_Defender_Player, $id_Defender_Planet, $fleets[1]);
 
+
         // Start attack
-        $combatReport = $this->startAttack($fleets[0], $defenderPlanet);
+        $combatReport = $this->startAttack($attackerPlanet, $defenderPlanet);
 
         // // Return combat report
         // return $combatReport;
 
     }
 
-    private function startAttack($attackerFleet, $defenderPlanet) {
+    private function startAttack($attackerPlanet, $defenderPlanet) {
         // Calculate attack and defense points
-        $attackerAttackPoints = $attackerFleet->getAttackPoints();
-        $attackerDefensePoints = $attackerFleet->getDefensePoints();
+        $attackerAttackPoints = $attackerPlanet->getAttackPoints();
+        $attackerDefensePoints = $attackerPlanet->getDefensePoints();
         
         $defenderAttackPoints = $defenderPlanet->getAttackPoints();
         $defenderDefensePoints = $defenderPlanet->getDefensePoints();
@@ -121,12 +124,14 @@ class Attaque{
             $attackerAttackPoints, $attackerDefensePoints,
             $defenderAttackPoints, $defenderDefensePoints
         );
+
+        var_dump($damage);
         
         // Apply damage and update game state
-        $rewards = $this->applyDamage($result, $damage, $attackerFleet, $defenderPlanet);
+        $rewards = $this->applyDamage($result, $damage, $attackerPlanet, $defenderPlanet);
         
         // // Generate combat report
-        // $combatReport = $this->generateCombatReport($result, $damage, $rewards, $attackerFleet, $defenderPlanet);
+        // $combatReport = $this->generateCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet);
         
         // Return combat report
         // return $combatReport;
@@ -152,51 +157,65 @@ class Attaque{
         ];
     }
 
-    private function applyDamage($result, $damage, $attackerFleet, $defenderPlanet) {
+    private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
-        $defenderPlanet->applyDefenseSystemDamage($damage['attackRatio']);
-        $attackerFleet->applyShipDamage($damage['defenseRatio']);
+        $this->applyDefenseSystemDamage($damage['attackRatio']);
+        // $this->applyShipDamage($damage['defenseRatio']);
 
-        // Calculate rewards and update game state based on the result
-        if ($result === 'defenseur') {
-            $rewards = $attackerFleet->getDestroyedShipResources();
-            $defenderPlanet->addResources($rewards);
-        } elseif ($result === 'attaquant') {
-            $rewards = $this->handleAttackerVictory($attackerFleet, $defenderPlanet);
-        } else {
-            // In case of a draw, no rewards
-            $rewards = [];
-        }
+        // // Calculate rewards and update game state based on the result
+        // if ($result === 'defenseur') {
+        //     $rewards = $attackerPlanet->getDestroyedShipResources();
+        //     $defenderPlanet->addResources($rewards);
+        // } elseif ($result === 'attaquant') {
+        //     $rewards = $this->handleAttackerVictory($attackerPlanet, $defenderPlanet);
+        // } else {
+        //     // In case of a draw, no rewards
+        //     $rewards = [];
+        // }
 
-        // Save changes to attacker fleet and defender planet
-        $attackerFleet->save();
-        $defenderPlanet->save();
+        // // Save changes to attacker fleet and defender planet
+        // $attackerPlanet->save();
+        // $defenderPlanet->save();
 
-        return $rewards;
+        // return $rewards;
     }
 
-    private function handleAttackerVictory($attackerFleet, $defenderPlanet) {
-        if ($attackerFleet->hasColonizationShip()) {
+    private function applyDefenseSystemDamage($attackRatio) {
+        
+        if ($attackRatio > 1) {
+            // Defense systems are destroyed
+            $this->dbInterface->destroyAllDefenseSystems();
+        } else {
+            // Defense systems are damaged
+            // foreach ($this->defenseSystems as $defenseSystem) {
+            //     $defenseSystem->applyDamage($attackRatio);
+            // }
+        }
+
+    }
+
+    private function handleAttackerVictory($attackerPlanet, $defenderPlanet) {
+        if ($attackerPlanet->hasColonizationShip()) {
             // Colonize planet
-            $defenderPlanet->colonize($attackerFleet->getOwner());
+            $defenderPlanet->colonize($attackerPlanet->getOwner());
             return [];
-        } elseif ($attackerFleet->hasTransportShips()) {
+        } elseif ($attackerPlanet->hasTransportShips()) {
             // Loot resources
-            $lootCapacity = $attackerFleet->getTransportCapacity();
+            $lootCapacity = $attackerPlanet->getTransportCapacity();
             $lootedResources = $defenderPlanet->lootResources($lootCapacity);
-            $attackerFleet->getOwner()->addResources($lootedResources);
+            $attackerPlanet->getOwner()->addResources($lootedResources);
             return $lootedResources;
         } else {
             return [];
         }
     }
 
-    private function generateCombatReport($result, $damage, $rewards, $attackerFleet, $defenderPlanet) {
+    private function generateCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet) {
         $report = [
             'date' => date('Y-m-d H:i:s'),
             'result' => $result,
             'ships' => [
-                'attacker' => $attackerFleet->getShips(),
+                'attacker' => $attackerPlanet->getShips(),
                 'defender' => $defenderPlanet->getOrbitingShips(),
             ],
             'defenseSystems' => $defenderPlanet->getDefenseSystems(),
@@ -205,7 +224,7 @@ class Attaque{
         ];
 
         // Save combat report for both attacker anddefender
-        $attackerFleet->getOwner()->addCombatReport($report);
+        $attackerPlanet->getOwner()->addCombatReport($report);
         $defenderPlanet->getOwner()->addCombatReport($report);
 
         return $report;
