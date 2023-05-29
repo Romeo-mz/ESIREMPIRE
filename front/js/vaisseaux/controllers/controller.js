@@ -1,8 +1,9 @@
 import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import { Vaisseaux } from "../models/vaisseaux.js";
+import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIvaisseaux.php";
+const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIvaisseaux.php";
 const API_QUERY_PARAMS = {
   defaultVaisseaux: (id_Planet) => `?default_vaisseaux&id_Planet=${id_Planet}`,
   nbVaisseaux: (id_Player, id_Univers) => `?number_vaisseaux&id_Player=${id_Player}&id_Univers=${id_Univers}`,
@@ -14,10 +15,24 @@ export class Controller extends Notifier {
 
   constructor() {
     super();
-    this.#session = new Session("roro", 2, 1, 355, [1, 2, 3]);
+
     this.#vaisseaux = [];
     this.#flotte = [];
 
+    let id_Planets = [];
+    let id_Ressources = [];
+
+    for (let i = 0; i < sessionDataService.getSessionData().id_Planets.length; i++)
+    {
+        id_Planets[i] = parseInt(sessionDataService.getSessionData().id_Planets[i].id);
+    }
+    for (let i = 0; i < sessionDataService.getSessionData().id_Ressources.length; i++)
+    {
+        id_Ressources[i] = parseInt(sessionDataService.getSessionData().id_Ressources[i].id);
+    }
+
+    this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
+  
   }
 
   get vaisseaux() { return this.#vaisseaux; }
@@ -32,7 +47,7 @@ export class Controller extends Notifier {
   }
 
   async loadVaisseaux() {
-    const vaisseauData = await this.fetchData(API_QUERY_PARAMS.defaultVaisseaux(this.#session.id_Planet));
+    const vaisseauData = await this.fetchData(API_QUERY_PARAMS.defaultVaisseaux(this.#session.id_CurrentPlanet));
 
     let negativeId = -1;
 

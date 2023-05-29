@@ -3,8 +3,6 @@ import { View } from "../views/view.js";
 import sessionDataService from '../../SessionDataService.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const myController = new Controller();
-    const myView = new View(myController); //Need to delete this line ?
 
     if (sessionDataService.getSessionData() !== null) {
         const myController = new Controller();
