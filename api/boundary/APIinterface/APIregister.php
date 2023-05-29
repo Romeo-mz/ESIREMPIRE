@@ -50,11 +50,6 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
-
-            $id = $this->controller->getIdJoueur($username);
-            $univers = $this->controller->getIdUnivers();
-
-            $this->session_controller->storeJoueur($username, $id, $univers);
         }
         else if($result == 1){
             http_response_code(401);
