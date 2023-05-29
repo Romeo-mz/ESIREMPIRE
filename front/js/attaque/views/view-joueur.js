@@ -16,10 +16,10 @@ export class View extends Observer {
 
     const attackerId = this.#controller.session.id_Player;
     const fleetData = this.#controller.getFlotteJoueur();
+    console.log(fleetData);
 
     this.#controller.getDataEnnemis().then((data) => {
       data.forEach((ennemi, index) => {
-        console.log(ennemi);
         const defenderId = ennemi[index].id_defender;
         const idDefenderPlanet = ennemi[index].id_planete;
 
@@ -30,7 +30,16 @@ export class View extends Observer {
           id_Defender_Planet: idDefenderPlanet, // Set the defender's planet ID
           fleet_Attacker: fleetData
         }
+        console.log(jsonData);
         const row = document.createElement('tr');
+
+        const jsonDataTd = document.createElement('td');
+        const jsonDataInput = document.createElement('input');
+        jsonDataInput.type = 'hidden';
+        jsonDataInput.name = 'json_data';
+        jsonDataInput.value = JSON.stringify(jsonData);
+        jsonDataTd.appendChild(jsonDataInput);
+        row.appendChild(jsonDataTd);
 
         const radioTd = document.createElement('td');
         const radioInput = document.createElement('input');
