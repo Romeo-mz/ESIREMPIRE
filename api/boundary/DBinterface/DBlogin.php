@@ -52,7 +52,7 @@ class DBlogin extends DBinterface {
     public function addRessourcesToPlayer($idCurrentUnivers, $idJoueur)
     {
         // Get the last id
-        $last_id = $this->executeQuery("SELECT id FROM ressource ORDER BY id DESC LIMIT 1;");
+        $last_id = $this->fetchValue("SELECT id FROM ressource ORDER BY id DESC LIMIT 1;");
 
         $this->executeQuery("INSERT INTO ressource (id, id_Type) VALUES ($last_id+1,  1);");
         $this->executeQuery("INSERT INTO ressource (id, id_Type) VALUES ($last_id+2,  2);");
