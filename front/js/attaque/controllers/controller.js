@@ -9,6 +9,7 @@ const API_QUERY_PARAMS = {
 export class Controller extends Notifier {
   #session;
   #idJoueurEnnemis;
+  #flotteData;
   #joueurEnnemis;
 
   constructor() {
@@ -41,7 +42,8 @@ export class Controller extends Notifier {
 
     if (flotteParam) {
       let flotteData = JSON.parse(decodeURIComponent(flotteParam));
-      console.log(flotteData);
+      this.#flotteData = flotteData;
+      return flotteData;
     } else {
       console.log('No flotte parameter found in URL.');
     }
