@@ -97,7 +97,7 @@ class DBattaque extends DBinterface {
         
         $inQuery = implode(',', array_fill(0, count($id_Systeme_Solaire), '?'));
     
-        $query = "SELECT p.id as id, j.pseudo as pseudo, g.nom as nom_galaxie, ss.nom as nom_systeme_solaire, p.nom as nom_planete
+        $query = "SELECT p.id as id, j.pseudo as pseudo, g.nom as nom_galaxie, ss.nom as nom_systeme_solaire, p.nom as nom_planete, p.id as id_planete, p.id_Joueur as id_defender
               FROM planete p
               JOIN joueur j ON p.id_Joueur = j.id
               JOIN systemesolaire ss ON p.id_Systeme_Solaire = ss.id
