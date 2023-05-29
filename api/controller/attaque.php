@@ -91,7 +91,7 @@ class Attaque{
         
         $defenderAttackPoints = $defenderPlanet->getAttackPoints();
         $defenderDefensePoints = $defenderPlanet->getDefensePoints();
-        
+
         // Determine victory conditions
         $result = $this->determineVictory(
             $attackerAttackPoints, $attackerDefensePoints,
@@ -103,15 +103,16 @@ class Attaque{
             $attackerAttackPoints, $attackerDefensePoints,
             $defenderAttackPoints, $defenderDefensePoints
         );
+
         
         // Apply damage and update game state
-        $rewards = $this->applyDamage($result, $damage, $attackerFleet, $defenderPlanet);
+        // $rewards = $this->applyDamage($result, $damage, $attackerFleet, $defenderPlanet);
         
-        // Generate combat report
-        $combatReport = $this->generateCombatReport($result, $damage, $rewards, $attackerFleet, $defenderPlanet);
+        // // Generate combat report
+        // $combatReport = $this->generateCombatReport($result, $damage, $rewards, $attackerFleet, $defenderPlanet);
         
         // Return combat report
-        return $combatReport;
+        // return $combatReport;
     }
 
     private function determineVictory($attackerAttackPoints, $attackerDefensePoints, $defenderAttackPoints, $defenderDefensePoints) {
