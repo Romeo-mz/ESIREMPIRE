@@ -202,6 +202,7 @@ export class Controller extends Notifier
         }
 
         this.upgradeInfrastructureToAPI(infrastructure.id);
+        infrastructure.upgradingState = false;
 
         this.notify();
     }
