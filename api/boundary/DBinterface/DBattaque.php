@@ -12,6 +12,23 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function getInfrastructuresPoints($id_Defender_Planet)
+    {
+        return $this->fetchAllRows('
+            SELECT  
+                i.id AS infrastructure_id,
+                i.niveau AS infrastructure_niveau,
+                td.type AS defense_type,
+                ddf.point_attaque AS defense_point_attaque,
+                ddf.point_defense AS defense_point_defense
+            FROM 
+                infrastructure i
+            LEFT JOIN defense d ON i.id = d.id_Infrastructure
+            LEFT JOIN typedefense td ON d.id_Type_Defense = td.id
+            LEFT JOIN defensedefaut ddf ON td.id = ddf.id_Type_Defense
+            WHERE i.id_Planete = ? AND td.type IS NOT NULL;', [$id_Defender_Planet]);
+    }
+
     public function getFleet($idDefenderPlayer, $idDefenderPlanet)
     {
         $id_Spacework =  $this->fetchValue('
