@@ -122,10 +122,12 @@ class DBinfrastructures extends DBinterface {
         return $this->fetchValue('SELECT id FROM infrastructure ORDER BY id DESC LIMIT 1;');
     }
 
-    public function buildInfrastructure($id_Planet, $type)
+    public function buildInfrastructure($id_Planet, $infraType, $type)
     {
+        $idType = $this->fetchValue('SELECT id FROM typeinfrastructure WHERE type = ?;', [$infraType]);
+
         $this->executeQuery('
-        INSERT INTO infrastructure (id_Planete) VALUES (?);', [$id_Planet]);
+        INSERT INTO infrastructure (id_Planete, id_Type) VALUES (?, ?);', [$id_Planet, $idType]);
         $id_Infrastructure = $this->getLastInsertId();
 
         switch ($type) {
