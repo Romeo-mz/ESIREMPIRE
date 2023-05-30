@@ -6,12 +6,24 @@ require_once 'DBinterface.php';
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
 
+/**
+ * Class DBattaque
+ * @package api\boundary\DBinterface
+ */
 class DBattaque extends DBinterface {
-
+    /**
+     * DBattaque constructor.
+     */
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * getInfrastructuresPoints 
+     * fucntion that return the infrastructures points of a planet
+     * @param int $id_Defender_Planet
+     * @return array
+     */
+     
     public function getInfrastructuresPoints($id_Defender_Planet)
     {
         return $this->fetchAllRows('
@@ -28,7 +40,14 @@ class DBattaque extends DBinterface {
             LEFT JOIN defensedefaut ddf ON td.id = ddf.id_Type_Defense
             WHERE i.id_Planete = ? AND td.type IS NOT NULL;', [$id_Defender_Planet]);
     }
-
+    /**
+     * getFleet
+     * Function that return the fleet of a player
+     * 
+     * @param int $idDefenderPlayer
+     * @param int $idDefenderPlanet
+     * @return void
+     */
     public function getFleet($idDefenderPlayer, $idDefenderPlanet)
     {
         $id_Spacework =  $this->fetchValue('
@@ -67,7 +86,12 @@ class DBattaque extends DBinterface {
         return $ships;
 
     }
-
+    /**
+     * getShipsPoint
+     * Function that return the ships points
+     * 
+     * @return array
+     */
     public function getShipsPoint()
     {
         return $this->fetchAllRows('
@@ -82,12 +106,27 @@ class DBattaque extends DBinterface {
         ');
     }
     
+    /**
+     * getListeEnnemis
+     * Function that return the list of id of ennemies
+     *
+     * @param int $id_Joueur
+     * @param int $id_Univers
+     * @return int
+     */
     public function getListeEnnemis($id_Joueur, $id_Univers){
         $listeEnnemis = "SELECT DISTINCT id_Joueur FROM joueurunivers WHERE id_Joueur != ? AND id_Univers = ?";
         $listeEnnemis = $this->fetchAllRows($listeEnnemis, [$id_Joueur, $id_Univers]);
         return $listeEnnemis;
     }
-
+    /**
+     * getIdGalaxie
+     * Function that return all the id of the galaxy that are in an universe
+     *
+     * @param int $id_Univers
+     * @return array
+     */
+     
     public function getIdGalaxie($id_Univers){
         $result = "SELECT id FROM galaxie WHERE id_Univers = ?";
         $result = $this->fetchAllRows($result, [$id_Univers]);
@@ -96,7 +135,13 @@ class DBattaque extends DBinterface {
     
         return $id_Galaxie;
     }
-    
+    /**
+     * getIdSystemeSolaire
+     * Function that return all the id of the solar system that are in a galaxy
+     *
+     * @param array $id_Galaxie
+     * @return array
+     */
     public function getIdSystemeSolaire($id_Galaxie){
         $inQuery = implode(',', array_fill(0, count($id_Galaxie), '?'));
     
@@ -107,7 +152,14 @@ class DBattaque extends DBinterface {
     
         return $id_Systeme_Solaire;
     }
-    
+    /**
+     * getDataEnnemis
+     * Function that return all the data of the ennemies that are in the same universe
+     *
+     * @param int $id_Ennemis
+     * @param int $id_Univers
+     * @return array
+     */
     public function getDataEnnemis($id_Ennemis, $id_Univers) {
         $id_Galaxie = $this->getIdGalaxie($id_Univers);
         $id_Systeme_Solaire = $this->getIdSystemeSolaire($id_Galaxie);
@@ -125,7 +177,14 @@ class DBattaque extends DBinterface {
     
         return $dataEnnemis;
     }
-    
+    /**
+     * getPseudo
+     * Function that return the pseudo of a player
+     *
+     * @param int $id_Planet
+     * @param int $id_Univers
+     * @return string
+     */
     public function getPseudo($id_Planet, $id_Univers){
         $query = "SELECT joueur.pseudo
         FROM joueur
