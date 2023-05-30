@@ -21,16 +21,15 @@ class APIlogin
     {
         $this->controller = $controller;
         $this->session_controller = $session_controller;
-        $this->request();
+        //$this->request();
     }
 
     public function request()
     {
         $request_method = $_SERVER['REQUEST_METHOD'];
-        
+        echo($request_method);
         switch ($request_method) {
             case 'POST':
-                //echo("POST");
                 $this->postRequest();
                 break;
 

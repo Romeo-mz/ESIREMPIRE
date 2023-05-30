@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['search_0',['Search',['../class_search.html',1,'']]],
+  ['search_2ephp_1',['search.php',['../search_8php.html',1,'']]],
+  ['sendresponse_2',['sendResponse',['../class_a_p_iattaque.html#a4c182d0445d36a98479e64f413b0be80',1,'APIattaque']]],
+  ['server_3',['SERVER',['../_d_binterface_8php.html#ae3076e8ff25d710f0b39e78352782795',1,'DBinterface.php']]],
+  ['sessioncontroller_4',['SessionController',['../class_session_controller.html',1,'']]],
+  ['sessioncontroller_2ephp_5',['SessionController.php',['../_session_controller_8php.html',1,'']]],
+  ['sessioninterface_6',['SessionInterface',['../interface_session_interface.html',1,'']]],
+  ['sessioninterface_2ephp_7',['SessionInterface.php',['../_session_interface_8php.html',1,'']]],
+  ['setattackpoints_8',['setAttackPoints',['../class_ship.html#a1cd70d8fc43511ef1d06202750aea714',1,'Ship']]],
+  ['setcapacity_9',['setCapacity',['../class_ship.html#a8dc0cfe6fd7b04e8ed919e3103206767',1,'Ship']]],
+  ['setdefensepoints_10',['setDefensePoints',['../class_ship.html#a2cc05c3b97b6c14f50b88d25ba09aa3a',1,'Ship']]],
+  ['setsessionvar_11',['setSessionVar',['../interface_session_interface.html#aa84ff9d1575d343c56b2368b9e03120f',1,'SessionInterface\setSessionVar()'],['../class_p_h_p_session.html#aa84ff9d1575d343c56b2368b9e03120f',1,'PHPSession\setSessionVar()'],['../class_session_controller.html#aa84ff9d1575d343c56b2368b9e03120f',1,'SessionController\setSessionVar()']]],
+  ['settype_12',['setType',['../class_ship.html#ade096bf521b5d05dcaff2ba1a42e9f71',1,'Ship']]],
+  ['ship_13',['Ship',['../class_ship.html',1,'']]],
+  ['ship_2ephp_14',['ship.php',['../ship_8php.html',1,'']]],
+  ['solar_5fsystems_5fper_5fgalaxy_15',['SOLAR_SYSTEMS_PER_GALAXY',['../administration_8php.html#a34cdd4080d349574f9fdc94b8a93ec2f',1,'administration.php']]],
+  ['spacework_16',['Spacework',['../class_spacework.html',1,'']]],
+  ['spacework_2ephp_17',['spacework.php',['../spacework_8php.html',1,'']]],
+  ['startsession_18',['startSession',['../interface_session_interface.html#a1e201c0957bc704471a78cd492174871',1,'SessionInterface\startSession()'],['../class_p_h_p_session.html#a1e201c0957bc704471a78cd492174871',1,'PHPSession\startSession()'],['../class_session_controller.html#a1e201c0957bc704471a78cd492174871',1,'SessionController\startSession()']]],
+  ['storejoueur_19',['storeJoueur',['../interface_session_interface.html#ab39e80c49a95cf819686fbc1aafb3f5f',1,'SessionInterface\storeJoueur()'],['../class_p_h_p_session.html#ab39e80c49a95cf819686fbc1aafb3f5f',1,'PHPSession\storeJoueur()'],['../class_session_controller.html#ab39e80c49a95cf819686fbc1aafb3f5f',1,'SessionController\storeJoueur()']]]
+];

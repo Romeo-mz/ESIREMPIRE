@@ -2,19 +2,40 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_admin");
-define('DB_PWD', "lDMH6chWNK3um6fF");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
+//Add Dockblock for each function and class
+
+/**
+ * Class DBlogin
+ * @package api\boundary\DBinterface
+ */
+
 
 class DBlogin extends DBinterface {
-
+    /**
+     * DBlogin constructor.
+     */
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * 
+     * @param $idCurrentUnivers
+     * @param $idJoueur
+     * @return array
+     */
     public function getIdRessources($idCurrentUnivers, $idJoueur)
     {
         return $this->fetchAllRows("SELECT id_Ressource AS id FROM joueurunivers WHERE id_Univers = ? AND id_Joueur = ?", [$idCurrentUnivers, $idJoueur]);
     }
+
+    /**
+     * 
+     * @param $idCurrentUnivers
+     * @param $idJoueur
+     * @return array
+     */
 
     public function getIdPlanets($idCurrentUnivers, $idJoueur)
     {
@@ -27,7 +48,13 @@ class DBlogin extends DBinterface {
             WHERE planete.id_Joueur = ?
             AND univers.id = ?;", [$idJoueur, $idCurrentUnivers]);
     }
-
+    /**
+     * checkIfPlayerHavePlanet
+     *
+     * @param [int] $idCurrentUnivers
+     * @param [int] $idJoueur
+     * @return array
+     */
     public function checkIfPlayerHavePlanet($idCurrentUnivers, $idJoueur)
     {
         // Check if player have at least one planet on this universe
@@ -40,7 +67,14 @@ class DBlogin extends DBinterface {
             WHERE planete.id_Joueur = ?
             AND univers.id = ?;", [$idJoueur, $idCurrentUnivers]);
     }
-
+    /**
+     * linkJoueurUnivers
+     *
+     * @param [int] $idCurrentUnivers
+     * @param [int] $idJoueur
+     * @param [int] $idRessources
+     * @return void
+     */
     public function linkJoueurUnivers($idCurrentUnivers, $idJoueur, $idRessources)
     {
         for($i = 0; $i < 3; $i++)
@@ -48,7 +82,13 @@ class DBlogin extends DBinterface {
             $this->executeQuery("INSERT INTO joueurunivers (id_Univers, id_Joueur, id_Ressource) VALUES (?, ?, ?);", [$idCurrentUnivers, $idJoueur, $idRessources[$i]]);
         }
     }
-
+    /**
+     * addRessourcesToPlayer
+     *
+     * @param [int] $idCurrentUnivers
+     * @param [int] $idJoueur
+     * @return array
+     */
     public function addRessourcesToPlayer($idCurrentUnivers, $idJoueur)
     {
         // Get the last id
@@ -60,7 +100,13 @@ class DBlogin extends DBinterface {
 
         return array($last_id+1, $last_id+2, $last_id+3);
     }
-
+    /**
+     * addPlanetToPlayer
+     *
+     * @param [int] $idCurrentUnivers
+     * @param [int] $idJoueur
+     * @return void
+     */
     public function addPlanetToPlayer($idCurrentUnivers, $idJoueur)
     {
         // Fetch a random planet's ID
@@ -80,31 +126,60 @@ class DBlogin extends DBinterface {
             WHERE id = ?", [$idJoueur, $planet_id]);
     }
 
-
+    /**
+     * login
+     * @param $username
+     * @param $password
+     * @return array
+     */
     public function login($username, $password){
         return $this->fetchAllRows("SELECT * FROM joueur WHERE pseudo = ? AND mdp = ?", [$username, $password]);
     }
-
+    /**
+     * isEmail
+     *
+     * @param [string] $mail
+     * @return boolean
+     */
     public function isEmail($mail){
         $query = "SELECT * FROM joueur WHERE email = ?";
         return $this->fetchAllRows($query, [$mail]);
     }
-
+    /**
+     * isPseudo
+     *
+     * @param [string] $pseudo
+     * @return int
+     */
     public function getIdJoueur($pseudo){
         $query = "SELECT id FROM joueur WHERE pseudo = ?";
         return $this->fetchValue($query, [$pseudo]);
     }
-
+    /**
+     * isPseudo
+     *
+     * @param [int] $idUnivers
+     * @return int
+     */
     public function getNumberJoueurUnivers($idUnivers){
         $query = "SELECT COUNT(*) FROM joueurunivers WHERE id_Univers = ?";
         return $this->fetchValue($query, [$idUnivers]);
     }
-
+    /**
+     * getIdUnivers
+     * @return int
+     */
     public function getIdUnivers(){
         $query = "SELECT id FROM univers ORDER BY id ASC LIMIT 1";
         return $this->fetchValue($query);
     }
-
+    /**
+     * getRessourcesJoueur
+     *
+     * @param [int] $id_joueur
+     * @param [int] $id_univers
+     * @return int
+     */
     public function getRessourcesJoueur($id_joueur, $id_univers){
         $query = "SELECT id_Ressource FROM joueurunivers WHERE id_Joueur = ? AND id_Univers = ?";
         return $this->fetchAllRows($query, [$id_joueur, $id_univers]);
