@@ -93,10 +93,7 @@ class Attaque{
         // Start attack
         $combatReport = $this->startAttack($attackerPlanet, $defenderPlanet);
 
-        var_dump($combatReport);
-
-        // // Return combat report
-        // return $combatReport;
+        // Add combat report to DB
 
     }
 
@@ -154,7 +151,7 @@ class Attaque{
 
     private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
-        $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet.getIdDefenderPlanet());
+        $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet->getIdPlanet());
         // $this->applyShipDamage($damage['defenseRatio']);
 
         // // Calculate rewards and update game state based on the result
@@ -178,7 +175,7 @@ class Attaque{
     private function applyDefenseSystemDamage($attackRatio, $idDefenderPlanet) {
         
         if ($attackRatio > 1) {
-            // Defense systems are destroyed
+            // Defense systems are all destroyed
             $this->dbInterface->destroyAllDefenseSystems($idDefenderPlanet);
         } else {
             // Defense systems are damaged

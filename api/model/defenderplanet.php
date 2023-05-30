@@ -10,14 +10,14 @@ class DefenderPlanet {
 
     public function __construct($idDefenderPlanet, $idDefenderPlayer, $fleetDefender, $infraDefensePoints, $infraAttackPoints)
     {
-        $this->id_DefenderPlanet = $idDefenderPlanet;
-        $this->id_DefenderPlayer = $idDefenderPlayer;
+        $this->idDefenderPlanet = $idDefenderPlanet;
+        $this->idDefenderPlayer = $idDefenderPlayer;
         $this->fleetDefender = $fleetDefender;
         $this->infraDefensePoints = $infraDefensePoints;
         $this->infraAttackPoints = $infraAttackPoints;
     }
 
-    public function getIdDefenderPlanet() { return $this->idDefenderPlanet; }
+    public function getIdPlanet() { return $this->idDefenderPlanet; }
     public function getFleetDefender() { return $this->fleetDefender; }
     public function getInfraDefensePoints() { return $this->infraDefensePoints; }
     public function getInfraAttackPoints() { return $this->infraAttackPoints; }
