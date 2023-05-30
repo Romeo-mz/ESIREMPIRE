@@ -27,7 +27,7 @@ class APIlogin
     public function request()
     {
         $request_method = $_SERVER['REQUEST_METHOD'];
-        echo($request_method);
+
         switch ($request_method) {
             case 'POST':
                 $this->postRequest();
