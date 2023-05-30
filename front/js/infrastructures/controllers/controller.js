@@ -135,7 +135,8 @@ export class Controller extends Notifier
 
         if (id < 0) {
             try {
-                const dataToReturn = await this.createInfrastructureToAPI(id, type);
+                const infraType = this.#infrastructures.find(infrastructure => infrastructure.id === id).type;
+                const dataToReturn = await this.createInfrastructureToAPI(id, type, infraType);
                 console.log("Success to create infra:", dataToReturn);
                 
                 if(dataToReturn > 0){
@@ -432,9 +433,10 @@ export class Controller extends Notifier
         });
     }
     
-    async createInfrastructureToAPI(id, type) {
+    async createInfrastructureToAPI(id, type, infraType) {
         const infrastructureData = {
             id_Planet: this.#session.id_CurrentPlanet,
+            infraType: infraType,
             type: type
         };
     
