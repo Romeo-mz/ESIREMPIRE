@@ -6,12 +6,23 @@ require_once 'DBinterface.php';
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
 
+/**
+ * DBinfrastructures class
+ * @package api\boundary\DBinterface
+ */
 class DBinfrastructures extends DBinterface {
-
+    /**
+     * DBinfrastructures constructor.
+     */
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * getBonusRessources
+     * function that return the bonus ressources of a planet
+     * @param int $id_Planet
+     * @return array
+     */
     public function getBonusRessources($id_Planet)
     {
         return $this->fetchAllRows("
@@ -30,7 +41,12 @@ class DBinfrastructures extends DBinterface {
                 id = ?
         );", [$id_Planet])[0];
     }
-
+    /**
+     * getInfrastructuresByPlanetId
+     * function that return the infrastructures of a planet
+     * @param int $id_Planet
+     * @return array
+     */
     public function getInfrastructuresByPlanetId($id_Planet) 
     {
         return $this->fetchAllRows('
@@ -70,7 +86,12 @@ class DBinfrastructures extends DBinterface {
         LEFT JOIN defensedefaut ddf ON td.id = ddf.id_Type_Defense
         WHERE i.id_Planete = ?;', [$id_Planet]);
     }
-
+    /**
+     * getDefaultDefense
+     * function that return the defense caracteristics of a player
+     * 
+     * @return array
+     */
     public function getDefaultDefense()
     {
         return $this->fetchAllRows('
@@ -86,7 +107,12 @@ class DBinfrastructures extends DBinterface {
             defensedefaut ddf
         LEFT JOIN typedefense td ON ddf.id_Type_Defense = td.id;');
     }        
-
+    /**
+     * getDefaultInstallation
+     * function that return the installation caracteristics of a player
+     * 
+     * @return array
+     */
     public function getDefaultInstallation()
     {
         return $this->fetchAllRows('
@@ -99,7 +125,12 @@ class DBinfrastructures extends DBinterface {
             installationdefaut idf
         LEFT JOIN typeinstallation ti ON idf.id_Type_Installation = ti.id;');
     }
-
+    /**
+     * getDefaultRessource
+     * function that return the ressource caracteristics of an infrastructure
+     * 
+     * @return array
+     */
     public function getDefaultRessource()
     {
         return $this->fetchAllRows('
@@ -116,12 +147,24 @@ class DBinfrastructures extends DBinterface {
             ressourcedefaut rdf
         LEFT JOIN typeinfraressource tr ON rdf.id_Type_Ressource = tr.id;');
     }
-
+    /**
+     * getLastInsertId
+     * function that return the last id of the table infrastructure
+     * 
+     * @return int
+     */
+  
     public function getLastInsertId()
     {
         return $this->fetchValue('SELECT id FROM infrastructure ORDER BY id DESC LIMIT 1;');
     }
-
+    /**
+     * buildInfrastructure
+     * function that build an infrastructure
+     * @param int $id_Planet
+     * @param string $type
+     * @return int
+     */
     public function buildInfrastructure($id_Planet, $type)
     {
         $this->executeQuery('
@@ -173,12 +216,25 @@ class DBinfrastructures extends DBinterface {
 
         return $id_Infrastructure;
     }
-
+    /**
+     * upgradeInfrastructure
+     * function that upgrade an infrastructure
+     * @param int $id_Planet
+     * @param int $id_Infrastructure
+     * @return void
+     */
     public function upgradeInfrastructure($id_Planet, $id_Infrastructure) 
     {
         return $this->executeQuery('UPDATE infrastructure SET niveau = niveau + 1 WHERE id = ?;', [$id_Infrastructure]);
     }
-
+    /**
+     * getQuantityRessourcePlayer
+     * function that return the quantity of ressources of a player
+     * 
+     * @param int $id_Player
+     * @param int $id_Universe
+     * @return array
+     */
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
     {
         return $this->fetchAllRows('
@@ -194,12 +250,25 @@ class DBinfrastructures extends DBinterface {
                 ju.id_Joueur = ? AND
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
-
+    /**
+     * updateQuantityRessource
+     * function that update the quantity of ressources of a player
+     * 
+     * @param int $id_Ressource
+     * @param int $quantite
+     * @return void
+     */
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
     }
 
+    /**
+     * getTechnoRequired
+     * function that return the technologies required
+     * 
+     * @return array
+     */
     public function getTechnoRequired()
     {
         return $this->fetchAllRows('
@@ -218,7 +287,12 @@ class DBinfrastructures extends DBinterface {
             ON
                 tn.id_Technologie_Necessaire = tt2.id;');
     }
-
+    /**
+     * getInfraTechnoRequired
+     * function that return the infrastructures technologies required
+     * 
+     * @return array
+     */
     public function getInfraTechnoRequired()
     {
         return $this->fetchAllRows('
@@ -238,7 +312,13 @@ class DBinfrastructures extends DBinterface {
             LEFT JOIN typeinfraressource AS tr
                 ON itn.id_Type_Ressource = tr.id;');
     }
-
+    /**
+     * getTechnologies
+     * function that return the technologies of a laboratory
+     * 
+     * @param int $id_Labo
+     * @return array
+     */
     public function getTechnologies($id_Labo)
     {
         return $this->fetchAllRows('

@@ -6,12 +6,24 @@ require_once 'DBinterface.php';
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
 
+/**
+ * DBspacework class
+ * @package api\boundary\DBinterface
+ *
+ */
 class DBspacework extends DBinterface {
-
+    /**
+     * DBspacework constructor.
+     */
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * function getSpaceworkID
+     * function that get the id of the spacework
+     * @param $id_Planet
+     * @return array
+     */
     public function getSpaceworkID($id_Planet)
     {
         return $this->fetchValue('
@@ -22,7 +34,11 @@ class DBspacework extends DBinterface {
             WHERE ti.type = "Chantier spatial" AND inf.id_Planete = ?;', [$id_Planet]
         );
     }
-
+    /**
+     * function getDefaultShips
+     * function that get the default ships
+     * @return array
+     */
     public function getDefaultShips()
     {
         return $this->fetchAllRows('
@@ -39,7 +55,13 @@ class DBspacework extends DBinterface {
             LEFT JOIN typevaisseaux tv ON vdf.id_Type = tv.id;
         ');
     }
-
+    /**
+     * function getQuantityRessourcePlayer
+     * function that get the quantity of the resource of the player
+     * @param $id_Player
+     * @param $id_Universe
+     * @return array
+     */
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
     {
         return $this->fetchAllRows('
@@ -55,7 +77,12 @@ class DBspacework extends DBinterface {
                 ju.id_Joueur = ? AND
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
-
+    /**
+     * function getNbShips
+     * function that get the number of ships
+     * @param $id_Spacework
+     * @return array
+     */
     public function getNbShips($id_Spacework)
     {
         // Get the number of ships for each type of ship
@@ -71,7 +98,12 @@ class DBspacework extends DBinterface {
             GROUP BY
                 tv.type;', [$id_Spacework]);
     }
-
+    /**
+     * function getLaboratoireID
+     * function that get the id of the laboratory
+     * @param $id_Planet
+     * @return array
+     */
     private function getLaboratoireID($id_Planet)
     {
         return $this->fetchValue('
@@ -82,7 +114,12 @@ class DBspacework extends DBinterface {
             WHERE ti.type = "Laboratoire" AND inf.id_Planete = ?;', [$id_Planet]
         );
     }
-
+    /**
+     * function getTechnologies
+     * function that get the technologies
+     * @param $id_Planet
+     * @return array
+     */
     public function getTechnologies($id_Planet)
     {
         $idLabo = $this->getLaboratoireID($id_Planet);
@@ -98,9 +135,13 @@ class DBspacework extends DBinterface {
             WHERE
                 t.id_Laboratoire = ?;', [$idLabo]);
     }
-
-    // 
-
+    /**
+     * function addShip
+     * function that add a ship
+     * @param $id_Spacework
+     * @param $type
+     * @return array
+     */
     public function addShip($id_Spacework, $type)
     {
         switch ($type) {
@@ -122,18 +163,34 @@ class DBspacework extends DBinterface {
                 break;
         }
     }
-
+    /**
+     * function addToDefense
+     * function that add to defense
+     * @param $id_joueur
+     * @return array
+     */
     public function addToDefense($id_joueur){
         $id_vaisseaux = $this->executeQuery('
             SELECT * FROM vaisseau ORDER BY vaisseau.id DESC LIMIT 1;');
         $this->executeQuery('
             INSERT INTO flottedefense (id_joueur, id_vaisseaux_combattants) VALUES (?, ?);', [$id_joueur, $id_vaisseaux]);
     }
+    /**
+     * function updateQuantityRessource
+     * function that update the quantity of the resource
+     * @param $id_Ressource
+     * @param $quantite
+     * @return array
+     */
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
     }
-
+    /**
+     * function getTechnoRequired
+     * function that get the required technology
+     * @return array
+     */
     public function getTechnoRequired()
     {
         return $this->fetchAllRows('

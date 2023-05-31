@@ -5,13 +5,24 @@ require_once 'DBinterface.php';
 //Compte Interface API
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
-
+/**
+ * DBsearch class
+ * @package api\boundary\DBinterface
+ *
+ */
 class DBsearch extends DBinterface {
-
+    /**
+     * DBsearch constructor.
+     */
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * function getLaboratoireID
+     * function that get the id of the laboratory
+     * @param $id_Planet
+     * @return array
+     */
     public function getLaboratoireID($id_Planet)
     {
         return $this->fetchValue('
@@ -22,7 +33,12 @@ class DBsearch extends DBinterface {
             WHERE ti.type = "Laboratoire" AND inf.id_Planete = ?;', [$id_Planet]
         );
     }
-
+    /**
+     * function getDefaultTechnologie
+     * function that get the default technology
+     * @return array
+     * 
+     */
     public function getDefaultTechnologie()
     {
         return $this->fetchAllRows('
@@ -36,7 +52,13 @@ class DBsearch extends DBinterface {
             LEFT JOIN typetechnologie tt ON tdf.id_Type_Technologie = tt.id;
         ');
     }
-
+    /**
+     * function getQuantityRessourcePlayer
+     * function that get the quantity of the resource of the player
+     * @param $id_Player
+     * @param $id_Universe
+     * @return array
+     */
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
     {
         return $this->fetchAllRows('
@@ -52,7 +74,11 @@ class DBsearch extends DBinterface {
                 ju.id_Joueur = ? AND
                 ju.id_Univers = ?;', [$id_Player, $id_Universe]);
     }
-
+    /**
+     * function getTechnologies
+     * function that get the technologies of a Laboratory
+     * @param $id_Labo
+     */
     public function getTechnologies($id_Labo)
     {
         return $this->fetchAllRows('
@@ -72,12 +98,23 @@ class DBsearch extends DBinterface {
             WHERE
                 technologie.id_Laboratoire = ?;', [$id_Labo]);
     }
-
+    /**
+     * function upgradeTechnologie
+     * function that upgrade the technology
+     * @param $id_Technologie
+     * @return array
+     */
     public function upgradeTechnologie($id_Technologie) 
     {
         return $this->executeQuery('UPDATE technologie SET niveau = niveau + 1 WHERE id = ?;', [$id_Technologie]);
     }
-    
+    /**
+     * function createTechnologie
+     * function that create a technology
+     * @param $id_Labo
+     * @param $type
+     * @return array
+     */
     public function createTechnologie($id_Labo, $type)
     {
         switch ($type) {
@@ -117,12 +154,22 @@ class DBsearch extends DBinterface {
 
         return $id_Technologie;
     }
-
+    /**
+     * function updateQuantityRessource
+     * function that update the quantity of the resource
+     * @param $id_Ressource
+     * @param $quantite
+     * @return array
+     */
     public function updateQuantityRessource($id_Ressource, $quantite)
     {
         return $this->executeQuery('UPDATE ressource SET quantite = quantite - ? WHERE id = ?;', [$quantite, $id_Ressource]);
     }
-
+    /**
+     * function getTechnoRequired
+     * function that get the technology required
+     * @return array
+     */
     public function getTechnoRequired()
     {
         return $this->fetchAllRows('
