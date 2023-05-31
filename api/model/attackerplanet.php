@@ -2,27 +2,27 @@
 
 class AttackerPlanet {
 
-    private $id_Attacker_Planet;
-    private $id_Attacker_Player;
-    private $fleet_Attacker;
+    private $idAttackerPlanet;
+    private $idAttackerPlayer;
+    private $fleetAttacker;
 
-    public function __construct($id_Attacker_Planet, $id_Attacker_Player, $fleet_Attacker)
+    public function __construct($idAttackerPlanet, $idAttackerPlayer, $fleetAttacker)
     {
-        $this->id_Attacker_Planet = $id_Attacker_Planet;
-        $this->id_Attacker_Player = $id_Attacker_Player;
-        $this->fleet_Attacker = $fleet_Attacker;
+        $this->idAttackerPlanet = $idAttackerPlanet;
+        $this->idAttackerPlayer = $idAttackerPlayer;
+        $this->fleetAttacker = $fleetAttacker;
     }
 
-    public function getFleet_Attacker() { return $this->fleet_Attacker; }
+    public function getFleet_Attacker() { return $this->fleetAttacker; }
 
     public function getAttackPoints()
     {
-        return $this->fleet_Attacker->getAttackPoints();
+        return $this->fleetAttacker->getAttackPoints();
     }
 
     public function getDefensePoints()
     {
-        return $this->fleet_Attacker->getDefensePoints();
+        return $this->fleetAttacker->getDefensePoints();
     }
 
 }

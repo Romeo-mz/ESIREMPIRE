@@ -163,12 +163,17 @@ class DBinfrastructures extends DBinterface {
      * function that build an infrastructure
      * @param int $id_Planet
      * @param string $type
+     * @param string $infraType
      * @return int
      */
-    public function buildInfrastructure($id_Planet, $type)
+    
+
+    public function buildInfrastructure($id_Planet, $infraType, $type)
     {
+        $idType = $this->fetchValue('SELECT id FROM typeinfrastructure WHERE type = ?;', [$infraType]);
+
         $this->executeQuery('
-        INSERT INTO infrastructure (id_Planete) VALUES (?);', [$id_Planet]);
+        INSERT INTO infrastructure (id_Planete, id_Type) VALUES (?, ?);', [$id_Planet, $idType]);
         $id_Infrastructure = $this->getLastInsertId();
 
         switch ($type) {

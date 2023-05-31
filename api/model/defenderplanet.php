@@ -2,22 +2,23 @@
 
 class DefenderPlanet {
 
-    private $id_Defender_Planet;
-    private $id_Defender_Player;
-    private $fleet_Defender;
+    private $idDefenderPlanet;
+    private $idDefenderPlayer;
+    private $fleetDefender;
     private $infraDefensePoints;
     private $infraAttackPoints;
 
-    public function __construct($id_Defender_Planet, $id_Defender_Player, $fleet_Defender, $infraDefensePoints, $infraAttackPoints)
+    public function __construct($idDefenderPlanet, $idDefenderPlayer, $fleetDefender, $infraDefensePoints, $infraAttackPoints)
     {
-        $this->id_Defender_Planet = $id_Defender_Planet;
-        $this->id_Defender_Player = $id_Defender_Player;
-        $this->fleet_Defender = $fleet_Defender;
+        $this->idDefenderPlanet = $idDefenderPlanet;
+        $this->idDefenderPlayer = $idDefenderPlayer;
+        $this->fleetDefender = $fleetDefender;
         $this->infraDefensePoints = $infraDefensePoints;
         $this->infraAttackPoints = $infraAttackPoints;
     }
 
-    public function getFleet_Defender() { return $this->fleet_Defender; }
+    public function getIdPlanet() { return $this->idDefenderPlanet; }
+    public function getFleetDefender() { return $this->fleetDefender; }
     public function getInfraDefensePoints() { return $this->infraDefensePoints; }
     public function getInfraAttackPoints() { return $this->infraAttackPoints; }
 
@@ -25,7 +26,7 @@ class DefenderPlanet {
     {
         $attacksPoints = $this->infraAttackPoints;
 
-        foreach ($this->fleet_Defender->getShips() as $ship) {
+        foreach ($this->fleetDefender->getShips() as $ship) {
             $attacksPoints += $ship->getAttackPoints();
         }
 
@@ -36,7 +37,7 @@ class DefenderPlanet {
     {
         $defensesPoints = $this->infraDefensePoints;
 
-        foreach ($this->fleet_Defender->getShips() as $ship) {
+        foreach ($this->fleetDefender->getShips() as $ship) {
             $defensesPoints += $ship->getDefensePoints();
         }
 

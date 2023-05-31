@@ -94,9 +94,9 @@ class APIinfrastructures
             $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
             $this->sendResponse(200, 'OK');
         }
-        else if (isset($data['id_Planet']) && isset($data['type'])) 
+        else if (isset($data['id_Planet']) && isset($data['infraType']) && isset($data['type'])) 
         {
-            $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
+            $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['infraType'], $data['type']);
             $response = array('id_New_Infrastructure' => $id_New_Infrastructure);
 
             $this->sendResponse(200, 'OK', json_encode($response));

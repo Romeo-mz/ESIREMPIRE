@@ -17,6 +17,19 @@ class DBattaque extends DBinterface {
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
+
+    public function destroyAllDefenseSystems($idDefenderPlanet)
+    {
+        $idType = $this->fetchValue('SELECT id FROM typeinfrastructure WHERE type = "DEFENSE";');
+
+        $this->executeQuery('
+            DELETE FROM infrastructure
+            WHERE id_Planete = ?
+            AND id_Type = ?;',
+            [$idDefenderPlanet, $idType]
+        );
+    }
+
     /**
      * getInfrastructuresPoints 
      * fucntion that return the infrastructures points of a planet

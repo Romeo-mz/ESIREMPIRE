@@ -36,8 +36,6 @@ class Attaque{
 
         // Create a fleet with the ships
         return new Fleet($ships);
-
-        // var_dump($this->fleet_Attacker);
     }
 
     private function createDefenderFleet($id_Defender_Player, $id_Defender_Planet)
@@ -61,9 +59,6 @@ class Attaque{
 
         // Create a fleet with the ships
         return new Fleet($ships);
-
-        // var_dump($this->fleet_Defender);
-
     }
 
     private function createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet) 
@@ -76,7 +71,6 @@ class Attaque{
 
     private function createDefenderPlanet($id_Defender_Player, $id_Defender_Planet, $fleet_Defender)
     {
-
         $infra = $this->dbInterface->getInfrastructuresPoints($id_Defender_Planet);
 
         $defensePoints = 0;
@@ -96,12 +90,10 @@ class Attaque{
        $attackerPlanet = new AttackerPlanet($id_Attacker_Planet, $id_Attacker_Player, $fleets[0]);
        $defenderPlanet = $this->createDefenderPlanet($id_Defender_Player, $id_Defender_Planet, $fleets[1]);
 
-
         // Start attack
         $combatReport = $this->startAttack($attackerPlanet, $defenderPlanet);
 
-        // // Return combat report
-        // return $combatReport;
+        // Add combat report to DB
 
     }
 
@@ -159,7 +151,7 @@ class Attaque{
 
     private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
-        $this->applyDefenseSystemDamage($damage['attackRatio']);
+        $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet->getIdPlanet());
         // $this->applyShipDamage($damage['defenseRatio']);
 
         // // Calculate rewards and update game state based on the result
@@ -180,11 +172,11 @@ class Attaque{
         // return $rewards;
     }
 
-    private function applyDefenseSystemDamage($attackRatio) {
+    private function applyDefenseSystemDamage($attackRatio, $idDefenderPlanet) {
         
         if ($attackRatio > 1) {
-            // Defense systems are destroyed
-            $this->dbInterface->destroyAllDefenseSystems();
+            // Defense systems are all destroyed
+            $this->dbInterface->destroyAllDefenseSystems($idDefenderPlanet);
         } else {
             // Defense systems are damaged
             // foreach ($this->defenseSystems as $defenseSystem) {
