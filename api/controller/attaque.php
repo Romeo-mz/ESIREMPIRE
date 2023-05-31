@@ -178,10 +178,19 @@ class Attaque{
             // Defense systems are all destroyed
             $this->dbInterface->destroyAllDefenseSystems($idDefenderPlanet);
         } else {
-            // Defense systems are damaged
-            // foreach ($this->defenseSystems as $defenseSystem) {
-            //     $defenseSystem->applyDamage($attackRatio);
-            // }
+            // Destroy randomly some defense systems
+            $defenseSystems = $this->dbInterface->getDefenseSystems($idDefenderPlanet);
+            $defenseSystemsCount = count($defenseSystems);
+            $defenseSystemsToDestroy = max(1, min($defenseSystemsCount, round($defenseSystemsCount * $attackRatio)));
+
+            $defenseSystemsToDestroyKeys = array_rand($defenseSystems, $defenseSystemsToDestroy);
+            if (!is_array($defenseSystemsToDestroyKeys)) {
+                $defenseSystemsToDestroyKeys = [$defenseSystemsToDestroyKeys];
+            }
+
+            foreach ($defenseSystemsToDestroyKeys as $key) {
+                $this->dbInterface->destroyDefenseSystem($defenseSystems[$key]['infrastructure_id']);
+}
         }
 
     }

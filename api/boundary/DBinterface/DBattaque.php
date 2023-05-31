@@ -18,6 +18,29 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function destroyDefenseSystem($idInfrastructure)
+    {
+        $this->executeQuery('
+            DELETE FROM defense
+            WHERE id_Infrastructure = ?;',
+            [$idInfrastructure]
+        );
+    }
+
+    public function getDefenseSystems($idDefenderPlanet)
+    {
+        return $this->fetchAllRows('
+            SELECT
+                i.id AS infrastructure_id,
+                td.type AS defense_type
+            FROM
+                infrastructure i
+            LEFT JOIN defense d ON i.id = d.id_Infrastructure
+            LEFT JOIN typedefense td ON d.id_Type_Defense = td.id
+            WHERE
+                i.id_Planete = ? AND td.type IS NOT NULL;', [$idDefenderPlanet]);
+    }
+
     public function destroyAllDefenseSystems($idDefenderPlanet)
     {
         $idType = $this->fetchValue('SELECT id FROM typeinfrastructure WHERE type = "DEFENSE";');
