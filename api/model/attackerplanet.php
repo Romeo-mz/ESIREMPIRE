@@ -13,6 +13,9 @@ class AttackerPlanet {
         $this->fleetAttacker = $fleetAttacker;
     }
 
+    public function getIdPlanet() { return $this->idAttackerPlanet; }
+    public function getIdPlayer() { return $this->idAttackerPlayer; }
+
     public function getFleet_Attacker() { return $this->fleetAttacker; }
 
     public function getAttackPoints()

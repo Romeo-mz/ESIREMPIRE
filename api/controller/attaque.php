@@ -152,7 +152,7 @@ class Attaque{
     private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
         $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet->getIdPlanet());
-        // $this->applyShipDamage($damage['defenseRatio']);
+        $this->applyShipDamage($damage['defenseRatio'], $attackerPlanet->getIdPlanet());
 
         // // Calculate rewards and update game state based on the result
         // if ($result === 'defenseur') {
@@ -172,13 +172,35 @@ class Attaque{
         // return $rewards;
     }
 
+    private function applyShipDamage($defenseRatio, $idAttackerPlanet) {
+        if ($defenseRatio > 1) {
+            // All ships are destroyed
+            $this->dbInterface->destroyAllShips($idAttackerPlanet);
+        } else {
+            // Destroy randomly ships
+            var_dump("randomly destroy ships");
+            // $ships = $this->dbInterface->getShips($idAttackerPlanet);
+            // $shipsCount = count($ships);
+            // $shipsToDestroy = max(1, min($shipsCount, round($shipsCount * $defenseRatio)));
+
+            // $shipsToDestroyKeys = array_rand($ships, $shipsToDestroy);
+            // if (!is_array($shipsToDestroyKeys)) {
+            //     $shipsToDestroyKeys = [$shipsToDestroyKeys];
+            // }
+
+            // foreach ($shipsToDestroyKeys as $key) {
+            //     $this->dbInterface->destroyShip($ships[$key]['ship_id']);
+            // }
+        }
+    }
+
     private function applyDefenseSystemDamage($attackRatio, $idDefenderPlanet) {
         
         if ($attackRatio > 1) {
             // Defense systems are all destroyed
             $this->dbInterface->destroyAllDefenseSystems($idDefenderPlanet);
         } else {
-            // Destroy randomly some defense systems
+            // Destroy randomly defense systems
             $defenseSystems = $this->dbInterface->getDefenseSystems($idDefenderPlanet);
             $defenseSystemsCount = count($defenseSystems);
             $defenseSystemsToDestroy = max(1, min($defenseSystemsCount, round($defenseSystemsCount * $attackRatio)));
