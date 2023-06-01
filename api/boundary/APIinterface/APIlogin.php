@@ -11,19 +11,32 @@ $session_controller->startSession();
 
 $api_login = new APIlogin($controller_instance, $session_controller);
 $api_login->request();
-
+/**
+ * Class APIlogin
+ * This class is the API for the login page.
+ * It handles the POST and GET requests.
+ */
 class APIlogin
 {
     private $controller;
     private $session_controller;
-
+    /**
+     * APIlogin constructor.
+     * @param $controller
+     */
     public function __construct($controller, $session_controller)
     {
         $this->controller = $controller;
         $this->session_controller = $session_controller;
         //$this->request();
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     * 
+     * @return void
+     */
     public function request()
     {
         $request_method = $_SERVER['REQUEST_METHOD'];
@@ -43,7 +56,13 @@ class APIlogin
                 break;
             }
     }
-
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     private function postRequest()
     {
         $data = json_decode(file_get_contents("php://input"));
@@ -70,7 +89,14 @@ class APIlogin
             $this->sendResponse(401, 'Error while authentification', json_encode($result));
         }
     }
-
+    /**
+     * This function sends the response to the client.
+     * 
+     * @param $statusCode
+     * @param $statusText
+     * @param null $body
+     * @return void
+     */
     private function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");

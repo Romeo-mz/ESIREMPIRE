@@ -5,17 +5,30 @@ require_once('../../controller/attaque.php');
 $controller_instance = new Attaque();
 $api_attaque = new APIattaque($controller_instance);
 $api_attaque->handleRequest();
-
+/**
+ * Class APIattaque
+ * This class is the API for the admin page.
+ * It handles the POST and GET requests.
+ */
 class APIattaque
 {
     private $controller;
-
+    /**
+     * APIadmin constructor.
+     * @param $controller
+     */
     public function __construct($controller)
     {
         $this->controller = $controller;
 
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     * 
+     * @return void
+     */
     public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -32,7 +45,13 @@ class APIattaque
                 break;
         }
     }
-
+    /**
+     * This function handles the GET request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     public function handleGet()
     {
         if (isset($_GET['default_ennemis']) && isset($_GET['id_Joueur']) && isset($_GET['id_Univers'])) {
@@ -49,7 +68,13 @@ class APIattaque
         }
     }
 
-
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     public function handlePost()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -61,7 +86,15 @@ class APIattaque
             $this->sendResponse(200, 'OK');
         }
     }
-    
+    /**
+     * This function sends a response with the given status code and status text.
+     * If a body is given, it is sent as a JSON string.
+     * 
+     * @param int $statusCode
+     * @param string $statusText
+     * @param string|null $body
+     * @return void
+     */
     public function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");
