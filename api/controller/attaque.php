@@ -6,17 +6,28 @@ require_once('../../model/fleet.php');
 require_once('../../model/defenderplanet.php');
 require_once('../../model/attackerplanet.php');
 
+/**
+ * Class Attaque
+ * This class is the controller for the attack page.
+ * It handles the attack of the game.
+ */
 class Attaque{
     private $dbInterface;
 
     // private $fleet_Attacker;
     // private $fleet_Defender;
-
+    /**
+     * Attaque constructor.
+     */
     public function __construct()
     {
         $this->dbInterface = new DBattaque();
     }
-
+    /**
+     * this create a fleet with the ships
+     * 
+     * @return array the result of the database operation
+     */
     private function createAttackerFleet($fleet_Attacker_Composition)
     {
         $shipsPoint = $this->dbInterface->getShipsPoint();
@@ -37,7 +48,12 @@ class Attaque{
         // Create a fleet with the ships
         return new Fleet($ships);
     }
-
+    /**
+     * this create a defender fleet with the ships
+     * @param int $id_Defender_Player
+     * @param int $id_Defender_Planet
+     * @return array the result of the database operation
+     */
     private function createDefenderFleet($id_Defender_Player, $id_Defender_Planet)
     {
         $shipsPoint = $this->dbInterface->getShipsPoint();
@@ -60,7 +76,15 @@ class Attaque{
         // Create a fleet with the ships
         return new Fleet($ships);
     }
-
+    /**
+     * this function create a fleet for the attacker and the defender
+     * 
+     * @param array $fleet_Attacker_Composition
+     * @param int $id_Defender_Player
+     * @param int $id_Defender_Planet
+     * 
+     * @return array the result of the database operation
+     */
     private function createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet) 
     {
         $attackerFleet =  $this->createAttackerFleet($fleet_Attacker_Composition);
@@ -68,7 +92,16 @@ class Attaque{
 
         return array($attackerFleet, $defenderFleet);
     }
-
+    /**
+     * this function create a defender planet
+     * 
+     * @param int $id_Defender_Player
+     * @param int $id_Defender_Planet
+     * @param array $fleet_Defender
+     * 
+     * @return array the result of the database operation
+     */
+     
     private function createDefenderPlanet($id_Defender_Player, $id_Defender_Planet, $fleet_Defender)
     {
         $infra = $this->dbInterface->getInfrastructuresPoints($id_Defender_Planet);
@@ -83,7 +116,17 @@ class Attaque{
 
         return new DefenderPlanet($id_Defender_Planet, $id_Defender_Player, $fleet_Defender, $defensePoints, $attackPoints);
     }
-
+    /**
+     * This function setup the attack
+     * 
+     * @param int $id_Attacker_Player
+     * @param int $id_Defender_Player
+     * @param int $id_Attacker_Planet
+     * @param int $id_Defender_Planet
+     * @param array $fleet_Attacker_Composition
+     * 
+     * @return array the result of the database operation
+     */
     public function attack($id_Attacker_Player, $id_Defender_Player, $id_Attacker_Planet, $id_Defender_Planet, $fleet_Attacker_Composition)
     {
        $fleets = $this->createFleets($fleet_Attacker_Composition, $id_Defender_Player, $id_Defender_Planet);
@@ -96,7 +139,17 @@ class Attaque{
         // Add combat report to DB
 
     }
-
+    /**
+     * This function start the attack
+     * 
+     * @param int $id_Attacker_Player
+     * @param int $id_Defender_Player
+     * @param int $id_Attacker_Planet
+     * @param int $id_Defender_Planet
+     * @param array $fleet_Attacker_Composition
+     * 
+     * @return array the result of the database operation
+     */
     private function startAttack($attackerPlanet, $defenderPlanet) {
         // Calculate attack and defense points
         $attackerAttackPoints = $attackerPlanet->getAttackPoints();
@@ -128,7 +181,16 @@ class Attaque{
         // Return combat report
         // return $combatReport;
     }
-
+    /**
+     * This function determine the victory
+     * 
+     * @param int $attackerAttackPoints
+     * @param int $attackerDefensePoints
+     * @param int $defenderAttackPoints
+     * @param int $defenderDefensePoints
+     * 
+     * @return array the result of the database operation
+     */
     private function determineVictory($attackerAttackPoints, $attackerDefensePoints, $defenderAttackPoints, $defenderDefensePoints) {
         if ($defenderAttackPoints > $attackerDefensePoints) {
             return 'defenseur';
@@ -138,7 +200,16 @@ class Attaque{
             return 'egalite';
         }
     }
-
+    /**
+     * This function calculate the damage
+     * 
+     * @param int $attackerAttackPoints
+     * @param int $attackerDefensePoints
+     * @param int $defenderAttackPoints
+     * @param int $defenderDefensePoints
+     * 
+     * @return array the result of the database operation
+     */
     private function calculateDamage($attackerAttackPoints, $attackerDefensePoints, $defenderAttackPoints, $defenderDefensePoints) {
         $attackRatio = $attackerAttackPoints / $defenderDefensePoints;
         $defenseRatio = $defenderAttackPoints / $attackerDefensePoints;
@@ -148,7 +219,16 @@ class Attaque{
             'defenseRatio' => $defenseRatio,
         ];
     }
-
+    /**
+     * This function apply the damage
+     * 
+     * @param int $result
+     * @param int $damage
+     * @param object $attackerPlanet
+     * @param object $defenderPlanet
+     * 
+     * @return array the result of the database operation
+     */
     private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
         $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet->getIdPlanet());
@@ -216,6 +296,14 @@ class Attaque{
         }
 
     }
+    /**
+     * This function handle the attacker victory
+     * 
+     * @param object $attackerPlanet
+     * @param object $defenderPlanet
+     * 
+     * @return array the result of the database operation
+     */
 
     private function handleAttackerVictory($attackerPlanet, $defenderPlanet) {
         if ($attackerPlanet->hasColonizationShip()) {
@@ -232,7 +320,16 @@ class Attaque{
             return [];
         }
     }
-
+    /**
+     * This function generate the combat report
+     * 
+     * @param int $result
+     * @param int $damage
+     * @param object $attackerPlanet
+     * @param object $defenderPlanet
+     * 
+     * @return array the result of the database operation
+     */
     private function generateCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet) {
         $report = [
             'date' => date('Y-m-d H:i:s'),

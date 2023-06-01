@@ -6,15 +6,29 @@ $controller_instance = new Search();
 $api_search = new APIsearch($controller_instance);
 $api_search->handleRequest();
 
+/**
+ * Class APIsearch
+ * This class is the API for the search page.
+ * It handles the POST and GET requests.
+ */
 class APIsearch
 {
     private $controller;
-
+    /**
+     * APIsearch constructor.
+     * @param $controller
+     */
     public function __construct($controller)
     {
         $this->controller = $controller;
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     *
+     * @return void
+     */
     public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -30,7 +44,13 @@ class APIsearch
                 break;
         }
     }
-
+    /**
+     * This function handles the GET request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     *
+     * @return void
+     */
     private function handleGet()
     {
         if (isset($_GET['id_Labo']) && isset($_GET['id_Planet'])) 
@@ -64,6 +84,13 @@ class APIsearch
         }
     }
 
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     *
+     * @return void
+     */
     private function handlePost()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -88,7 +115,14 @@ class APIsearch
             $this->sendResponse(400, 'Bad Request');
         }
     }
-
+    /**
+     * This function sends a response with the given status code and status text.
+     * If a body is given, it is sent as a JSON object.
+     *
+     * @param $statusCode
+     * @param $statusText
+     * @param null $body
+     */
     private function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");
