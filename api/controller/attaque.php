@@ -181,6 +181,7 @@ class Attaque{
         // Return combat report
         // return $combatReport;
     }
+    
     /**
      * This function determine the victory
      * 
