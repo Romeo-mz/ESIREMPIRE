@@ -181,7 +181,7 @@ class Attaque{
         // Return combat report
         // return $combatReport;
     }
-    
+
     /**
      * This function determine the victory
      * 
@@ -233,9 +233,9 @@ class Attaque{
     private function applyDamage($result, $damage, $attackerPlanet, $defenderPlanet) {
         // Apply damage to defense systems and ships
         $this->applyDefenseSystemDamage($damage['attackRatio'], $defenderPlanet->getIdPlanet());
-        $this->applyShipDamage($damage['defenseRatio'], $attackerPlanet->getIdPlanet());
+        $this->applyShipDamage($damage['defenseRatio'], $attackerPlanet);
 
-        // // Calculate rewards and update game state based on the result
+        // Calculate rewards and update game state based on the result
         // if ($result === 'defenseur') {
         //     $rewards = $attackerPlanet->getDestroyedShipResources();
         //     $defenderPlanet->addResources($rewards);
@@ -253,25 +253,24 @@ class Attaque{
         // return $rewards;
     }
 
-    private function applyShipDamage($defenseRatio, $idAttackerPlanet) {
+    private function applyShipDamage($defenseRatio, $attackerPlanet) {
         if ($defenseRatio > 1) {
             // All ships are destroyed
-            $this->dbInterface->destroyAllShips($idAttackerPlanet);
+            $this->dbInterface->destroyAllShips($attackerPlanet->getIdPlanet());
         } else {
             // Destroy randomly ships
-            var_dump("randomly destroy ships");
-            // $ships = $this->dbInterface->getShips($idAttackerPlanet);
-            // $shipsCount = count($ships);
-            // $shipsToDestroy = max(1, min($shipsCount, round($shipsCount * $defenseRatio)));
+            $ships = $attackerPlanet->getFleet()->getShips();
+            $shipsCount = count($ships);
+            $shipsToDestroy = max(1, min($shipsCount, round($shipsCount * $defenseRatio)));
 
-            // $shipsToDestroyKeys = array_rand($ships, $shipsToDestroy);
-            // if (!is_array($shipsToDestroyKeys)) {
-            //     $shipsToDestroyKeys = [$shipsToDestroyKeys];
-            // }
+            $shipsToDestroyKeys = array_rand($ships, $shipsToDestroy);
+            if (!is_array($shipsToDestroyKeys)) {
+                $shipsToDestroyKeys = [$shipsToDestroyKeys];
+            }
 
-            // foreach ($shipsToDestroyKeys as $key) {
-            //     $this->dbInterface->destroyShip($ships[$key]['ship_id']);
-            // }
+            foreach ($shipsToDestroyKeys as $key) {
+                $this->dbInterface->destroyShip($ships[$key]->getType(), $attackerPlanet->getIdPlanet());
+            }
         }
     }
 
@@ -284,16 +283,19 @@ class Attaque{
             // Destroy randomly defense systems
             $defenseSystems = $this->dbInterface->getDefenseSystems($idDefenderPlanet);
             $defenseSystemsCount = count($defenseSystems);
-            $defenseSystemsToDestroy = max(1, min($defenseSystemsCount, round($defenseSystemsCount * $attackRatio)));
 
-            $defenseSystemsToDestroyKeys = array_rand($defenseSystems, $defenseSystemsToDestroy);
-            if (!is_array($defenseSystemsToDestroyKeys)) {
-                $defenseSystemsToDestroyKeys = [$defenseSystemsToDestroyKeys];
+            if ($defenseSystemsCount > 0) {
+                $defenseSystemsToDestroy = max(1, min($defenseSystemsCount, round($defenseSystemsCount * $attackRatio)));
+
+                $defenseSystemsToDestroyKeys = array_rand($defenseSystems, $defenseSystemsToDestroy);
+                if (!is_array($defenseSystemsToDestroyKeys)) {
+                    $defenseSystemsToDestroyKeys = [$defenseSystemsToDestroyKeys];
+                }
+
+                foreach ($defenseSystemsToDestroyKeys as $key) {
+                    $this->dbInterface->destroyDefenseSystem($defenseSystems[$key]['infrastructure_id']);
+                }
             }
-
-            foreach ($defenseSystemsToDestroyKeys as $key) {
-                $this->dbInterface->destroyDefenseSystem($defenseSystems[$key]['infrastructure_id']);
-}
         }
 
     }

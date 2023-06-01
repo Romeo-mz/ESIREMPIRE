@@ -18,15 +18,31 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
-    public function destroyAllShips($idAttackerPlanet)
+    private function getIdSpacework($idPlanet)
     {
-        $id_Spacework = $this->fetchValue('
+        return $this->fetchValue('
             SELECT ins.id
             FROM installation AS ins
             JOIN typeinstallation AS ti ON ins.id_Type_Installation = ti.id
             JOIN infrastructure AS inf ON ins.id_Infrastructure = inf.id
-            WHERE ti.type = "Chantier spatial" AND inf.id_Planete = ?;', [$idAttackerPlanet]
+            WHERE ti.type = "Chantier spatial" AND inf.id_Planete = ?;', [$idPlanet]
         );
+    }
+
+    public function destroyShip($shipType, $idPlanet)
+    {
+        $id_Type = $this->fetchValue('SELECT id FROM typevaisseaux WHERE type = ?;', [$shipType]);
+        $id_Spacework = $this->getIdSpacework($idPlanet);
+
+        $this->executeQuery('
+            DELETE FROM vaisseau
+            WHERE id_Chantier_Spatial = ? AND id_Type = ? LIMIT 1;', [$id_Spacework, $id_Type]
+        );
+    }
+
+    public function destroyAllShips($idAttackerPlanet)
+    {
+        $id_Spacework = $this->getIdSpacework($idAttackerPlanet);
 
         return $this->executeQuery('
             DELETE FROM vaisseau
