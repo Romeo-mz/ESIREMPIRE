@@ -6,11 +6,12 @@ export class View extends Observer {
         super();
         this.#controller = controller;
         this.#controller.addObserver(this);
-
-        this.createVaisseaux();
+        
     }
 
     createVaisseaux() {
+        console.log("debug");
+
         const vaisseaux = this.#controller.vaisseaux;
         vaisseaux.forEach(vaisseau => {
             console.log(vaisseau);

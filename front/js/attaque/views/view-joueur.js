@@ -16,7 +16,7 @@ export class View extends Observer {
 
     const attackerId = this.#controller.session.id_Player;
     const fleetData = this.#controller.getFlotteJoueur();
-    console.log(fleetData);
+    // console.log(fleetData);
 
     this.#controller.getDataEnnemis().then((data) => {
       data.forEach((ennemi, index) => {
@@ -26,11 +26,11 @@ export class View extends Observer {
         const jsonData = {
           id_Attacker_Player: attackerId,
           id_Defender_Player: defenderId,
-          id_Attacker_Planet: 1, // Set the attacker's planet ID
+          id_Attacker_Planet: this.#controller.session.id_Player, // Set the attacker's planet ID
           id_Defender_Planet: idDefenderPlanet, // Set the defender's planet ID
           fleet_Attacker: fleetData
         }
-        console.log(jsonData);
+        // console.log(jsonData);
         const row = document.createElement('tr');
 
         const jsonDataTd = document.createElement('td');

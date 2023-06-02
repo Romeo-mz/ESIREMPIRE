@@ -6,7 +6,7 @@ import { Technologie } from "../models/technologie.js";
 import { Ship } from "../models/ship.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esireloc/api/boundary/APIinterface/APIspacework.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIspacework.php";
 const API_QUERY_PARAMS = {
     defaultShips: "?default_ships",
     spaceworkID: (planetID) => `?id_Spacework&id_Planet=${planetID}`,

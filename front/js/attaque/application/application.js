@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (sessionDataService.getSessionData() !== null) {
     const myController = new Controller();
-
+    console.log("Success to load controller");
       try {
         await myController.getFlotteJoueur();
         console.log("Success to load all vaisseaux");

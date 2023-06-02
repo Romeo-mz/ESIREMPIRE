@@ -67,31 +67,38 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
+            header('Location: ../../../front/login.php');
             
         }
         else if($result == 1){
             http_response_code(401);
             echo "Password Invalid / Password too short";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 2){
             http_response_code(401);
             echo "Username Ivalid / Username too short";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 3){
             http_response_code(401);
             echo "Email Invalid";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 4){
             http_response_code(401);
             echo "Username already exists";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 5){
             http_response_code(401);
             echo "Email already exists";
+            header('Location: ../../../front/register.php');
         }
         else{
             http_response_code(500);
             echo "Internal server error";
+            header('Location: ../../../front/register.php');
         }
     }
     /**
@@ -100,7 +107,7 @@ class APIregister{
      * @param int $code
      * @param string $status
      * @param string $message
-     * @return void
+     * @return int
      */
     public function getIdUnivers(){
         if(http_response_code() != 200){
@@ -169,7 +176,7 @@ class APIregister{
      * @param int $code
      * @param string $status
      * @param string $message
-     * @return void
+     * @return mixed
      */
     public function getAllUnivers(){
         $allunivers = $this->controller->getAllUnivers();
