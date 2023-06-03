@@ -17,6 +17,7 @@ class DefenderPlanet {
         $this->infraAttackPoints = $infraAttackPoints;
     }
 
+    public function getIdPlayer() { return $this->idDefenderPlayer; }
     public function getIdPlanet() { return $this->idDefenderPlanet; }
     public function getFleetDefender() { return $this->fleetDefender; }
     public function getInfraDefensePoints() { return $this->infraDefensePoints; }

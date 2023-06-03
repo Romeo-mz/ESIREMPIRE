@@ -18,6 +18,57 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function addResources($idPlayer, $idPlanet, $rewards)
+    {
+        $idUniverse = $this->fetchValue('
+            SELECT u.id AS universe_id
+            FROM univers u
+            JOIN galaxie g ON g.id_Univers = u.id
+            JOIN systemesolaire s ON s.id_Galaxie = g.id
+            JOIN planete p ON p.id_Systeme_Solaire = s.id
+            WHERE p.id = ?;', [$idPlanet]
+        );
+
+        $idResources = $this->fetchAllRows('
+            SELECT ju.id_Ressource AS resource_id,
+                    tr.type AS resource_type
+            FROM joueurunivers ju
+            JOIN ressource r ON r.id = ju.id_Ressource
+            LEFT JOIN typeressource tr ON r.id_Type = tr.id
+            WHERE ju.id_Univers = ?
+            AND ju.id_Joueur = ?
+            AND 
+                (tr.type = "METAL" OR tr.type = "DEUTERIUM");', [$idUniverse, $idPlayer]
+        );
+
+        $this->executeQuery('
+            UPDATE ressource
+            SET quantite = quantite + ?
+            WHERE id = ?
+            AND id_Type = 1;', [$rewards['cout_metal'], $idResources[0]['resource_id']]
+        );
+        return $this->executeQuery('
+            UPDATE ressource
+            SET quantite = quantite + ?
+            WHERE id = ?
+            AND id_Type = 2;', [$rewards['cout_deuterium'], $idResources[1]['resource_id']]
+        );
+    }
+
+    public function getShipResources($shipType)
+    {
+        return $this->fetchAllRows('
+            SELECT
+                vdf.cout_metal,
+                vdf.cout_deuterium
+            FROM
+                vaisseaudefaut vdf
+            LEFT JOIN typevaisseaux tv ON vdf.id_Type = tv.id
+            WHERE
+                tv.type = ?;', [$shipType]
+        );
+    }
+
     private function getIdSpacework($idPlanet)
     {
         return $this->fetchValue('

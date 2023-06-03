@@ -236,21 +236,44 @@ class Attaque{
         $this->applyShipDamage($damage['defenseRatio'], $attackerPlanet);
 
         // Calculate rewards and update game state based on the result
-        // if ($result === 'defenseur') {
-        //     $rewards = $attackerPlanet->getDestroyedShipResources();
-        //     $defenderPlanet->addResources($rewards);
-        // } elseif ($result === 'attaquant') {
-        //     $rewards = $this->handleAttackerVictory($attackerPlanet, $defenderPlanet);
-        // } else {
-        //     // In case of a draw, no rewards
-        //     $rewards = [];
-        // }
+        if ($result === 'defenseur') {
+            $rewards = $this->getDestroyedShipResources($attackerPlanet->getFleet());
+            $this->dbInterface->addResources($defenderPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet(),$rewards);
+        } elseif ($result === 'attaquant') {
+            $rewards = $this->handleAttackerVictory($attackerPlanet, $defenderPlanet);
+        } else {
+            // In case of a draw, no rewards
+            $rewards = [];
+        }
 
         // // Save changes to attacker fleet and defender planet
         // $attackerPlanet->save();
         // $defenderPlanet->save();
 
         // return $rewards;
+    }
+
+    private function getDestroyedShipResources($attackerFleet)
+    {
+        $ships = $attackerFleet->getShips();
+        $resources = [];
+
+        foreach ($ships as $ship) {
+            $resources[$ship->getType()] = $this->dbInterface->getShipResources($ship->getType())[0];
+        }
+
+        // Sum resources
+        $resources = array_reduce($resources, function ($carry, $item) {
+            foreach ($item as $key => $value) {
+                if (!isset($carry[$key])) {
+                    $carry[$key] = 0;
+                }
+                $carry[$key] += $value;
+            }
+            return $carry;
+        }, []);
+
+        return $resources;
     }
 
     private function applyShipDamage($defenseRatio, $attackerPlanet) {
