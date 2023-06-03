@@ -11,8 +11,7 @@ export class View extends Observer {
 
     createVaisseaux() {
         return new Promise((resolve, reject) => {
-            console.log("debug");
-
+            
             const vaisseaux = this.#controller.vaisseaux;
             vaisseaux.forEach(vaisseau => {
                 console.log(vaisseau);
