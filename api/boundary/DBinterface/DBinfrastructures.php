@@ -68,44 +68,50 @@ class DBinfrastructures extends DBinterface {
 
         // Update events
         // Metal
-        $this->executeQuery('
-            CREATE OR REPLACE EVENT 
-                resource_metal_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[0]['resource_id'].' 
-            ON SCHEDULE EVERY 1 MINUTE DO 
-            UPDATE 
-                ressource 
-            SET 
-                ressource.quantite = ressource.quantite + ? 
-            WHERE 
-                ressource.id = ?;
-            ', [($productionRate['production_metal'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[0]['resource_id']]
-        );
+        if($productionRate['production_metal'] !== null) {
+            $this->executeQuery('
+                CREATE OR REPLACE EVENT 
+                    resource_metal_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[0]['resource_id'].' 
+                ON SCHEDULE EVERY 1 MINUTE DO 
+                UPDATE 
+                    ressource 
+                SET 
+                    ressource.quantite = ressource.quantite + ? 
+                WHERE 
+                    ressource.id = ?;
+                ', [($productionRate['production_metal'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[0]['resource_id']]
+            );
+        }
         // Energie
-        $this->executeQuery('
-            CREATE OR REPLACE EVENT 
-                resource_energie_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[1]['resource_id'].' 
-            ON SCHEDULE EVERY 1 MINUTE DO 
-            UPDATE 
-                ressource 
-            SET 
-                ressource.quantite = ressource.quantite + ? 
-            WHERE 
-                ressource.id = ?;
-            ', [($productionRate['production_energie'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[1]['resource_id']]
-        );
+        if($productionRate['production_energie'] !== null) {
+            $this->executeQuery('
+                CREATE OR REPLACE EVENT 
+                    resource_energie_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[1]['resource_id'].' 
+                ON SCHEDULE EVERY 1 MINUTE DO 
+                UPDATE 
+                    ressource 
+                SET 
+                    ressource.quantite = ressource.quantite + ? 
+                WHERE 
+                    ressource.id = ?;
+                ', [($productionRate['production_energie'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[1]['resource_id']]
+            );
+        }
         // Deuterium
-        $this->executeQuery('
-            CREATE OR REPLACE EVENT 
-                resource_deuterium_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[2]['resource_id'].' 
-            ON SCHEDULE EVERY 1 MINUTE DO 
-            UPDATE 
-                ressource 
-            SET 
-                ressource.quantite = ressource.quantite + ? 
-            WHERE 
-                ressource.id = ?;
-            ', [($productionRate['production_deuterium'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[2]['resource_id']]
-        );
+        if($productionRate['production_deuterium'] !== null ) {
+            $this->executeQuery('
+                CREATE OR REPLACE EVENT 
+                    resource_deuterium_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[2]['resource_id'].' 
+                ON SCHEDULE EVERY 1 MINUTE DO 
+                UPDATE 
+                    ressource 
+                SET 
+                    ressource.quantite = ressource.quantite + ? 
+                WHERE 
+                    ressource.id = ?;
+                ', [($productionRate['production_deuterium'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[2]['resource_id']]
+            );
+        }
 
     }
 
