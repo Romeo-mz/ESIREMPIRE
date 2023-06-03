@@ -18,6 +18,15 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function colonize($idColoniziterPlayer, $idColonizedPlanet)
+    {
+        return $this->executeQuery('
+            UPDATE planete
+            SET id_Joueur = ?
+            WHERE id = ?;', [$idColoniziterPlayer, $idColonizedPlanet]
+        );
+    }
+
     public function addResources($idPlayer, $idPlanet, $rewards)
     {
         $idUniverse = $this->fetchValue('

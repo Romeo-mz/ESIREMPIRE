@@ -323,15 +323,17 @@ class Attaque{
      */
 
     private function handleAttackerVictory($attackerPlanet, $defenderPlanet) {
-        if ($attackerPlanet->hasColonizationShip()) {
+        if ($attackerPlanet->getFleet()->hasColonizationShip()) {
+            var_dump('colonize');
             // Colonize planet
-            $defenderPlanet->colonize($attackerPlanet->getOwner());
+            $this->dbInterface->colonize($attackerPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet());
             return [];
-        } elseif ($attackerPlanet->hasTransportShips()) {
+        } elseif ($attackerPlanet->getFleet()->hasTransportShips()) {
+            var_dump('loot');
             // Loot resources
-            $lootCapacity = $attackerPlanet->getTransportCapacity();
-            $lootedResources = $defenderPlanet->lootResources($lootCapacity);
-            $attackerPlanet->getOwner()->addResources($lootedResources);
+            // $lootCapacity = $attackerPlanet->getTransportCapacity();
+            // $lootedResources = $defenderPlanet->lootResources($lootCapacity);
+            // $attackerPlanet->getOwner()->addResources($lootedResources);
             return $lootedResources;
         } else {
             return [];
