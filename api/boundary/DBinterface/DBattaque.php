@@ -45,13 +45,13 @@ class DBattaque extends DBinterface {
             UPDATE ressource
             SET quantite = quantite + ?
             WHERE id = ?
-            AND id_Type = 1;', [$rewards['cout_metal'], $idResources[0]['resource_id']]
+            AND id_Type = 1;', [$rewards['metal'], $idResources[0]['resource_id']]
         );
         return $this->executeQuery('
             UPDATE ressource
             SET quantite = quantite + ?
             WHERE id = ?
-            AND id_Type = 2;', [$rewards['cout_deuterium'], $idResources[1]['resource_id']]
+            AND id_Type = 2;', [$rewards['deuterium'], $idResources[1]['resource_id']]
         );
     }
 
