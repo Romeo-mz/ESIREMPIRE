@@ -10,6 +10,17 @@ class Fleet {
 
     public function getShips() { return $this->ships; }
 
+    public function countShips($type)
+    {
+        $count = 0;
+        foreach ($this->ships as $ship) {
+            if ($ship->getType() == $type) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
     public function hasColonizationShip() {
         foreach ($this->ships as $ship) {
             if ($ship->getType() == 'colonization') {

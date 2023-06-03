@@ -238,7 +238,6 @@ class Attaque{
         // Calculate rewards and update game state based on the result
         if ($result === 'defenseur') {
             $rewards = $this->getDestroyedShipResources($attackerPlanet->getFleet());
-            var_dump($rewards);
             $this->dbInterface->addResources($defenderPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet(),$rewards);
         } elseif ($result === 'attaquant') {
             $rewards = $this->handleAttackerVictory($attackerPlanet, $defenderPlanet);
@@ -253,15 +252,17 @@ class Attaque{
     private function getDestroyedShipResources($attackerFleet)
     {
         $ships = $attackerFleet->getShips();
-        $resources = [];
+        $resources = [
+            'metal' => 0,
+            'deuterium' => 0
+        ];
 
         foreach ($ships as $ship) {
-            $resources[$ship->getType()] = $this->dbInterface->getShipResources($ship->getType())[0];
+            $shipType = $ship->getType();
+            $shipResources = $this->dbInterface->getShipResources($shipType)[0];
+            $resources['metal'] += $shipResources['cout_metal'] * $attackerFleet->countShips($shipType);
+            $resources['deuterium'] += $shipResources['cout_deuterium'] * $attackerFleet->countShips($shipType);
         }
-
-        // Sum resources cost from all ships
-
-
 
         return $resources;
     }
