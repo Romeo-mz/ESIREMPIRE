@@ -46,6 +46,13 @@ export class Controller extends Notifier
         }
 
         this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
+    
+        // Increase resources every minute
+        setInterval(() => {
+            this.loadQuantitiesRessource();
+            this.notifyResources();
+        }, 20 * 1000);
+
     }
 
     get technologies() { return this.#technologies; }

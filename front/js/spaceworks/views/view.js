@@ -35,7 +35,7 @@ export class View extends Observer
 
         let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
         let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
-        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
+        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", Math.round(ressource.quantite));
 
         img.src = `img/${prefix}.png`;
         img.alt = prefix;
@@ -49,7 +49,7 @@ export class View extends Observer
     updateRessourceElement(ressource) {
         const prefix = ressource.type.toLowerCase();
         let p = document.getElementById(`p-${prefix}`);
-        p.innerHTML = ressource.quantite;
+        p.innerHTML = Math.round(ressource.quantite);
     }
 
     createShips() {
@@ -235,6 +235,11 @@ export class View extends Observer
     notify(id) 
     {
         this.updateShip(id);
+        this.notifyResources();
+    }
+
+    notifyResources()
+    {
         this.updateRessources();
     }
 

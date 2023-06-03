@@ -35,7 +35,7 @@ export class View extends Observer
 
         let div = this.createOrUpdateElement("div", `div-${prefix}`, "div-ressource");
         let img = this.createOrUpdateElement("img", `img-${prefix}`, "img-ressource");
-        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", ressource.quantite);
+        let p = this.createOrUpdateElement("p", `p-${prefix}`, "number-ressource", Math.round(ressource.quantite));
 
         img.src = `img/${prefix}.png`;
         img.alt = prefix;

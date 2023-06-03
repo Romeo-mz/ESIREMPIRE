@@ -16,4 +16,9 @@ export class Notifier
     {
         this.#observers.forEach(observer => observer.notify(id));
     }
+
+    notifyResources()
+    {
+        this.#observers.forEach(observer => observer.notifyResources());
+    }
 }
