@@ -246,10 +246,6 @@ class Attaque{
             $rewards = [];
         }
 
-        // // Save changes to attacker fleet and defender planet
-        // $attackerPlanet->save();
-        // $defenderPlanet->save();
-
         // return $rewards;
     }
 
