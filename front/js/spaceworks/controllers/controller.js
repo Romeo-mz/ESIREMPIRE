@@ -6,7 +6,7 @@ import { Technologie } from "../models/technologie.js";
 import { Ship } from "../models/ship.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIspacework.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIspacework.php";
 const API_QUERY_PARAMS = {
     defaultShips: "?default_ships",
     spaceworkID: (planetID) => `?id_Spacework&id_Planet=${planetID}`,
@@ -223,6 +223,8 @@ export class Controller extends Notifier
         const ship = this.#ships.find(ship => ship.id === id);
 
         this.decreaseRessource(id, type);
+        
+        ship.upgradingState = false;
 
         try {
             const dataToReturn = await this.addShipToAPI(type.toUpperCase());
@@ -231,6 +233,7 @@ export class Controller extends Notifier
             ship.quantite = parseInt(ship.quantite) + 1;
 
             this.notify(id);
+
 
         } catch (error) {
             alert("Error while adding ship - please refresh the page:" + error);

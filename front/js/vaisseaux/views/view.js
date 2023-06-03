@@ -7,19 +7,22 @@ export class View extends Observer {
         this.#controller = controller;
         this.#controller.addObserver(this);
 
-        this.createVaisseaux();
     }
 
     createVaisseaux() {
-        const vaisseaux = this.#controller.vaisseaux;
-        vaisseaux.forEach(vaisseau => {
-            console.log(vaisseau);
-            this.createVaisseauElement(vaisseau);
+        return new Promise((resolve, reject) => {
+            
+            const vaisseaux = this.#controller.vaisseaux;
+            vaisseaux.forEach(vaisseau => {
+                console.log(vaisseau);
+                this.createVaisseauElement(vaisseau);
+            });
+
+            resolve(); // Resolve the promise after creating the vaisseaux
         });
     }
 
     createVaisseauElement(vaisseau) {
-        console.log(vaisseau.id);
         let parentDivId = "spaceship-disponible-liste";
 
         let div = this.createOrUpdateElement("div", `spaceship-disponible-${vaisseau.id}`, "spaceship-disponible");

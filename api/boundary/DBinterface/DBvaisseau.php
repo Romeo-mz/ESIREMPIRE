@@ -4,14 +4,26 @@ require_once('DBinterface.php');
 
 define('DB_LOGIN', "root");
 define('DB_PWD', "");
+/**
+ * DBvaisseau class
+ * @package api\boundary\DBinterface
+ *
+ */
 class DBvaisseau extends DBinterface
 {
-
+    /**
+     * DBvaisseau constructor.
+     */
     public function __construct()
     {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
-
+    /**
+     * function getDefaultVaisseaux
+     * function that get the default ships
+     * @param $id_Spacework
+     * @return array
+     */
     public function getDefaultVaisseaux($id_Spacework)
     {
         return $this->fetchAllRows('
@@ -34,7 +46,12 @@ class DBvaisseau extends DBinterface
                     tv.id
             ) AS sq ON tv.id = sq.type_id;', [$id_Spacework]);
     }
-
+    /**
+     * function getSpaceworkID
+     * function that get the id of the spacework
+     * @param $id_Planet
+     * @return array
+     */
     public function getSpaceworkID($id_Planet)
     {
         return $this->fetchValue('
@@ -46,7 +63,15 @@ class DBvaisseau extends DBinterface
             [$id_Planet]
         );
     }
-
+    /**
+     * function updateFlotteAttaque
+     * function that update the attack fleet
+     * @param $idFlotte
+     * @param $idJoueur
+     * @param $idRapport
+     * @param $idVaisseaux
+     * @return array
+     */
     public function updateFlotteAttaque($idFlotte, $idJoueur, $idRapport, $idVaisseaux )
     {
         // Mettez à jour la table flotte_attaque avec les ID des vaisseaux correspondants

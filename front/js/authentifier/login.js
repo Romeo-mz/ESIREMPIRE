@@ -6,8 +6,8 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     const username = document.getElementById('usernameInput').value;
     const password = document.getElementById('passwordInput').value;
     const universe = document.getElementById('universSelect').value;
-
-    fetch('http://esirempire/api/boundary/APIinterface/APIlogin.php', {
+    
+    fetch('http://esirloc/api/boundary/APIinterface/APIlogin.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -19,6 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         })
     })
         .then(response => {
+            console.log(response);
             if (!response.ok) {
                 throw new Error('Erreur lors de la requête à l\'API');
             }

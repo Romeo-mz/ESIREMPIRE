@@ -2,7 +2,7 @@ import { Notifier } from "../pattern/notifier.js";
 import { Session } from "../models/session.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esireloc/api/boundary/APIinterface/APIattaque.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIattaque.php";
 const API_QUERY_PARAMS = {
   defaultEnnemis: (id_Joueur, id_Univers) => `?default_ennemis&id_Joueur=${id_Joueur}&id_Univers=${id_Univers}`,
   dataEnnemis: (liste_Ennemis, id_Univers) => `?dataEnnemis&liste_Ennemis=${liste_Ennemis}&id_Univers=${id_Univers}`,
@@ -15,7 +15,6 @@ export class Controller extends Notifier {
 
   constructor() {
     super();
-    this.#session = new Session("roro", 2, 1, 355, [1, 2, 3]);
     this.#idJoueurEnnemis = [];
 
     let id_Planets = [];

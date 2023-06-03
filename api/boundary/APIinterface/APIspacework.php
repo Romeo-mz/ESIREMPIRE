@@ -6,15 +6,29 @@ $controller_instance = new Spacework();
 $api_spacework = new APIspacework($controller_instance);
 $api_spacework->handleRequest();
 
+/**
+ * Class APIspacework
+ * This class is the API for the spacework page.
+ * It handles the POST and GET requests.
+ */
 class APIspacework
 {
     private $controller;
-
+    /**
+     * APIspacework constructor.
+     * @param $controller
+     */
     public function __construct($controller)
     {
         $this->controller = $controller;
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     *
+     * @return void
+     */
     public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -30,7 +44,13 @@ class APIspacework
                 break;
         }
     }
-
+    /**
+     * This function handles the GET request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     *
+     * @return void
+     */
     private function handleGet()
     {
         if (isset($_GET['id_Spacework']) && isset($_GET['id_Planet'])) 
@@ -64,7 +84,13 @@ class APIspacework
             $this->sendResponse(400, 'Bad Request');
         }
     }
-
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     *
+     * @return void
+     */
     private function handlePost()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -84,7 +110,14 @@ class APIspacework
             $this->sendResponse(400, 'Bad Request');
         }
     }
-
+    /**
+     * This function sends a response with the given status code and status text.
+     * If a body is given, it is sent as a JSON object.
+     *
+     * @param $statusCode
+     * @param $statusText
+     * @param null $body
+     */
     private function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");

@@ -5,16 +5,29 @@ require_once('../../controller/infrastructures.php');
 $controller_instance = new Infrastructures();
 $api_infrastructures = new APIinfrastructures($controller_instance);
 $api_infrastructures->handleRequest();
-
+/**
+ * Class APIinfrastructures
+ * This class is the API for the admin page.
+ * It handles the POST and GET requests.
+ */
 class APIinfrastructures
 {
     private $controller;
-
+    /**
+     * APIinfrastructures constructor.
+     * @param $controller
+     */
     public function __construct($controller)
     {
         $this->controller = $controller;
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     * 
+     * @return void
+     */
     public function handleRequest()
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'];
@@ -30,7 +43,13 @@ class APIinfrastructures
                 break;
         }
     }
-
+    /**
+     * This function handles the GET request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     private function handleGet()
     {
         if(isset($_GET['bonus_ressources']) && isset($_GET['id_Planet']))
@@ -83,7 +102,13 @@ class APIinfrastructures
             $this->sendResponse(400, 'Bad Request');
         }
     }
-
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     private function handlePost()
     {
         // decode json post data
@@ -94,9 +119,9 @@ class APIinfrastructures
             $this->controller->upgradeInfrastructure($data['id_Planet'], $data['id_Infrastructure']);
             $this->sendResponse(200, 'OK');
         }
-        else if (isset($data['id_Planet']) && isset($data['type'])) 
+        else if (isset($data['id_Planet']) && isset($data['infraType']) && isset($data['type'])) 
         {
-            $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['type']);
+            $id_New_Infrastructure = $this->controller->buildInfrastructure($data['id_Planet'], $data['infraType'], $data['type']);
             $response = array('id_New_Infrastructure' => $id_New_Infrastructure);
 
             $this->sendResponse(200, 'OK', json_encode($response));
@@ -111,7 +136,15 @@ class APIinfrastructures
             $this->sendResponse(400, 'Bad Request');
         }
     }
-
+    /**
+     * This function sends a response with the given status code and status text.
+     * If a body is given, it is added to the response.
+     * 
+     * @param $statusCode
+     * @param $statusText
+     * @param null $body
+     * @return void
+     */
     private function sendResponse($statusCode, $statusText, $body = null)
     {
         header("HTTP/1.1 {$statusCode} {$statusText}");

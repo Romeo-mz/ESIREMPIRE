@@ -10,9 +10,20 @@ class Fleet {
 
     public function getShips() { return $this->ships; }
 
+    public function countShips($type)
+    {
+        $count = 0;
+        foreach ($this->ships as $ship) {
+            if ($ship->getType() == $type) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
     public function hasColonizationShip() {
         foreach ($this->ships as $ship) {
-            if ($ship->getType() == 'colonization') {
+            if ($ship->getType() == 'COLONISATEUR') {
                 return true;
             }
         }
@@ -21,7 +32,7 @@ class Fleet {
 
     public function hasTransportShips() {
         foreach ($this->ships as $ship) {
-            if ($ship->getType() == 'transport') {
+            if ($ship->getType() == 'TRANSPORTEUR') {
                 return true;
             }
         }
@@ -42,6 +53,17 @@ class Fleet {
             $defensePoints += $ship->getDefensePoints();
         }
         return $defensePoints;
+    }
+
+    public function getTransportCapacity()
+    {
+        $transportCapacity = 0;
+        foreach ($this->ships as $ship) {
+            if ($ship->getType() == 'TRANSPORTEUR') {
+                $transportCapacity += $ship->getCapacity();
+            }
+        }
+        return $transportCapacity;
     }
 
 }

@@ -2,17 +2,36 @@
 
 require_once('../../boundary/DBinterface/DBlogin.php');
 require_once('../../boundary/DBinterface/DBregister.php');
-
+/**
+ * Class Authentifier
+ * 
+ * This class is used to authenticate a user
+ * 
+ * @package api\controller
+ */
 class Authentifier
 {
     private $DBinterfaceLogin;
     private $DBinterfaceRegister;
+    /**
+     * Constructor
+     * 
+     * @return void
+     */
     public function __construct()
     {
         $this->DBinterfaceLogin = new DBlogin();
         $this->DBinterfaceRegister = new DBregister();
     }
-
+    /**
+     * Login function
+     * 
+     * @param string $username
+     * @param string $password
+     * @param int $univers
+     * 
+     * @return array
+     */
     public function login($username, $password, $univers) {
         $hashedPassword = hash("SHA512", $password);
         $result = $this->DBinterfaceLogin->login($username, $hashedPassword);
@@ -58,7 +77,15 @@ class Authentifier
             return $session;
         }
     }
-
+    /**
+     * Register function
+     * 
+     * @param string $username
+     * @param string $password
+     * @param string $mail
+     * 
+     * @return int
+     */
     public function register($username, $password, $mail){
 
         //Check if email is valid
@@ -102,17 +129,32 @@ class Authentifier
 
 
     }
+    /**
+     * Get id of a player
+     * 
+     * @param string $pseudo
+     * 
+     * @return int
+     */
     public function getIdJoueur($pseudo){
         $result = $this->DBinterfaceLogin->getIdJoueur($pseudo);
         return $result;
     }
 
-
+    /**
+     * Get number of player in a universe
+     * 
+     * @param int $idUnivers
+     * 
+     * @return int
+     */
     public function getNumberJoueurUnivers($idUnivers){
         $result = $this->DBinterfaceLogin->getNumberJoueurUnivers($idUnivers);
         return $result;
     }
-    
+    /**
+     * Function to register a player in a universe
+     */
     public function registerUnivers($idJoueur, $idUnivers, $idRessource){
         $result = $this->DBinterfaceRegister->registerUnivers($idJoueur, $idUnivers, $idRessource);
         return $result;

@@ -10,7 +10,7 @@ import { Technologie } from "../models/technologie.js";
 import { Bonus } from "../models/bonus.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirempire/api/boundary/APIinterface/APIinfrastructures.php";
+const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIinfrastructures.php";
 const API_QUERY_PARAMS = {
     loadInfrastructures: (planetId) => `?id_Planet=${planetId}`,
     loadDefaultDefenses: "?default_defense",
@@ -55,7 +55,6 @@ export class Controller extends Notifier
         }
 
         this.#session = new Session(sessionDataService.getSessionData().pseudo, parseInt(sessionDataService.getSessionData().id_Player), parseInt(sessionDataService.getSessionData().id_Univers), id_Planets, id_Ressources, parseInt(sessionDataService.getSessionData().id_CurrentPlanet));
-
     }
 
     get infrastructures() { return this.#infrastructures; }
@@ -78,6 +77,7 @@ export class Controller extends Notifier
 
     get bonusRessources() { return this.#bonusRessources; }
     set bonusRessources(bonusRessources) { this.#bonusRessources = bonusRessources; }
+    
 
     async fetchData(endpoint) {
         const response = await fetch(API_BASE_URL + endpoint);
@@ -105,7 +105,8 @@ export class Controller extends Notifier
 
         if (id < 0) {
             try {
-                const dataToReturn = await this.createInfrastructureToAPI(id, type);
+                const infraType = this.#infrastructures.find(infrastructure => infrastructure.id === id).type;
+                const dataToReturn = await this.createInfrastructureToAPI(id, type, infraType);
                 console.log("Success to create infra:", dataToReturn);
                 
                 if(dataToReturn > 0){
@@ -202,6 +203,7 @@ export class Controller extends Notifier
         }
 
         this.upgradeInfrastructureToAPI(infrastructure.id);
+        infrastructure.upgradingState = false;
 
         this.notify();
     }
@@ -291,13 +293,8 @@ export class Controller extends Notifier
         const infrastructure = this.#infrastructures.find(infrastructure => infrastructure.id === id);
 
         const idQuantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").id;
-        const quantiteMetal = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "METAL").quantite;
-
         const idQuantiteEnergie = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").id;
-        const quantiteEnergie = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "ENERGIE").quantite;
-
         const idQuantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").id;
-        const quantiteDeuterium = this.#quantiteRessource.find(quantiteRessource => quantiteRessource.type === "DEUTERIUM").quantite;
 
         if (infrastructure instanceof Installation) {
             if (infrastructure.type_installation === "Chantier spatial") {
@@ -406,9 +403,10 @@ export class Controller extends Notifier
         });
     }
     
-    async createInfrastructureToAPI(id, type) {
+    async createInfrastructureToAPI(id, type, infraType) {
         const infrastructureData = {
             id_Planet: this.#session.id_CurrentPlanet,
+            infraType: infraType,
             type: type
         };
     

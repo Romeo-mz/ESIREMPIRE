@@ -4,44 +4,77 @@ require_once('../../boundary/DBinterface/DBadmin.php');
 
 define('GALAXIES_PER_UNIVER', 5);
 define('SOLAR_SYSTEMS_PER_GALAXY', 10);
-
+/**
+ * Class Administration
+ * This class is the controller for the administration page.
+ * It handles the administration of the game.
+ */
 class Administration
 {
     private $dbInterface;
-
+    /**
+     * Administration constructor.
+     */
     public function __construct()
     {
         $this->dbInterface = new DBadmin();
     }
-
+    /**
+     * This function gets the universes from the database.
+     * 
+     * @return array the result of the database operation
+     */
     public function getUniverses() 
     {
         return $this->dbInterface->getUniverses();
     }
-
+    /**
+     * This function gets the last Universe Id from the database.
+     * 
+     * @return array the result of the database operation
+     */
     public function getLastUniverseId() 
     {
         return $this->dbInterface->getLastUniverseId();
     }
-
+    /**
+     * This function gets the last 5 galaxies Id from the database.
+     * 
+     * @return array the result of the database operation
+     */
     private function getLast5GalaxiesId() 
     {
         $universeId = $this->getLastUniverseId();
         return $this->dbInterface->getLast5GalaxiesId($universeId);
     }
-
+    /**
+     * This function gets the last 50 solar systems Id from the database.
+     * 
+     * @return array the result of the database operation
+     */
     public function getLast50SolarSystemsId() 
     {
         $galaxiesId = $this->getLast5GalaxiesId();
         $placeholders = rtrim(str_repeat('?, ', count($galaxiesId)), ', ');
         return $this->dbInterface->getLast50SolarSystemsId($placeholders, array_column($galaxiesId, 'id'));
     }
-
+    /**
+     * This function creates a universe in the database.
+     * 
+     * @param string $universe_name
+     * @return array the result of the database operation
+     */
     public function createUniverse($universe_name) 
     {
         return $this->dbInterface->createUniverse($universe_name);
     }
-
+    /**
+     * This function creates a galaxy in the database.
+     * 
+     * @param string $galaxy_name
+     * @param int $universe_id
+     * @return array the result of the database operation
+     */
     public function createGalaxies() 
     {
         $universeId = $this->getLastUniverseId();

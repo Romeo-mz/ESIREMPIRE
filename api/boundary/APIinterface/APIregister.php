@@ -13,6 +13,11 @@ $session_controller->startSession();
 $api_register = new APIregister($controller_instance, $session_controller);
 $api_register->request();
 
+/**
+ * Class APIregister
+ * This class is the API for the register page.
+ * It handles the POST and GET requests.
+ */
 class APIregister{
     private $controller;
     private $session_controller;
@@ -20,7 +25,13 @@ class APIregister{
         $this->controller = $controller;
         $this->session_controller = $session_controller;
     }
-
+    /**
+     * This function handles the request.
+     * It checks the request method and calls the appropriate function.
+     * If the request method is not supported, it sends a 405 response.
+     * 
+     * @return void
+     */
     public function request(){
         $request = $_SERVER['REQUEST_METHOD'];
 
@@ -32,7 +43,13 @@ class APIregister{
             echo "Method not allowed";
         }
     }
-
+    /**
+     * This function handles the POST request.
+     * It checks if the request is valid and calls the appropriate function.
+     * If the request is not valid, it sends a 400 response.
+     * 
+     * @return void
+     */
     public function postRequest(){
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -50,33 +67,48 @@ class APIregister{
             http_response_code(200);
             echo "Register successful";
             $this->addJoueurToUnivers();
+            header('Location: ../../../front/login.php');
+            
         }
         else if($result == 1){
             http_response_code(401);
             echo "Password Invalid / Password too short";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 2){
             http_response_code(401);
             echo "Username Ivalid / Username too short";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 3){
             http_response_code(401);
             echo "Email Invalid";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 4){
             http_response_code(401);
             echo "Username already exists";
+            header('Location: ../../../front/register.php');
         }
         else if($result == 5){
             http_response_code(401);
             echo "Email already exists";
+            header('Location: ../../../front/register.php');
         }
         else{
             http_response_code(500);
             echo "Internal server error";
+            header('Location: ../../../front/register.php');
         }
     }
-    
+    /**
+     * This function sends a response to the client.
+     * 
+     * @param int $code
+     * @param string $status
+     * @param string $message
+     * @return int
+     */
     public function getIdUnivers(){
         if(http_response_code() != 200){
             return;
@@ -92,7 +124,14 @@ class APIregister{
             return $univers;
         }
     }
-
+    /**
+     * This function sends a response to the client.
+     * 
+     * @param int $code
+     * @param string $status
+     * @param string $message
+     * @return void
+     */
     public function getIdJoueur($username){
         if(http_response_code() != 200){
             return;
@@ -108,7 +147,14 @@ class APIregister{
             return $id_joueur;
         }
     }
-
+    /**
+     * This function sends a response to the client.
+     * 
+     * @param int $code
+     * @param string $status
+     * @param string $message
+     * @return void
+     */
     public function getNumberJoueurUnivers($id_univers){
         if(http_response_code() != 200){
             return;
@@ -124,11 +170,26 @@ class APIregister{
             return $number_joueur;
         }
     }
-
+    /**
+     * This function return all the Universes .
+     * 
+     * @param int $code
+     * @param string $status
+     * @param string $message
+     * @return mixed
+     */
     public function getAllUnivers(){
         $allunivers = $this->controller->getAllUnivers();
         return $allunivers;
     }
+    /**
+     * This function return the next Univers .
+     * 
+     * @param int $code
+     * @param string $status
+     * @param string $message
+     * @return void
+     */
     public function nextUnivers(){
         $univers = $this->getAllUnivers();
         foreach($univers as $u){
@@ -140,7 +201,11 @@ class APIregister{
         }
         return null; // Tous les univers ont atteint leur limite
     }
-    
+    /**
+     * This function add a joueur to an univers .
+     * 
+     * @return void
+     */
     public function addJoueurToUnivers(){
         if(http_response_code() != 200){
             return;
@@ -172,7 +237,12 @@ class APIregister{
         
     }
 
-   
+   /**
+     * This function add a planet to a joueur .
+     * 
+     * @param int $id_joueur
+     * @return void
+     */
     public function addEmptyPlanet($id_joueur){
         if(http_response_code() != 200){
             return;
