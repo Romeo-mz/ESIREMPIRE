@@ -6,11 +6,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sessionDataService.getSessionData() !== null) {
     const myController = new Controller();
+    const myView = new View(myController);
     
     myController.loadVaisseaux()
     .then(() => {
         console.log("Success to load vaisseaux");
-        const myView = new View(myController);
+        
         return myView.createVaisseaux();
     })
     .then(() => {
@@ -27,6 +28,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         alert("Error while loading data - please refresh the page");
     })
+    .then(() => {
+        console.log("Success to load attaque");
+        return myView.getResultatAttaque(1,1);
+    })
+
 }
     else
         window.location.href = './login.php';

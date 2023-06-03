@@ -20,6 +20,7 @@ export class View extends Observer {
 
     this.#controller.getDataEnnemis().then((data) => {
       data.forEach((ennemi, index) => {
+        console.log(ennemi);
         const defenderId = ennemi[index].id_defender;
         const idDefenderPlanet = ennemi[index].id_planete;
 

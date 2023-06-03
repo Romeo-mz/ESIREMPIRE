@@ -84,7 +84,16 @@ export class View extends Observer {
                 return "";
         }
     }
-
+    getResultatAttaque(id_Attaquant, id_Defenseur) {
+        const resultat = this.#controller.getResultatAttaque(id_Attaquant, id_Defenseur);
+        const div = document.getElementById("resultat-attaque-texte");
+        if (resultat){
+            div.innerHTML = resultat;
+        }
+        
+        else{div.innerHTML = "Aucune attaque";}
+        
+    }
     notify() {
         // this.updateHistorique();
     }

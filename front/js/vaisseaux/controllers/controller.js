@@ -136,6 +136,7 @@ export class Controller extends Notifier {
       this.notify();
       if (this.#session.flotte.length > 0) {
         const flotteData = JSON.stringify(this.#session.flotte);
+        console.log(flotteData);
         const encodedData = encodeURIComponent(flotteData);
         const attaqueURL = `attaque.html?flotte=${encodedData}`;
         console.log(attaqueURL);
@@ -157,5 +158,10 @@ export class Controller extends Notifier {
   addVaisseauToFlotteToApi() {
 
     const vaisseauId = document.getElementById("vaisseau-id").value;
+  }
+
+  getResultatAttaque(id_Attaquant, id_Defenseur) {
+    const resultat = 0;
+    return resultat;
   }
 }

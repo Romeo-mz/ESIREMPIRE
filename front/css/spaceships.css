@@ -94,6 +94,16 @@ h2 {
     object-fit: contain;
 }
 
+#right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}   
+#resultat {
+    text-align: center;
+    margin: 20px 0;
+}
 #choix {
     text-align: center;
     margin: auto;
