@@ -39,14 +39,16 @@ class DBattaque extends DBinterface {
 
     public function addResourcesToAttacker($lootedResources, $idPlayer)
     {
+        $idUniverse = $this->getIdUniverse($idPlanet);
+
         $idResources = $this->fetchAllRows('
             SELECT ju.id_Ressource AS resource_id,
                     tr.type AS resource_type
             FROM joueurunivers ju
             JOIN ressource r ON r.id = ju.id_Ressource
             LEFT JOIN typeressource tr ON r.id_Type = tr.id
-            WHERE ju.id_Univers = 1
-            AND ju.id_Joueur = ?;', [$idPlayer]
+            WHERE ju.id_Univers = ?
+            AND ju.id_Joueur = ?;', [$idUniverse, $idPlayer]
         );
 
         $this->executeQuery('
@@ -69,7 +71,7 @@ class DBattaque extends DBinterface {
         );
     }
 
-    public function getIdUniverse($idPlanet)
+    private function getIdUniverse($idPlanet)
     {
         return $this->fetchValue('
             SELECT u.id AS universe_id
