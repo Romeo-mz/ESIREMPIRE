@@ -2,6 +2,16 @@
 
 require_once('../../controller/attaque.php');
 
+// $data = json_decode(file_get_contents('php://input'), true);
+
+// var_dump($data);
+
+// var_dump($data['id_Attacker_Player']);
+// var_dump($data['id_Defender_Player']);
+// var_dump($data['id_Attacker_Planet']);
+// var_dump($data['id_Defender_Planet']);
+// var_dump($data['fleet_Attacker']);
+
 $controller_instance = new Attaque();
 $api_attaque = new APIattaque($controller_instance);
 $api_attaque->handleRequest();
