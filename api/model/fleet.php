@@ -23,7 +23,7 @@ class Fleet {
 
     public function hasColonizationShip() {
         foreach ($this->ships as $ship) {
-            if ($ship->getType() == 'colonization') {
+            if ($ship->getType() == 'COLONISATEUR') {
                 return true;
             }
         }
@@ -32,7 +32,7 @@ class Fleet {
 
     public function hasTransportShips() {
         foreach ($this->ships as $ship) {
-            if ($ship->getType() == 'transport') {
+            if ($ship->getType() == 'TRANSPORTEUR') {
                 return true;
             }
         }
