@@ -4,6 +4,9 @@
 
 ESIREMPIRE, un jeu de stratégie en ligne passionnant qui vous transportera dans un univers de science fascinant.
 
+## Développeurs 
+Nous sommes Hugo Goncalves et Roméo Martinez et voici notre projet !
+
 ## Description
 Le but du jeu est simple : chaque joueur doit tenter d'étendre son empire à l'ensemble des galaxies de l'univers en construisant des bases, en développant des technologies avancées et en recrutant des armées puissantes. Mais attention, la concurrence est rude et les autres joueurs ne vous feront aucun cadeau !
 
