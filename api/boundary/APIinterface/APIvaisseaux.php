@@ -55,13 +55,13 @@ class APIvaisseau
      */
     private function handlePost()
     {
-        header('../../../front/attaque.php');
+        
         $nbrChasseur = $_POST['nombre-vaisseau-chasseur'];
         $nbrCroiseur = $_POST['nombre-vaisseau-croiseur'];
         $nbrTransporteur = $_POST['nombre-vaisseau-transporteur'];
         $nbrColonisateur = $_POST['nombre-vaisseau-colonisateur'];
 
-
+        header('../../../front/attaque.php');
     }
     /**
      * This function handles the POST request.

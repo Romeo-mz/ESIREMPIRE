@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (sessionDataService.getSessionData() !== null) {
     const myController = new Controller();
-
+    
     myController.loadVaisseaux()
         .then(() => {
-                console.log("Success to load vaisseaux")
+            console.log("Success to load vaisseaux")
             const myView = new View(myController)
 
-            myView.createVaisseaux() . then (() => {
+            myView.createVaisseaux().then (() => {
                 myController.loadFlotte()
                     .then(() => {
                         console.log("Success to load flotte")
