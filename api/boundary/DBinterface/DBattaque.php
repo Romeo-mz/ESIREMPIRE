@@ -18,6 +18,93 @@ class DBattaque extends DBinterface {
         parent::__construct(DB_LOGIN, DB_PWD);
     }
 
+    public function removeResourcesFromDefender($lootedResources, $idPlayer, $idPlanet)
+    {
+        $idUniverse = $this->getIdUniverse($idPlanet);
+
+        // delete in joueurunivers the where id_Resource = $lootedResources[0]['resource_id']
+        $this->executeQuery('
+            DELETE FROM ressource
+            WHERE id = ?;', [$lootedResources[0]['resource_id']]
+        );
+        $this->executeQuery('
+            DELETE FROM ressource
+            WHERE id = ?;', [$lootedResources[1]['resource_id']]
+        );
+        $this->executeQuery('
+            DELETE FROM ressource
+            WHERE id = ?;', [$lootedResources[2]['resource_id']]
+        );
+    }
+
+    public function addResourcesToAttacker($lootedResources, $idPlayer)
+    {
+        $idResources = $this->fetchAllRows('
+            SELECT ju.id_Ressource AS resource_id,
+                    tr.type AS resource_type
+            FROM joueurunivers ju
+            JOIN ressource r ON r.id = ju.id_Ressource
+            LEFT JOIN typeressource tr ON r.id_Type = tr.id
+            WHERE ju.id_Univers = 1
+            AND ju.id_Joueur = ?;', [$idPlayer]
+        );
+
+        $this->executeQuery('
+            UPDATE ressource
+            SET quantite = quantite + ?
+            WHERE id = ?
+            AND id_Type = 1;', [$lootedResources[0]['resource_quantity'], $idResources[0]['resource_id']]
+        );
+        $this->executeQuery('
+            UPDATE ressource
+            SET quantite = quantite + ?
+            WHERE id = ?
+            AND id_Type = 2;', [$lootedResources[1]['resource_quantity'], $idResources[1]['resource_id']]
+        );
+        $this->executeQuery('
+            UPDATE ressource
+            SET quantite = quantite + ?
+            WHERE id = ?
+            AND id_Type = 3;', [$lootedResources[2]['resource_quantity'], $idResources[2]['resource_id']]
+        );
+    }
+
+    public function getIdUniverse($idPlanet)
+    {
+        return $this->fetchValue('
+            SELECT u.id AS universe_id
+            FROM univers u
+            JOIN galaxie g ON g.id_Univers = u.id
+            JOIN systemesolaire s ON s.id_Galaxie = g.id
+            JOIN planete p ON p.id_Systeme_Solaire = s.id
+            WHERE p.id = ?;', [$idPlanet]
+        );
+    }
+
+    public function getQuantityResources($idPlayer, $idPlanet)
+    {
+        $idUniverse = $this->getIdUniverse($idPlanet);
+
+        return $this->fetchAllRows('
+            SELECT ju.id_Ressource AS resource_id,
+            r.quantite AS resource_quantity,
+            tr.type AS resource_type
+            FROM joueurunivers ju
+            JOIN ressource r ON r.id = ju.id_Ressource
+            LEFT JOIN typeressource tr ON r.id_Type = tr.id
+            WHERE ju.id_Univers = ?
+            AND ju.id_Joueur = ?;', [$idUniverse, $idPlayer]
+        );
+    }
+
+    public function destroyAllInfra($idPlanet)
+    {
+        return $this->executeQuery('
+            DELETE FROM infrastructure
+            WHERE id_Planete = ?;', [$idPlanet]
+        );
+    }
+
     public function colonize($idColoniziterPlayer, $idColonizedPlanet)
     {
         return $this->executeQuery('
@@ -29,14 +116,7 @@ class DBattaque extends DBinterface {
 
     public function addResources($idPlayer, $idPlanet, $rewards)
     {
-        $idUniverse = $this->fetchValue('
-            SELECT u.id AS universe_id
-            FROM univers u
-            JOIN galaxie g ON g.id_Univers = u.id
-            JOIN systemesolaire s ON s.id_Galaxie = g.id
-            JOIN planete p ON p.id_Systeme_Solaire = s.id
-            WHERE p.id = ?;', [$idPlanet]
-        );
+        $idUniverse = $this->getIdUniverse($idPlanet);
 
         $idResources = $this->fetchAllRows('
             SELECT ju.id_Ressource AS resource_id,

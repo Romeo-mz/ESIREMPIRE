@@ -169,17 +169,12 @@ class Attaque{
             $attackerAttackPoints, $attackerDefensePoints,
             $defenderAttackPoints, $defenderDefensePoints
         );
-
-        var_dump($damage);
         
         // Apply damage and update game state
         $rewards = $this->applyDamage($result, $damage, $attackerPlanet, $defenderPlanet);
         
         // // Generate combat report
-        // $combatReport = $this->generateCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet);
-        
-        // Return combat report
-        // return $combatReport;
+        $this->createCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet);
     }
 
     /**
@@ -246,7 +241,7 @@ class Attaque{
             $rewards = [];
         }
 
-        // return $rewards;
+        return $rewards;
     }
 
     private function getDestroyedShipResources($attackerFleet)
@@ -324,16 +319,18 @@ class Attaque{
 
     private function handleAttackerVictory($attackerPlanet, $defenderPlanet) {
         if ($attackerPlanet->getFleet()->hasColonizationShip()) {
-            var_dump('colonize');
             // Colonize planet
             $this->dbInterface->colonize($attackerPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet());
+            // Destroy all infrastrucutres (Cascade effect will destroy all ships too)
+            $this->dbInterface->destroyAllInfra($defenderPlanet->getIdPlanet());
             return [];
         } elseif ($attackerPlanet->getFleet()->hasTransportShips()) {
-            var_dump('loot');
             // Loot resources
-            // $lootCapacity = $attackerPlanet->getTransportCapacity();
-            // $lootedResources = $defenderPlanet->lootResources($lootCapacity);
-            // $attackerPlanet->getOwner()->addResources($lootedResources);
+            $lootCapacity = $attackerPlanet->getFleet()->getTransportCapacity();
+            $lootedResources = $this->dbInterface->getQuantityResources($defenderPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet());
+            $this->dbInterface->addResourcesToAttacker($lootedResources, $attackerPlanet->getIdPlayer());
+            // Remove resources from defender
+            $this->dbInterface->removeResourcesFromDefender($lootedResources, $defenderPlanet->getIdPlayer(), $defenderPlanet->getIdPlanet());
             return $lootedResources;
         } else {
             return [];
@@ -349,7 +346,7 @@ class Attaque{
      * 
      * @return array the result of the database operation
      */
-    private function generateCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet) {
+    private function createCombatReport($result, $damage, $rewards, $attackerPlanet, $defenderPlanet) {
         $report = [
             'date' => date('Y-m-d H:i:s'),
             'result' => $result,

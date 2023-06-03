@@ -55,4 +55,15 @@ class Fleet {
         return $defensePoints;
     }
 
+    public function getTransportCapacity()
+    {
+        $transportCapacity = 0;
+        foreach ($this->ships as $ship) {
+            if ($ship->getType() == 'TRANSPORTEUR') {
+                $transportCapacity += $ship->getCapacity();
+            }
+        }
+        return $transportCapacity;
+    }
+
 }
