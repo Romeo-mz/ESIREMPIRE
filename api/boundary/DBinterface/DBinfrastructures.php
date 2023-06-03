@@ -17,6 +17,98 @@ class DBinfrastructures extends DBinterface {
     public function __construct(){
         parent::__construct(DB_LOGIN, DB_PWD);
     }
+
+    private function getIdUniverse($idPlanet)
+    {
+        return $this->fetchValue('
+            SELECT u.id AS universe_id
+            FROM univers u
+            JOIN galaxie g ON g.id_Univers = u.id
+            JOIN systemesolaire s ON s.id_Galaxie = g.id
+            JOIN planete p ON p.id_Systeme_Solaire = s.id
+            WHERE p.id = ?;', [$idPlanet]
+        );
+    }
+
+    public function updateResourcesEvent($id_Planet, $idInfra)
+    {
+        $idUniverse = $this->getIdUniverse($id_Planet);
+        // Get the id Player
+        $idPlayer = $this->fetchValue('
+            SELECT id_Joueur
+            FROM planete
+            WHERE id = ?;', [$id_Planet]
+        );
+
+        $idResources = $this->fetchAllRows('
+            SELECT ju.id_Ressource AS resource_id,
+                    tr.type AS resource_type
+            FROM joueurunivers ju
+            JOIN ressource r ON r.id = ju.id_Ressource
+            LEFT JOIN typeressource tr ON r.id_Type = tr.id
+            WHERE ju.id_Univers = 1
+            AND ju.id_Joueur = ?;', [$idPlayer]
+        );
+        
+        $productionRate = $this->fetchAllRows('
+            SELECT 
+                i.id AS id,
+                i.niveau AS niveau,
+                tr.type AS type,
+                rdf.production_metal AS production_metal,
+                rdf.production_energie AS production_energie,
+                rdf.production_deuterium AS production_deuterium
+            FROM 
+                infrastructure i
+            LEFT JOIN infraressource r ON i.id = r.id_Infrastructure
+            LEFT JOIN typeinfraressource tr ON r.id_Type_Ressource = tr.id
+            LEFT JOIN ressourcedefaut rdf ON tr.id = rdf.id_Type_Ressource
+            WHERE i.id = ?;', [$idInfra]
+        )[0];
+
+        // Update events
+        // Metal
+        $this->executeQuery('
+            CREATE OR REPLACE EVENT 
+                resource_metal_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[0]['resource_id'].' 
+            ON SCHEDULE EVERY 1 MINUTE DO 
+            UPDATE 
+                ressource 
+            SET 
+                ressource.quantite = ressource.quantite + ? 
+            WHERE 
+                ressource.id = ?;
+            ', [($productionRate['production_metal'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[0]['resource_id']]
+        );
+        // Energie
+        $this->executeQuery('
+            CREATE OR REPLACE EVENT 
+                resource_energie_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[1]['resource_id'].' 
+            ON SCHEDULE EVERY 1 MINUTE DO 
+            UPDATE 
+                ressource 
+            SET 
+                ressource.quantite = ressource.quantite + ? 
+            WHERE 
+                ressource.id = ?;
+            ', [($productionRate['production_energie'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[1]['resource_id']]
+        );
+        // Deuterium
+        $this->executeQuery('
+            CREATE OR REPLACE EVENT 
+                resource_deuterium_event_'.$idUniverse.'_'.$idPlayer.'_'.$idResources[2]['resource_id'].' 
+            ON SCHEDULE EVERY 1 MINUTE DO 
+            UPDATE 
+                ressource 
+            SET 
+                ressource.quantite = ressource.quantite + ? 
+            WHERE 
+                ressource.id = ?;
+            ', [($productionRate['production_deuterium'] * 60 * (1.5 ** ($productionRate['niveau']))), $idResources[2]['resource_id']]
+        );
+
+    }
+
     /**
      * getBonusRessources
      * function that return the bonus ressources of a planet

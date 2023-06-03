@@ -36,14 +36,25 @@ class Infrastructures
         return $this->dbInterface->getDefaultRessource();
     }
 
+    private function updateResourcesEvent($id_Planet, $infraType, $type)
+    {
+        $this->dbInterface->updateResourcesEvent($id_Planet, $infraType, $type);
+    }
+
     public function buildInfrastructure($id_Planet, $infraType, $type)
     {
-        return $this->dbInterface->buildInfrastructure($id_Planet, $infraType, $type);
+        $idInfra =  $this->dbInterface->buildInfrastructure($id_Planet, $infraType, $type);
+
+        // Create an event
+        $this->dbInterface->updateResourcesEvent($id_Planet, $idInfra);
+
+        return $idInfra;
     }
 
     public function upgradeInfrastructure($id_Planet, $id_Infrastructure)
     {
         $this->dbInterface->upgradeInfrastructure($id_Planet, $id_Infrastructure);
+        $this->dbInterface->updateResourcesEvent($id_Planet, $id_Infrastructure);
     }
 
     public function getQuantityRessourcePlayer($id_Player, $id_Universe)
