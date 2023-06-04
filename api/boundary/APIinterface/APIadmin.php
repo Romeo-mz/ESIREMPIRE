@@ -22,11 +22,11 @@ class APIadmin
     {
         $this->controller = $controller;
     }
+
     /**
-     * This function handles the request.
-     * It checks the request method and calls the appropriate function.
-     * If the request method is not supported, it sends a 405 response.
-     * 
+     * @brief Gère la requête entrante.
+     * @details Vérifie la méthode de la requête et appelle la fonction appropriée.
+     * Si la méthode de la requête n'est pas prise en charge, elle envoie une réponse 405.
      * @return void
      */
     public function handleRequest()
@@ -44,11 +44,13 @@ class APIadmin
                 break;
         }
     }
+
     /**
-     * This function handles the POST request.
-     * It checks if the request is valid and calls the appropriate function.
-     * If the request is not valid, it sends a 400 response.
-     * 
+     * @brief Gère la requête POST.
+     * @details Vérifie si la requête est valide et appelle la fonction appropriée.
+     * Si la requête n'est pas valide, elle envoie une réponse 400.
+     * @note Fetch à réaliser: POST /api/boundary/apiinterface/apiadmin.php
+     * @note JSON envoyé: { "universe_name": "nom de l'univers" }
      * @return void
      */
     private function handlePost()
@@ -71,11 +73,13 @@ class APIadmin
             $this->sendResponse(500, 'Internal Server Error');
         }
     }
+
     /**
-     * This function handles the GET request.
-     * It checks if the request is valid and calls the appropriate function.
-     * If the request is not valid, it sends a 400 response.
-     * 
+     * @brief Gère la requête GET.
+     * @details Vérifie si la requête est valide et appelle la fonction appropriée.
+     * Si la requête n'est pas valide, elle envoie une réponse 400.
+     * @note Fetch à réaliser: GET /api/boundary/apiinterface/apiadmin.php?universes
+     * @note JSON renvoyé: Un tableau JSON contenant les informations sur les univers.
      * @return void
      */
     private function handleGet()
@@ -88,11 +92,10 @@ class APIadmin
         }
     }
     /**
-     * This function sends the response to the client.
-     * 
-     * @param int $statusCode
-     * @param string $statusText
-     * @param string $body
+     * @brief Envoie la réponse au client.
+     * @param int $statusCode - Le code de statut HTTP.
+     * @param string $statusText - Le texte du statut HTTP.
+     * @param string|null $body - Le corps de la réponse, s'il y en a un.
      * @return void
      */
     private function sendResponse($statusCode, $statusText, $body = null)
