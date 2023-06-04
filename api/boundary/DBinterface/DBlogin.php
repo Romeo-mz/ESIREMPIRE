@@ -2,8 +2,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "root");
-define('DB_PWD', "");
+define('DB_LOGIN', "api_login");
+define('DB_PWD', "XlgNBs9jz9zn3(P5");
 //Add Dockblock for each function and class
 
 /**

@@ -3,8 +3,8 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "root");
-define('DB_PWD', "");
+define('DB_LOGIN', "api_search");
+define('DB_PWD', "4]vhuhrWWSzDF_OG");
 /**
  * DBsearch class
  * @package api\boundary\DBinterface
