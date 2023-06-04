@@ -76,52 +76,27 @@ Le dossier `controller` contient les contrôleurs suivants :
 - Vaisseaux
 
 #### SessionController
-Le contrôleur `SessionController` est utilisé pour gérer les sessions utilisateur. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `SessionController` est utilisé pour gérer les sessions utilisateur.
 
 #### Administration
-Le contrôleur `Administration` est utilisé pour gérer les tâches d'administration. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Administration` est utilisé pour gérer les tâches d'administration.
 
 #### Authentifier
-Le contrôleur `Authentifier` est utilisé pour gérer l'authentification des utilisateurs. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Authentifier` est utilisé pour gérer l'authentification des utilisateurs.
 
 #### Galaxy
-Le contrôleur `Galaxy` est utilisé pour gérer les données relatives aux galaxies. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Galaxy` est utilisé pour gérer les données relatives aux galaxies.
 
 #### Infrastructure
-Le contrôleur `Infrastructure` est utilisé pour gérer les données relatives à l'infrastructure. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Infrastructure` est utilisé pour gérer les données relatives à l'infrastructure.
 
 #### Search
-Le contrôleur `Search` est utilisé pour gérer les recherches d'éléments dans l'API. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Search` est utilisé pour gérer les recherches d'éléments dans l'API.
 
 #### Spacework
-Le contrôleur `Spacework` est utilisé pour gérer les données relatives aux travaux spatiaux. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
-
+Le contrôleur `Spacework` est utilisé pour gérer les données relatives aux travaux spatiaux.
 #### Vaisseaux
-Le contrôleur `Vaisseaux` est utilisé pour gérer les données relatives aux vaisseaux spatiaux. Il contient les méthodes suivantes :
-- Méthode1 : Description de la méthode 1
-- Méthode2 : Description de la méthode 2
-- Méthode3 : Description de la méthode 3
+Le contrôleur `Vaisseaux` est utilisé pour gérer les données relatives aux vaisseaux spatiaux.
 
 ## Utilisation de l'API
 Pour utiliser l'API il suffit de réaliser les différentes requetes vues ci-dessous.
