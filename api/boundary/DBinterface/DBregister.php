@@ -106,7 +106,7 @@ class DBregister extends DBinterface {
      * @return array
      */
     public function getIdRessources(){
-        $query = "SELECT id FROM ressource WHERE id_type IN (1,2,3) ORDER BY id ASC"    ;
+        $query = "SELECT id FROM ressource WHERE id_type IN (1,2,3) ORDER BY id DESC LIMIT 3"    ;
         return $this->fetchAllRows($query);
     }
 }
