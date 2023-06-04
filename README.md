@@ -8,7 +8,7 @@ ESIREMPIRE, un jeu de stratégie en ligne passionnant qui vous transportera dans
 Nous sommes Hugo Goncalves et Roméo Martinez et voici notre projet !
 
 ## Pour M. MEUNIER
-Lien vers notre diagramme entité/relation de notre BDD: https://drive.google.com/file/d/11-xNWhDw8N6Pds1CLWjyII8KPIqFgejL/view?usp=sharing
+Lien vers nos diagrammes entité/relation de notre BDD: https://drive.google.com/file/d/11-xNWhDw8N6Pds1CLWjyII8KPIqFgejL/view?usp=sharing
 
 
 Pour créer un univers et lancer le jeu, rendez-vous sur la page: /front/admin.php.
