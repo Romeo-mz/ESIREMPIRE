@@ -86,11 +86,11 @@ export class Controller extends Notifier {
    
     try {
       const response = await fetch(API_BASE_URL, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSONdata,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSONdata,
       });
 
       const jsonData = await response.json();
@@ -98,10 +98,10 @@ export class Controller extends Notifier {
       // const dataToReturn = jsonData.id_New_Infrastructure;
 
       return dataToReturn;
-  } catch (error) {
+    } catch (error) {
       console.error('Erreur:', error);
       throw error;
-  }
+    }
 
   }
     
