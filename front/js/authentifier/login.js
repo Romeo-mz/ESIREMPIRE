@@ -7,7 +7,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
     const password = document.getElementById('passwordInput').value;
     const universe = document.getElementById('universSelect').value;
     
-    fetch('http://esirloc/api/boundary/APIinterface/APIlogin.php', {
+    fetch('/api/boundary/APIinterface/APIlogin.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

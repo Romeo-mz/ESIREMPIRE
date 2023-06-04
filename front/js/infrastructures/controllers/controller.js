@@ -10,7 +10,7 @@ import { Technologie } from "../models/technologie.js";
 import { Bonus } from "../models/bonus.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIinfrastructures.php";
+const API_BASE_URL = "/api/boundary/APIinterface/APIinfrastructures.php";
 const API_QUERY_PARAMS = {
     loadInfrastructures: (planetId) => `?id_Planet=${planetId}`,
     loadDefaultDefenses: "?default_defense",

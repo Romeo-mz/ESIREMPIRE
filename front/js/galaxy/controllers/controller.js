@@ -3,7 +3,7 @@ import { Session } from "../models/session.js";
 import { CelestialBody } from "../models/celestial-object.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "http://esirloc/api/boundary/APIinterface/APIgalaxy.php";
+const API_BASE_URL = "/api/boundary/APIinterface/APIgalaxy.php";
 const API_QUERY_PARAMS = {
     loadPlanets: (universeId, galaxyId, systemId) => `?planets&id_Universe=${universeId}&id_Galaxy=${galaxyId}&id_SolarSystem=${systemId}`
 };
