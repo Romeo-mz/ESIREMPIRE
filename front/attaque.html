@@ -12,7 +12,7 @@
 <body>
     <main>
         <h1>Attaque</h1>
-        <form id="attaque-form" action="../api/boundary/APIinterface/APIattaque.php" method="post">
+        <form id="attaque-form" method="post">
             <br>
             <table>
                 <thead>
@@ -29,9 +29,10 @@
                 </tbody>
             </table>
 
-            <button type="submit">Lancer l'attaque</button>
+            <button type="submit" id="btn-attaquer" style="display: none;">Lancer l'attaque</button>
         </form>
     </main>
+
     <script src="js/attaque/application/application.js" type="module"></script>
 </body>
 
