@@ -9,7 +9,7 @@ export class View extends Observer {
 
     this.loadJoueurEnnemis();
   }
-
+  
   loadJoueurEnnemis() {
     const ennemisTableBody = document.querySelector('#joueur-liste');
     ennemisTableBody.innerHTML = '';
@@ -20,7 +20,8 @@ export class View extends Observer {
 
     this.#controller.getDataEnnemis().then((data) => {
       data.forEach((ennemi, index) => {
-        console.log(ennemi);
+
+        
         const defenderId = ennemi[index].id_defender;
         const idDefenderPlanet = ennemi[index].id_planete;
 
@@ -31,7 +32,8 @@ export class View extends Observer {
           id_Defender_Planet: idDefenderPlanet, // Set the defender's planet ID
           fleet_Attacker: fleetData
         }
-        // console.log(jsonData);
+        // console.log('roro' , ennemi[index].id);
+
         const row = document.createElement('tr');
 
         const jsonDataTd = document.createElement('td');
@@ -45,8 +47,8 @@ export class View extends Observer {
         const radioTd = document.createElement('td');
         const radioInput = document.createElement('input');
         radioInput.type = 'radio';
-        radioInput.name = 'ennemi-' + ennemi.id; // Update to use a unique identifier
-        radioInput.value = index;
+        radioInput.name = 'ennemi-' + ennemi[index].id; // Update to use a unique identifier
+        radioInput.value = ennemi[index].id;
         radioTd.appendChild(radioInput);
         row.appendChild(radioTd);
 
@@ -73,6 +75,12 @@ export class View extends Observer {
         row.appendChild(flotteTd);
 
         ennemisTableBody.appendChild(row);
+
+        radioInput.addEventListener('click', () => {
+          
+          this.#controller.fetchAttaque(jsonData)
+        }
+        );
       });
     });
   }

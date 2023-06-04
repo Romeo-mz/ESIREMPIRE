@@ -82,5 +82,28 @@ export class Controller extends Notifier {
     
   }
 
+  async fetchAttaque(JSONdata) {
+   
+    try {
+      const response = await fetch(API_BASE_URL, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSONdata,
+      });
+
+      const jsonData = await response.json();
+      console.log(jsonData);
+      // const dataToReturn = jsonData.id_New_Infrastructure;
+
+      return dataToReturn;
+  } catch (error) {
+      console.error('Erreur:', error);
+      throw error;
+  }
+
+  }
+    
 
 }

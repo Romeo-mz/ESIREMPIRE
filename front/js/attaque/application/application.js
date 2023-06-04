@@ -5,8 +5,15 @@ import sessionDataService from '../../SessionDataService.js';
 document.addEventListener("DOMContentLoaded", async () => {
 
   if (sessionDataService.getSessionData() !== null) {
+    const btn = document.getElementById('btn-attaquer');
+    
     const myController = new Controller();
     console.log("Success to load controller");
+    
+    btn.addEventListener('click', function() {
+      myController.fetchAttaque();
+       
+    });
       try {
         await myController.getFlotteJoueur();
         console.log("Success to load all vaisseaux");
@@ -27,3 +34,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = './login.php';
     
 });
+
+
