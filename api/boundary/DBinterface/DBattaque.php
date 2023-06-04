@@ -3,8 +3,10 @@
 require_once 'DBinterface.php';
 
 //Compte Interface API
-define('DB_LOGIN', "api_attaque");
-define('DB_PWD', "re2C.!YFX1tzQy.p");
+// define('DB_LOGIN', "api_attaque");
+// define('DB_PWD', "re2C.!YFX1tzQy.p");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
 
 /**
  * Class DBattaque

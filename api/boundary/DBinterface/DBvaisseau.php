@@ -2,8 +2,11 @@
 
 require_once('DBinterface.php');
 
-define('DB_LOGIN', "api_vaisseau");
-define('DB_PWD', "HoEPox@4lnMYL5d)");
+// define('DB_LOGIN', "api_vaisseau");
+// define('DB_PWD', "HoEPox@4lnMYL5d)");
+define('DB_LOGIN', "root");
+define('DB_PWD', "");
+
 /**
  * DBvaisseau class
  * @package api\boundary\DBinterface
