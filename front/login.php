@@ -1,6 +1,13 @@
 <?php
-$universes = file_get_contents("http://localhost/ESIREMPIRE/api/boundary/APIinterface/APIadmin.php?universes");
+$adresse = "http://" . $_SERVER['HTTP_HOST']; // Obtient le nom de domaine actuel
+
+if ($_SERVER['SERVER_PORT'] !== '80') {
+  $adresse .= ":" . $_SERVER['SERVER_PORT']; // Ajoute le port si différent de 80
+}
+
+$universes = file_get_contents($adresse . "/api/boundary/APIinterface/APIadmin.php?universes");
 $universes = json_decode($universes, true);
+
 ?>
 
 <!DOCTYPE html>
