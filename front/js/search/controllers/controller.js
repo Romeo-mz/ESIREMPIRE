@@ -5,7 +5,7 @@ import { TechnoRequired } from "../models/technorequired.js";
 import { Technologie } from "../models/technologie.js";
 import sessionDataService from '../../SessionDataService.js';
 
-const API_BASE_URL = "/api/boundary/APIinterface/APIsearch.php";
+const API_BASE_URL = "../api/boundary/APIinterface/APIsearch.php";
 const API_QUERY_PARAMS = {
     defaultTechnologies: "?default_technologies",
     laboID: (planetID) => `?id_Labo&id_Planet=${planetID}`,
