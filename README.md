@@ -4,7 +4,7 @@
 
 ESIREMPIRE, un jeu de stratégie en ligne passionnant qui vous transportera dans un univers de science fascinant.
 
-## Notes 
+## Note
 ![logo](https://cdn.discordapp.com/attachments/528165005812563968/1155843495001591808/png.png)
 
 ## Développeurs 
