@@ -1,14 +1,14 @@
 # ESIREMPIRE
 
-![logo](https://cdn.discordapp.com/attachments/1095328768127684638/1104389062854443071/logo1_transp.png)
+<img src="/logo.png" alt="logo" width="200">
 
 ESIREMPIRE, un jeu de stratégie en ligne passionnant qui vous transportera dans un univers de science fascinant.
 
 ## Note
-![logo](https://cdn.discordapp.com/attachments/528165005812563968/1155843495001591808/png.png)
+<img src="/rank.png" alt="rank" width="700">
 
 ## Développeurs 
-Nous sommes Hugo Goncalves et Roméo Martinez et voici notre projet !
+Nous sommes [Hugo Goncalves](https://github.com/hugo-gclvs) and [Roméo Martinez](https://github.com/romeo-mz). et voici notre projet !
 
 ## Pour M. MEUNIER
 Lien vers nos diagrammes entité/relation de notre BDD: https://drive.google.com/file/d/11-xNWhDw8N6Pds1CLWjyII8KPIqFgejL/view?usp=sharing
